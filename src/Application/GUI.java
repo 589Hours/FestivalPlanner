@@ -15,21 +15,27 @@ public class GUI extends Application {
 
         MenuBar menuBar = new MenuBar();
         Menu menu1 = new Menu("Saturday");
-        MenuItem menuItem1 = new MenuItem("Listview");
+        MenuItem menuItem1 = new MenuItem("Tableview");
         MenuItem menuItem2 = new MenuItem("Blockview");
         menu1.getItems().addAll(menuItem1, menuItem2);
         Menu menu2 = new Menu("Sunday");
 
-        MenuItem menuItem3 = new MenuItem("Listview");
+        MenuItem menuItem3 = new MenuItem("Tableview");
         MenuItem menuItem4 = new MenuItem("Blockview");
         menu2.getItems().addAll(menuItem3, menuItem4);
         menuBar.getMenus().addAll(menu1, menu2);
 
+        menuItem3.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(festivalTableview);
+        });
+
         borderPane.setTop(menuBar);
 
-//        FestivalListview listview = new FestivalListview();
 
         Scene scene = new Scene(borderPane);
+        primaryStage.setHeight(500);
+        primaryStage.setWidth(750);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
         primaryStage.show();
