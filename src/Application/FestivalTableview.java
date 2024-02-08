@@ -22,14 +22,18 @@ public class FestivalTableview extends TableView {
         TableColumn popularityColumn = new TableColumn("Popularity");
         TableColumn genre = new TableColumn("Genre");
 
-        int width = 725/6; //TODO auto resize vinden voor de columns
-        beginTimeColumn.setPrefWidth(width);
-        endTimeColumn.setPrefWidth(width);
-        stageColumn.setPrefWidth(width);
-        artistColumn.setPrefWidth(width);
-        popularityColumn.setPrefWidth(width);
-        genre.setPrefWidth(width);
+
+        /*Hiermee set je de sizes naar 1/6 van de totale lengte.
+        Hierdoor worden alle stukjes even groot */
+        beginTimeColumn.prefWidthProperty().bind(this.widthProperty().divide(6));
+        endTimeColumn.prefWidthProperty().bind(this.widthProperty().divide(6));
+        stageColumn.prefWidthProperty().bind(this.widthProperty().divide(6));
+        artistColumn.prefWidthProperty().bind(this.widthProperty().divide(6));
+        popularityColumn.prefWidthProperty().bind(this.widthProperty().divide(6));
+        genre.prefWidthProperty().bind(this.widthProperty().divide(6));
+
 
         getColumns().addAll(beginTimeColumn,endTimeColumn,stageColumn,artistColumn,popularityColumn,genre);
     }
+
 }
