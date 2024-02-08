@@ -1,17 +1,17 @@
 package data;
 
 public class Stage {
-    private String naam;
+    private String name;
 
-    public Stage(String naam) {
-        this.naam = naam;
+    public Stage(String name) {
+        this.name = name;
     }
 
-    public String getNaam() {
-        return naam;
+    public String getName() {
+        return name;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
+    public void setName(String name) {
+        this.name = name;
     }
 }

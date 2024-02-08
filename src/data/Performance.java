@@ -6,22 +6,22 @@ public class Performance {
     private ArrayList<Artist> artists;
     private Stage stage;
 
-    private int beginUur;
-    private int beginMinuut;
-    private int eindUur;
-    private int eindMinuut;
+    private int beginHour;
+    private int beginMinute;
+    private int endHour;
+    private int endMinute;
 
-    private String begintijd;
-    private String eindtijd;
+    private String beginTime;
+    private String endTime;
 
 
     public Performance(ArrayList<Artist> artists, Stage stage, int beginUur, int beginMinuut, int eindUur, int eindMinuut) {
         this.artists = artists;
         this.stage = stage;
-        this.beginUur = beginUur;
-        this.beginMinuut = beginMinuut;
-        this.eindUur = eindUur;
-        this.eindMinuut = eindMinuut;
+        this.beginHour = beginHour;
+        this.beginMinute = beginMinute;
+        this.endHour = endHour;
+        this.endMinute = endMinute;
     }
 
     public ArrayList<Artist> getArtists() {
@@ -40,51 +40,51 @@ public class Performance {
         this.stage = stage;
     }
 
-    public int getBeginUur() {
-        return beginUur;
+    public int getBeginHour() {
+        return beginHour;
     }
 
-    public void setBeginUur(int beginUur) {
-        this.beginUur = beginUur;
+    public void setBeginHour(int beginHour) {
+        this.beginHour = beginHour;
     }
 
-    public int getBeginMinuut() {
-        return beginMinuut;
+    public int getBeginMinute() {
+        return beginMinute;
     }
 
-    public void setBeginMinuut(int beginMinuut) {
-        this.beginMinuut = beginMinuut;
+    public void setBeginMinute(int beginMinute) {
+        this.beginMinute = beginMinute;
     }
 
-    public int getEindUur() {
-        return eindUur;
+    public int getEndHour() {
+        return endHour;
     }
 
-    public void setEindUur(int eindUur) {
-        this.eindUur = eindUur;
+    public void setEndHour(int endHour) {
+        this.endHour = endHour;
     }
 
-    public int getEindMinuut() {
-        return eindMinuut;
+    public int getEndMinute() {
+        return endMinute;
     }
 
-    public void setEindMinuut(int eindMinuut) {
-        this.eindMinuut = eindMinuut;
+    public void setEndMinute(int endMinute) {
+        this.endMinute = endMinute;
     }
 
-    public String getBegintijd() {
-        return begintijd;
+    public String getBeginTime() {
+        return beginTime;
     }
 
-    public void setBegintijd(String begintijd) {
-        this.begintijd = begintijd;
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
     }
 
-    public String getEindtijd() {
-        return eindtijd;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEindtijd(String eindtijd) {
-        this.eindtijd = eindtijd;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
