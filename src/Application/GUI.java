@@ -16,7 +16,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, canvas), borderPane);
-        borderPane.setCenter(canvas);
+
 
 
         MenuBar menuBar = new MenuBar();
@@ -31,9 +31,21 @@ public class GUI extends Application {
         menu2.getItems().addAll(menuItem3, menuItem4);
         menuBar.getMenus().addAll(menu1, menu2);
 
+        menuItem1.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(festivalTableview);
+        });
+        menuItem2.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(canvas);
+        });
         menuItem3.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview();
             borderPane.setCenter(festivalTableview);
+        });
+        menuItem4.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(canvas);
         });
 
         borderPane.setTop(menuBar);
