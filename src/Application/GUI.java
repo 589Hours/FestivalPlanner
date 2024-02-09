@@ -15,7 +15,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
-        canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, canvas), borderPane);
+        canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
         borderPane.setCenter(canvas);
 
 

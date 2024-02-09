@@ -1,5 +1,6 @@
 package Application;
 
+import data.FestivalPlan;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
@@ -7,9 +8,17 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class FestivalBlockview extends Canvas {
-    // 12:00 - 3:00
 
-    public void draw(FXGraphics2D graphics, ResizableCanvas canvas){
+    private FestivalPlan festivalPlan = new FestivalPlan();
+
+    public void draw(FXGraphics2D graphics){
+        // Tekent de basiselementen zoals tijden met bijbehorende tijdvakken.
+        drawBasics(graphics);
+
+        drawStages(graphics);
+    }
+
+    public void drawBasics(FXGraphics2D graphics){
         Rectangle2D rectangle1 = new Rectangle2D.Double(0,0, 200, 30);
         graphics.drawString("Podiums", 70,20);
         graphics.drawLine(200, 0, 200, 800);
@@ -49,5 +58,12 @@ public class FestivalBlockview extends Canvas {
         graphics.drawString("1:30", 1555,20);
         graphics.drawString("2:00", 1605,20);
         graphics.drawString("2:30", 1655,20);
+    }
+
+    public void drawStages(FXGraphics2D graphics){
+        for (int i = 0; i < festivalPlan.getStages().size(); i++) {
+            graphics.drawLine(0, 100 + (75*i), 1700, 100 + (75*i));
+            graphics.drawString(festivalPlan.getStages().get(i).getName(), 50, 70 + (75*i));
+        }
     }
 }
