@@ -36,7 +36,7 @@ public class GUI extends Application {
 
 //        FestivalListview listview = new FestivalListview();
 
-        borderPane.setPrefSize(1500,800);
+        borderPane.setPrefSize(1700,800);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
