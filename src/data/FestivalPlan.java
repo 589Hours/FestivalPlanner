@@ -15,4 +15,26 @@ public class FestivalPlan {
 
     private void addTestData() {
     }
+
+    public ArrayList<Performance> getPerformances() {
+        return performances;
+    }
+
+    public ArrayList<Artist> getArtists() {
+        return artists;
+    }
+
+    public ArrayList<Stage> getStages() {
+        return stages;
+    }
+
+    public void addPerformance(Performance performance){
+        this.performances.add(performance);
+    }
+    public void addArtist(Artist artist){
+        this.artists.add(artist);
+    }
+    public void addStage(Stage stage){
+        this.stages.add(stage);
+    }
 }
