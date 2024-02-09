@@ -53,8 +53,6 @@ public class GUI extends Application {
 
         borderPane.setPrefSize(1700,800);
         Scene scene = new Scene(borderPane);
-        primaryStage.setHeight(500);
-        primaryStage.setWidth(750);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
         primaryStage.show();
