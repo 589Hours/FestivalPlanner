@@ -55,18 +55,6 @@ public class FestivalPlan {
         this.stages = stages;
     }
 
-    public ArrayList<Performance> getPerformances() {
-        return performances;
-    }
-
-    public ArrayList<Artist> getArtists() {
-        return artists;
-    }
-
-    public ArrayList<Stage> getStages() {
-        return stages;
-    }
-
     public void addPerformance(Performance performance){
         this.performances.add(performance);
     }
