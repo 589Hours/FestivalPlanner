@@ -1,5 +1,6 @@
 package Application;
 
+import data.Artist;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -59,6 +60,10 @@ public class GUI extends Application {
 
         button.setOnAction(event -> {
             ArtistInfo artistInfo = new ArtistInfo();
+            Artist artist = new Artist("Ed Sheeran", 10000, "Pop");
+            artist.setArtistInfo("Ed Sheeran is an british pop artist. He is mostly known for his hits 'Shape of you' and 'Perfect'. ");
+            artistInfo.setArtist(artist);
+
             try {
                 artistInfo.start(new Stage());
             } catch (Exception e) {
@@ -71,6 +76,5 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
         primaryStage.show();
-
     }
 }
