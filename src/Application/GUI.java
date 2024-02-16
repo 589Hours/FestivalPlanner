@@ -7,11 +7,17 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.jfree.fx.ResizableCanvas;
 
 public class GUI extends Application {
+    private ResizableCanvas canvas;
+    FestivalBlockview festivalBlockview = new FestivalBlockview();
     @Override
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
+        canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
+
+
 
         MenuBar menuBar = new MenuBar();
         Menu menu1 = new Menu("Saturday");
@@ -25,17 +31,28 @@ public class GUI extends Application {
         menu2.getItems().addAll(menuItem3, menuItem4);
         menuBar.getMenus().addAll(menu1, menu2);
 
+        menuItem1.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(festivalTableview);
+        });
+        menuItem2.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(canvas);
+        });
         menuItem3.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview();
             borderPane.setCenter(festivalTableview);
+        });
+        menuItem4.setOnAction(event -> {
+            FestivalTableview festivalTableview = new FestivalTableview();
+            borderPane.setCenter(canvas);
         });
 
         borderPane.setTop(menuBar);
 
 
+        borderPane.setPrefSize(1700,800);
         Scene scene = new Scene(borderPane);
-        primaryStage.setHeight(500);
-        primaryStage.setWidth(750);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
         primaryStage.show();
