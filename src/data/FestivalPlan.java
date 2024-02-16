@@ -18,6 +18,9 @@ public class FestivalPlan {
         ArrayList<Artist> artist1 = new ArrayList<>();
         artist1.add(new Artist("Ed Sheeran", 100, "Pop"));
 
+        ArrayList<Artist> artist2 = new ArrayList<>();
+        artist2.add(new Artist("Gorillaz", 125, "Indie"));
+
         Stage stage = new Stage("Hoofdpodium");
         Stage stage2 = new Stage("Anderpodium1");
         Stage stage3 = new Stage("Anderpodium2");
@@ -28,7 +31,9 @@ public class FestivalPlan {
         stages.add(stage4);
 
         Performance performance = new Performance(artist1, stage, 8, 0, 9,0);
+        Performance performance1 = new Performance(artist2, stage3, 10, 0, 12, 0);
         performances.add(performance);
+        performances.add(performance1);
     }
 
     public ArrayList<Performance> getPerformances() {

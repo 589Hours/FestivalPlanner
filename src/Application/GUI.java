@@ -1,5 +1,6 @@
 package Application;
 
+import data.FestivalPlan;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import org.jfree.fx.ResizableCanvas;
 
 public class GUI extends Application {
+    private FestivalPlan festivalPlan;
     private ResizableCanvas canvas;
     FestivalBlockview festivalBlockview = new FestivalBlockview();
     @Override
@@ -17,7 +19,7 @@ public class GUI extends Application {
         BorderPane borderPane = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
 
-
+        festivalPlan = new FestivalPlan();
 
         MenuBar menuBar = new MenuBar();
         Menu menu1 = new Menu("Saturday");
@@ -32,24 +34,21 @@ public class GUI extends Application {
         menuBar.getMenus().addAll(menu1, menu2);
 
         menuItem1.setOnAction(event -> {
-            FestivalTableview festivalTableview = new FestivalTableview();
+            FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
         menuItem2.setOnAction(event -> {
-            FestivalTableview festivalTableview = new FestivalTableview();
             borderPane.setCenter(canvas);
         });
         menuItem3.setOnAction(event -> {
-            FestivalTableview festivalTableview = new FestivalTableview();
+            FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
         menuItem4.setOnAction(event -> {
-            FestivalTableview festivalTableview = new FestivalTableview();
             borderPane.setCenter(canvas);
         });
 
         borderPane.setTop(menuBar);
-
 
         borderPane.setPrefSize(1700,800);
         Scene scene = new Scene(borderPane);
