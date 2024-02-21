@@ -54,14 +54,14 @@ public class FestivalPlan {
         stages.add(stage5);
 
         // Performances
-        Performance performance = new Performance(artist1, stage, 8, 0, 9,0);
-        Performance performance1 = new Performance(artist2, stage2, 10, 0, 12, 0);
-        Performance performance2 = new Performance(artist3, stage, 9, 30, 11, 30);
-        Performance performance3 = new Performance(artist4, stage3, 8, 30, 11, 30);
-        Performance performance4 = new Performance(artist5, stage4, 9, 0, 11, 0);
-        Performance performance5 = new Performance(artist6, stage5, 12, 0, 13, 0);
-        Performance performance6 = new Performance(artist7, stage2, 14, 0, 16, 0);
-        Performance performance7 = new Performance(artist8, stage, 16, 0, 19, 0);
+        Performance performance = new Performance(artist1, stage, 12, 0, 13,0);
+        Performance performance1 = new Performance(artist2, stage2, 12, 30, 15, 0);
+        Performance performance2 = new Performance(artist3, stage, 13, 30, 16, 30);
+        Performance performance3 = new Performance(artist4, stage3, 14, 30, 16, 0);
+        Performance performance4 = new Performance(artist5, stage4, 14, 0, 17, 0);
+        Performance performance5 = new Performance(artist6, stage5, 12, 0, 14, 30);
+        Performance performance6 = new Performance(artist7, stage2, 16, 0, 19, 0);
+        Performance performance7 = new Performance(artist8, stage, 20, 0, 24, 0);
         Performance performance8 = new Performance(artist1, stage3, 20, 0, 23, 0);
         Performance performance9 = new Performance(artist2, stage4, 22, 0, 2, 0);
         performances.add(performance);
