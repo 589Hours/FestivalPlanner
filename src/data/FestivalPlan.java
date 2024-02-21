@@ -23,22 +23,22 @@ public class FestivalPlan {
         artist2.add(new Artist("Gorillaz", 125, "Indie"));
 
         ArrayList<Artist> artist3 = new ArrayList<>();
-        artist2.add(new Artist("Suzan en Freek", 150, "Rock"));
+        artist3.add(new Artist("Suzan en Freek", 150, "Rock"));
 
         ArrayList<Artist> artist4 = new ArrayList<>();
-        artist2.add(new Artist("Kraantje Pappie", 175, "Rap"));
+        artist4.add(new Artist("Kraantje Pappie", 175, "Rap"));
 
         ArrayList<Artist> artist5 = new ArrayList<>();
-        artist2.add(new Artist("Bizzey", 200, "Country"));
+        artist5.add(new Artist("Bizzey", 200, "Country"));
 
         ArrayList<Artist> artist6 = new ArrayList<>();
-        artist2.add(new Artist("The Weekend", 225, "Rock"));
+        artist6.add(new Artist("The Weekend", 225, "Rock"));
 
         ArrayList<Artist> artist7 = new ArrayList<>();
-        artist2.add(new Artist("Snelle", 250, "Pop"));
+        artist7.add(new Artist("Snelle", 250, "Pop"));
 
         ArrayList<Artist> artist8 = new ArrayList<>();
-        artist2.add(new Artist("Armin van Buuren", 275, "Metal"));
+        artist8.add(new Artist("Armin van Buuren", 275, "Metal"));
 
 
         // Podiums
