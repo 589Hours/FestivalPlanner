@@ -1,16 +1,22 @@
 package Application;
 
+import data.Artist;
 import data.FestivalPlan;
 import data.Performance;
 import org.jfree.fx.FXGraphics2D;
+import sun.misc.Perf;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FestivalBlockview extends Canvas {
 
     private FestivalPlan festivalPlan = new FestivalPlan();
+    private HashMap<RoundRectangle2D, Performance> blocks = new HashMap<>();
 
     public void draw(FXGraphics2D graphics) {
         // Tekent de basiselementen zoals tijden met bijbehorende tijdvakken.
@@ -127,7 +133,7 @@ public class FestivalBlockview extends Canvas {
                     x += 1400;
                     break;
             }
-            if (performance.getBeginMinute() == 30){
+            if (performance.getBeginMinute() == 30) {
                 x += 50;
             }
 
@@ -154,6 +160,7 @@ public class FestivalBlockview extends Canvas {
             String genre = performance.getArtists().get(0).getGenre();
 
             RoundRectangle2D roundRectangle = new RoundRectangle2D.Double(x, y, width, height, 5, 5);
+            blocks.put(roundRectangle, performance);
             graphics.draw(roundRectangle);
             graphics.setColor(Color.RED);
             graphics.fill(roundRectangle);
@@ -164,5 +171,15 @@ public class FestivalBlockview extends Canvas {
             graphics.drawString(String.valueOf(popularity), (x + 10), (y + 50));
             graphics.drawString(genre, (x + 60), (y + 50));
         }
+    }
+
+    private Performance checkClicked(Point2D point2D) {
+        for (RoundRectangle2D block : blocks.keySet()) {
+            if (point2D.getX() > block.getX() && point2D.getX() < (block.getX() + block.getWidth()) &&
+                    point2D.getY() > block.getY() && point2D.getY() < (block.getY() + block.getHeight())) {
+                return blocks.get(block);
+            }
+        }
+        return null;
     }
 }
