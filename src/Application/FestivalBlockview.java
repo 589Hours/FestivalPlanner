@@ -77,6 +77,8 @@ public class FestivalBlockview extends Canvas {
 
     private void drawPerformances(FXGraphics2D graphics) {
         graphics.setColor(Color.BLACK);
+
+        // Blocks
         for (Performance performance : festivalPlan.getPerformances()) {
             int width = 50 * (performance.getDuration() / 30);
             int height = 65;
@@ -155,6 +157,12 @@ public class FestivalBlockview extends Canvas {
             graphics.draw(roundRectangle);
             graphics.setColor(Color.RED);
             graphics.fill(roundRectangle);
+
+            // Tekst
+            graphics.setColor(Color.BLACK);
+            graphics.drawString(artist, (x + 10), (y + 25));
+            graphics.drawString(String.valueOf(popularity), (x + 10), (y + 50));
+            graphics.drawString(genre, (x + 60), (y + 50));
         }
     }
 }
