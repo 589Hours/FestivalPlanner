@@ -15,7 +15,7 @@ public class Performance {
     private String endTime;
 
 
-    public Performance(ArrayList<Artist> artists, Stage stage, int beginUur, int beginMinuut, int eindUur, int eindMinuut) {
+    public Performance(ArrayList<Artist> artists, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {
         this.artists = artists;
         this.stage = stage;
         this.beginHour = beginHour;
