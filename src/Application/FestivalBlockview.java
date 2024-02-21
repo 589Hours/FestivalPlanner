@@ -1,8 +1,8 @@
 package Application;
 
 import data.FestivalPlan;
+import data.Performance;
 import org.jfree.fx.FXGraphics2D;
-import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -14,9 +14,15 @@ public class FestivalBlockview extends Canvas {
     public void draw(FXGraphics2D graphics){
         // Tekent de basiselementen zoals tijden met bijbehorende tijdvakken.
         drawBasics(graphics);
-
+        
+        // Tekent de alle podiums
         drawStages(graphics);
+        
+        // Tekent alle optredes
+        drawPerformances(graphics);
     }
+
+    
 
     public void drawBasics(FXGraphics2D graphics){
         Rectangle2D rectangle1 = new Rectangle2D.Double(0,0, 200, 30);
@@ -64,6 +70,19 @@ public class FestivalBlockview extends Canvas {
         for (int i = 0; i < festivalPlan.getStages().size(); i++) {
             graphics.drawLine(0, 100 + (75*i), 1700, 100 + (75*i));
             graphics.drawString(festivalPlan.getStages().get(i).getName(), 50, 70 + (75*i));
+        }
+    }
+
+    private void drawPerformances(FXGraphics2D graphics) {
+        for (Performance performance : festivalPlan.getPerformances()) {
+            //TODO: de volgende waardes berekenen
+            int width = 0;
+            int height = 74;
+            int x = 0;
+            int y = 0;
+            String artist = performance.getArtists().get(0).getName();
+            int popularity = performance.getArtists().get(0).getPopularity();
+            String genre = performance.getArtists().get(0).getGenre();
         }
     }
 }

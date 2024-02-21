@@ -87,4 +87,15 @@ public class Performance {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+    public int getDuration(){
+        // Geeft de duur van het optreden terug in minuten
+        int totalMinutes = 0;
+        if (this.beginMinute == this.endMinute){
+            totalMinutes += (endHour - beginHour)*60;
+        } else {
+            totalMinutes += 30;
+            totalMinutes += ((endHour - beginHour)-1)*60;
+        }
+        return totalMinutes;
+    }
 }
