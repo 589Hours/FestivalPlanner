@@ -87,4 +87,37 @@ public class Performance {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+
+    public int getDuration() {
+        // Geeft de duur van het optreden terug in minuten
+        int totalMinutes = 0;
+        if (this.beginHour > this.endHour) {
+            if (this.beginMinute == this.endMinute) {
+                totalMinutes += ((endHour + 24) - beginHour) * 60;
+            } else {
+                if (this.beginMinute == 30) {
+                    totalMinutes += 30;
+                    totalMinutes += (((endHour + 24) - beginHour) - 1) * 60;
+                } else {
+                    totalMinutes += 30;
+                    totalMinutes += (((endHour + 24) - beginHour)) * 60;
+                }
+
+            }
+        } else {
+            if (this.beginMinute == this.endMinute) {
+                totalMinutes += (endHour - beginHour) * 60;
+            } else {
+                if (this.beginMinute == 30) {
+                    totalMinutes += 30;
+                    totalMinutes += ((endHour - beginHour) - 1) * 60;
+                } else {
+                    totalMinutes += 30;
+                    totalMinutes += ((endHour - beginHour)) * 60;
+                }
+
+            }
+        }
+        return totalMinutes;
+    }
 }
