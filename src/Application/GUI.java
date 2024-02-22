@@ -3,6 +3,7 @@ package Application;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
+import data.SaveToFile;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +16,12 @@ import org.jfree.fx.ResizableCanvas;
 
 import java.awt.geom.Point2D;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
     private ResizableCanvas canvas;
@@ -25,7 +32,6 @@ public class GUI extends Application {
         BorderPane borderPane = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
 
-
         festivalPlan = new FestivalPlan();
 
         MenuBar menuBar = new MenuBar();
@@ -33,12 +39,19 @@ public class GUI extends Application {
         MenuItem menuItem1 = new MenuItem("Tableview");
         MenuItem menuItem2 = new MenuItem("Blockview");
         menu1.getItems().addAll(menuItem1, menuItem2);
+
         Menu menu2 = new Menu("Create");
         MenuItem menuItem3 = new MenuItem("Podium");
         MenuItem menuItem4 = new MenuItem("Artist");
         MenuItem menuItem5 = new MenuItem("Performance");
         menu2.getItems().addAll(menuItem3, menuItem4, menuItem5);
-        menuBar.getMenus().addAll(menu1, menu2);
+
+        Menu saveAndLoadMenu = new Menu("Save & Load");
+        MenuItem saveAgenda = new MenuItem("Save");
+        MenuItem loadAgenda = new MenuItem("Load");
+        saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
+
+        menuBar.getMenus().addAll(menu1, menu2, saveAndLoadMenu);
 
         menuItem1.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
@@ -53,6 +66,20 @@ public class GUI extends Application {
         });
         menuItem4.setOnAction(event -> {
             borderPane.setCenter(canvas);
+        });
+
+        saveAgenda.setOnAction(event -> {
+            SaveToFile save = new SaveToFile(festivalPlan);
+        });
+
+        loadAgenda.setOnAction(event -> {
+            try{
+                FileInputStream fis = new FileInputStream("Saves/SaveFile.ser");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                festivalPlan = (FestivalPlan) ois.readObject();
+            } catch (Exception e){
+                System.out.println("file not found or class not found!");
+            }
         });
 
         // MouseClick

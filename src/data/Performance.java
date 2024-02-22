@@ -1,6 +1,8 @@
 package data;
 
-public class Performance {
+import java.io.Serializable;
+
+public class Performance implements Serializable {
     private Artist artist;
     private Stage stage;
 
