@@ -16,9 +16,6 @@ import org.jfree.fx.ResizableCanvas;
 
 import java.awt.geom.Point2D;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
     private ResizableCanvas canvas;
@@ -79,14 +76,14 @@ public class GUI extends Application {
         borderPane.setCenter(hBox);
 
         button.setOnAction(event -> {
-            ArtistInfo artistInfo = new ArtistInfo();
+            PerformanceInfo performanceInfo = new PerformanceInfo();
             Artist artist = new Artist("Ed Sheeran", 10000, "Pop");
             artist.setArtistInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.");
             data.Stage stage = new data.Stage("Alpha");
-            artistInfo.setArtist(new Performance(artist, stage, 19, 0, 20, 0));
+            performanceInfo.setArtist(new Performance(artist, stage, 19, 0, 20, 0));
 
             try {
-                artistInfo.start(new Stage());
+                performanceInfo.start(new Stage());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

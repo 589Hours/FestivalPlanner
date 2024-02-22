@@ -1,22 +1,16 @@
 package Application;
 
-import data.Artist;
 import data.Performance;
 import javafx.application.Application;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.Optional;
 
-
-public class ArtistInfo extends Application {
+public class PerformanceInfo extends Application {
     private Performance performance;
 
     @Override
@@ -27,7 +21,7 @@ public class ArtistInfo extends Application {
         //artistInfo label
         Label aritstInfoLabel = new Label("\n" + this.performance.getArtist().getArtistInfo());
 
-        VBox vBox = new VBox(artistName, generateTimesLabel(), aritstInfoLabel);
+        VBox vBox = new VBox(artistName, new Label(performance.getBeginTime() + " - " + performance.getEndTime()), aritstInfoLabel);
         Scene scene = new Scene(vBox);
 
         primaryStage.setTitle("Artist info");
@@ -42,16 +36,4 @@ public class ArtistInfo extends Application {
         this.performance = performance;
     }
 
-    private Label generateTimesLabel() {
-        String times = performance.getBeginHour() + ":";
-        if (performance.getBeginMinute() < 10) {
-            times = times + "0";
-        }
-        times = times + performance.getBeginMinute() + "-" + performance.getEndHour() + ":";
-        if (performance.getEndMinute() < 10) {
-            times = times + "0";
-        }
-        times = times + performance.getEndMinute();
-        return new Label(performance.getStage().getName() + " - " + times);
-    }
 }
