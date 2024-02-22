@@ -1,8 +1,9 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FestivalPlan {
+public class FestivalPlan implements Serializable {
     private ArrayList<Performance> performances;
     private ArrayList<Artist> artists;
     private ArrayList<Stage> stages;
