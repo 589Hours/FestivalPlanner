@@ -62,10 +62,11 @@ public class GUI extends Application {
                     Alert info = new Alert(Alert.AlertType.INFORMATION);
                     info.setTitle(festivalBlockview.checkClicked(point2D).getArtist().getName());
                     info.setHeaderText(festivalBlockview.checkClicked(point2D).getArtist().getName());
-                    info.setContentText(festivalBlockview.checkClicked(point2D).getStage().getName() + "\n" +
-                                    festivalBlockview.checkClicked(point2D).getBeginTime() + " - " +
+                    info.setContentText("Podium: " + festivalBlockview.checkClicked(point2D).getStage().getName() + "\n" +
+                            "Tijd: " + festivalBlockview.checkClicked(point2D).getBeginTime() + " - " +
                                     festivalBlockview.checkClicked(point2D).getEndTime() + "\n" +
-                                    festivalBlockview.checkClicked(point2D).getArtist().getArtistInfo());
+                            "Genre: " + festivalBlockview.checkClicked(point2D).getArtist().getGenre() + "\n" +
+                            "ArtiestBeschrijving: " + festivalBlockview.checkClicked(point2D).getArtist().getArtistInfo());
                     info.showAndWait();
                     System.out.println(festivalBlockview.checkClicked(point2D));
                 }
