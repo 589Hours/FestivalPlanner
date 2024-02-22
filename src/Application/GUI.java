@@ -76,26 +76,6 @@ public class GUI extends Application {
 
         borderPane.setTop(menuBar);
 
-
-        //Dit is een test voor ArtistInfo, als dit een mergeConflict geeft kan deze verwijderd worden.
-        Button button = new Button("Artist info check");
-        HBox hBox = new HBox(button);
-        borderPane.setCenter(hBox);
-
-        button.setOnAction(event -> {
-//            PerformanceInfo performanceInfo = new PerformanceInfo();
-            Artist artist = new Artist("Ed Sheeran", 10000, "Pop");
-            artist.setArtistInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.");
-            data.Stage stage = new data.Stage("Alpha");
-//            performanceInfo.setPerformance(new Performance(artist, stage, 19, 0, 20, 0));
-
-            try {
-//                performanceInfo.start(new Stage());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         borderPane.setPrefSize(1700, 800);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
