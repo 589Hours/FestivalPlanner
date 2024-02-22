@@ -1,13 +1,8 @@
 package data;
 
-import Application.PerformanceInfo;
-
-import java.util.ArrayList;
-
 public class Performance {
     private Artist artist;
     private Stage stage;
-    private PerformanceInfo performanceInfo;
 
     private int beginHour;
     private int beginMinute;
@@ -23,12 +18,6 @@ public class Performance {
         this.beginMinute = beginMinute;
         this.endHour = endHour;
         this.endMinute = endMinute;
-    }
-    public void setPerformanceInfo(PerformanceInfo performanceInfo){
-        this.performanceInfo = performanceInfo;
-    }
-    public PerformanceInfo getPerformanceInfo(){
-        return this.performanceInfo;
     }
 
     public Artist getArtist() {

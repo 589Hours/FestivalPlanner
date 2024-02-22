@@ -1,7 +1,5 @@
 package data;
 
-import Application.PerformanceInfo;
-
 import java.util.ArrayList;
 
 public class FestivalPlan {
@@ -18,22 +16,31 @@ public class FestivalPlan {
 
     private void addTestData() {
         // Artiesten
+        String standardArtistInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.";
+
         Artist artist1 = new Artist("Ed Sheeran", 100, "Pop");
+        artist1.setArtistInfo(standardArtistInfo);
 
         Artist artist2 = new Artist("Gorillaz", 125, "Indie");
+        artist2.setArtistInfo(standardArtistInfo);
 
         Artist artist3 = new Artist("Suzan en Freek", 150, "Rock");
+        artist3.setArtistInfo(standardArtistInfo);
 
         Artist artist4 = new Artist("Kraantje Pappie", 175, "Rap");
+        artist4.setArtistInfo(standardArtistInfo);
 
         Artist artist5 = new Artist("Bizzey", 200, "Country");
+        artist5.setArtistInfo(standardArtistInfo);
 
         Artist artist6 = new Artist("The Weekend", 225, "Rock");
+        artist6.setArtistInfo(standardArtistInfo);
 
         Artist artist7 = new Artist("Snelle", 250, "Pop");
+        artist7.setArtistInfo(standardArtistInfo);
 
         Artist artist8 = new Artist("Armin van Buuren", 275, "Metal");
-
+        artist8.setArtistInfo(standardArtistInfo);
 
         // Podiums
         Stage stage = new Stage("Hoofdpodium");
@@ -58,46 +65,6 @@ public class FestivalPlan {
         Performance performance7 = new Performance(artist8, stage, 20, 0, 24, 0);
         Performance performance8 = new Performance(artist1, stage3, 20, 0, 23, 0);
         Performance performance9 = new Performance(artist2, stage4, 22, 0, 2, 0);
-
-        PerformanceInfo performanceInfo1 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance);
-        performance.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo2 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance1);
-        performance1.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo3 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance2);
-        performance2.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo4 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance3);
-        performance3.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo5 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance4);
-        performance4.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo6 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance5);
-        performance5.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo7 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance6);
-        performance6.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo8 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance7);
-        performance7.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo9 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance8);
-        performance8.setPerformanceInfo(performanceInfo1);
-
-        PerformanceInfo performanceInfo10 = new PerformanceInfo();
-        performanceInfo1.setArtist(performance9);
-        performance9.setPerformanceInfo(performanceInfo1);
 
 
         performances.add(performance);
