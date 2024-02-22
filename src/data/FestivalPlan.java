@@ -16,29 +16,21 @@ public class FestivalPlan {
 
     private void addTestData() {
         // Artiesten
-        ArrayList<Artist> artist1 = new ArrayList<>();
-        artist1.add(new Artist("Ed Sheeran", 100, "Pop"));
+        Artist artist1 = new Artist("Ed Sheeran", 100, "Pop");
+       
+        Artist artist2 = new Artist("Gorillaz", 125, "Indie");
 
-        ArrayList<Artist> artist2 = new ArrayList<>();
-        artist2.add(new Artist("Gorillaz", 125, "Indie"));
+        Artist artist3 = new Artist("Suzan en Freek", 150, "Rock");
 
-        ArrayList<Artist> artist3 = new ArrayList<>();
-        artist3.add(new Artist("Suzan en Freek", 150, "Rock"));
+        Artist artist4 = new Artist("Kraantje Pappie", 175, "Rap");
 
-        ArrayList<Artist> artist4 = new ArrayList<>();
-        artist4.add(new Artist("Kraantje Pappie", 175, "Rap"));
+        Artist artist5 = new Artist("Bizzey", 200, "Country");
 
-        ArrayList<Artist> artist5 = new ArrayList<>();
-        artist5.add(new Artist("Bizzey", 200, "Country"));
+        Artist artist6 = new Artist("The Weekend", 225, "Rock");
 
-        ArrayList<Artist> artist6 = new ArrayList<>();
-        artist6.add(new Artist("The Weekend", 225, "Rock"));
+        Artist artist7 = new Artist("Snelle", 250, "Pop");
 
-        ArrayList<Artist> artist7 = new ArrayList<>();
-        artist7.add(new Artist("Snelle", 250, "Pop"));
-
-        ArrayList<Artist> artist8 = new ArrayList<>();
-        artist8.add(new Artist("Armin van Buuren", 275, "Metal"));
+        Artist artist8 = new Artist("Armin van Buuren", 275, "Metal");
 
 
         // Podiums
