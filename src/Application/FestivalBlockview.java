@@ -155,9 +155,9 @@ public class FestivalBlockview extends Canvas {
                     y = 328;
                     break;
             }
-            String artist = performance.getArtists().get(0).getName();
-            int popularity = performance.getArtists().get(0).getPopularity();
-            String genre = performance.getArtists().get(0).getGenre();
+            String artist = performance.getArtist().getName();
+            int popularity = performance.getArtist().getPopularity();
+            String genre = performance.getArtist().getGenre();
 
             RoundRectangle2D roundRectangle = new RoundRectangle2D.Double(x, y, width, height, 5, 5);
             blocks.put(roundRectangle, performance);

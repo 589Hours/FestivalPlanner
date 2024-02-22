@@ -12,7 +12,7 @@ public class CellDataForTableView {
 
     public CellDataForTableView(Performance performance){
         //TODO KIEZEN OF WE TOCH 1 ARTIST GAAN DOEN
-        Artist artist = performance.getArtists().get(0);
+        Artist artist = performance.getArtist();
         this.artistName = new SimpleStringProperty(artist.getName());
         
         //TODO TIME FOR TABLE moeten nog overleggen hoe we de tijd gaan doen.

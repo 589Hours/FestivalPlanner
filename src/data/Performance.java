@@ -3,7 +3,7 @@ package data;
 import java.util.ArrayList;
 
 public class Performance {
-    private ArrayList<Artist> artists;
+    private Artist artist;
     private Stage stage;
 
     private int beginHour;
@@ -12,8 +12,8 @@ public class Performance {
     private int endMinute;
 
 
-    public Performance(ArrayList<Artist> artists, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {
-        this.artists = artists;
+    public Performance(Artist artist, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {
+        this.artist = artist;
         this.stage = stage;
         this.beginHour = beginHour;
         this.beginMinute = beginMinute;
@@ -21,12 +21,12 @@ public class Performance {
         this.endMinute = endMinute;
     }
 
-    public ArrayList<Artist> getArtists() {
-        return artists;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtists(ArrayList<Artist> artists) {
-        this.artists = artists;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public Stage getStage() {
