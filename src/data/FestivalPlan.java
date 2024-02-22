@@ -18,28 +18,28 @@ public class FestivalPlan {
         // Artiesten
         String standardArtistInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.";
 
-        Artist artist1 = new Artist("Ed Sheeran", 100, "Pop");
+        Artist artist1 = new Artist("Ed Sheeran", 95, "Pop");
         artist1.setArtistInfo(standardArtistInfo);
 
-        Artist artist2 = new Artist("Gorillaz", 125, "Indie");
+        Artist artist2 = new Artist("Gorillaz", 60, "Indie");
         artist2.setArtistInfo(standardArtistInfo);
 
-        Artist artist3 = new Artist("Suzan en Freek", 150, "Rock");
+        Artist artist3 = new Artist("Suzan en Freek", 70, "Rock");
         artist3.setArtistInfo(standardArtistInfo);
 
-        Artist artist4 = new Artist("Kraantje Pappie", 175, "Rap");
+        Artist artist4 = new Artist("Kraantje Pappie", 75, "Rap");
         artist4.setArtistInfo(standardArtistInfo);
 
-        Artist artist5 = new Artist("Bizzey", 200, "Country");
+        Artist artist5 = new Artist("Bizzey", 55, "Country");
         artist5.setArtistInfo(standardArtistInfo);
 
-        Artist artist6 = new Artist("The Weekend", 225, "Rock");
+        Artist artist6 = new Artist("The Weekend", 65, "Rock");
         artist6.setArtistInfo(standardArtistInfo);
 
-        Artist artist7 = new Artist("Snelle", 250, "Pop");
+        Artist artist7 = new Artist("Snelle", 40, "Pop");
         artist7.setArtistInfo(standardArtistInfo);
 
-        Artist artist8 = new Artist("Armin van Buuren", 275, "Metal");
+        Artist artist8 = new Artist("Armin van Buuren", 100, "Metal");
         artist8.setArtistInfo(standardArtistInfo);
 
         // Podiums
