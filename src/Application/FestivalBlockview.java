@@ -173,7 +173,7 @@ public class FestivalBlockview extends Canvas {
         }
     }
 
-    private Performance checkClicked(Point2D point2D) {
+    public Performance checkClicked(Point2D point2D) {
         for (RoundRectangle2D block : blocks.keySet()) {
             if (point2D.getX() > block.getX() && point2D.getX() < (block.getX() + block.getWidth()) &&
                     point2D.getY() > block.getY() && point2D.getY() < (block.getY() + block.getHeight())) {
