@@ -66,7 +66,7 @@ public class GUI extends Application {
             if (borderPane.getCenter() == canvas){
                 Point2D point2D = new Point2D.Double(event.getX(), event.getY());
                 if (festivalBlockview.checkClicked(point2D) != null) {
-                    System.out.println(festivalBlockview.checkClicked(point2D).getArtists().get(0).getName());
+                    System.out.println(festivalBlockview.checkClicked(point2D).getArtist().getName());
                 }
             }
         });
@@ -84,10 +84,8 @@ public class GUI extends Application {
             ArtistInfo artistInfo = new ArtistInfo();
             Artist artist = new Artist("Ed Sheeran", 10000, "Pop");
             artist.setArtistInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.");
-            ArrayList<Artist> artists = new ArrayList<>();
-            artists.add(artist);
             data.Stage stage = new data.Stage("Alpha");
-            artistInfo.setArtist(new Performance(artists, stage, 19, 0, 20, 0));
+            artistInfo.setArtist(new Performance(artist, stage, 19, 0, 20, 0));
 
             try {
                 artistInfo.start(new Stage());
