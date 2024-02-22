@@ -2,6 +2,8 @@ package Application;
 
 import Application.Create.ArtistAdd;
 import Application.Create.StageAdd;
+import Application.Delete.DeleteArtist;
+import Application.Delete.DeletePerformance;
 import Application.Delete.DeleteStage;
 import data.Artist;
 import data.Performance;
@@ -79,6 +81,14 @@ public class GUI extends Application {
 
         deleteStage.setOnAction(event -> {
             new DeleteStage(festivalPlan);
+        });
+
+        deleteArtist.setOnAction(event -> {
+            new DeleteArtist(festivalPlan);
+        });
+
+        deletePerformance.setOnAction(event -> {
+            new DeletePerformance(festivalPlan);
         });
 
         // MouseClick

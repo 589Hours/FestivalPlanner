@@ -17,21 +17,21 @@ public class FestivalPlan {
     private void addTestData() {
         // Artiesten
         Artist artist1 = new Artist("Ed Sheeran", 100, "Pop");
-       
         Artist artist2 = new Artist("Gorillaz", 125, "Indie");
-
         Artist artist3 = new Artist("Suzan en Freek", 150, "Rock");
-
         Artist artist4 = new Artist("Kraantje Pappie", 175, "Rap");
-
         Artist artist5 = new Artist("Bizzey", 200, "Country");
-
         Artist artist6 = new Artist("The Weekend", 225, "Rock");
-
         Artist artist7 = new Artist("Snelle", 250, "Pop");
-
         Artist artist8 = new Artist("Armin van Buuren", 275, "Metal");
-
+        artists.add(artist1);
+        artists.add(artist2);
+        artists.add(artist3);
+        artists.add(artist4);
+        artists.add(artist5);
+        artists.add(artist6);
+        artists.add(artist7);
+        artists.add(artist8);
 
         // Podiums
         Stage stage = new Stage("Hoofdpodium");
@@ -100,5 +100,15 @@ public class FestivalPlan {
     }
     public void addStage(Stage stage){
         this.stages.add(stage);
+    }
+
+    public void deleteStage(Stage stage) {
+        stages.remove(stage);
+    }
+    public void deleteArtist(Artist artist) {
+        artists.remove(artist);
+    }
+    public void deletePerformance(Performance performance) {
+        performances.remove(performance);
     }
 }

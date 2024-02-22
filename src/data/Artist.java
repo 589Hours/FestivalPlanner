@@ -40,4 +40,9 @@ public class Artist {
     public void setArtistInfo(String artistInfo) {
         this.artistInfo = artistInfo;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

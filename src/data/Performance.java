@@ -115,4 +115,9 @@ public class Performance {
         }
         return totalMinutes;
     }
+
+    @Override
+    public String toString() {
+        return getArtist() + " at " + stage.getName();
+    }
 }

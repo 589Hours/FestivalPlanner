@@ -1,22 +1,21 @@
 package Application.Delete;
 
+import data.Artist;
 import data.FestivalPlan;
-import javafx.collections.ObservableList;
+import data.Performance;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Optional;
 
-public class DeleteStage {
-    public DeleteStage(FestivalPlan festivalPlan) {
+public class DeletePerformance {
+    public DeletePerformance(FestivalPlan festivalPlan) {
         Stage stage = new Stage();
-        ChoiceBox<data.Stage> stages = new ChoiceBox<>();
-        stages.getItems().addAll(festivalPlan.getStages());
+        ChoiceBox<Performance> performances = new ChoiceBox<>();
+        performances.getItems().addAll(festivalPlan.getPerformances());
 
         Button deleteStage = new Button("Delete");
         Button cancelButton = new Button("Cancel");
@@ -25,7 +24,7 @@ public class DeleteStage {
         buttons.getChildren().addAll(deleteStage, cancelButton);
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(stages, buttons);
+        vBox.getChildren().addAll(performances, buttons);
         vBox.setSpacing(10);
 
         Scene scene = new Scene(vBox);
@@ -40,23 +39,24 @@ public class DeleteStage {
         });
 
         deleteStage.setOnAction(event -> {
-            if(stages.getItems().isEmpty()) {
+            if (performances.getItems().isEmpty()) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
-                error.getDialogPane().setContent(new Label("Please select an stage to delete!"));
+                error.getDialogPane().setContent(new Label("Please select a performance to delete!"));
                 error.show();
             } else {
                 Alert warning = new Alert(Alert.AlertType.WARNING);
                 ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 warning.getButtonTypes().addAll(cancel);
 
-                warning.getDialogPane().setContent(new Label("Are you sure you want to delete " + stages.getSelectionModel().getSelectedItem().getName()) );
+                warning.getDialogPane().setContent(new Label("Are you sure you want to delete " + performances.getSelectionModel().getSelectedItem()));
 
                 Optional<ButtonType> result = warning.showAndWait();
 
-                if(result.get() == cancel) {
+                if (result.get() == cancel) {
                     warning.close();
                 } else {
-                    festivalPlan.deleteStage(stages.getSelectionModel().getSelectedItem());
+                    festivalPlan.deletePerformance(performances.getSelectionModel().getSelectedItem());
+                    System.out.println("deleted");
                     warning.close();
                     stage.close();
                 }
@@ -64,4 +64,3 @@ public class DeleteStage {
         });
     }
 }
-
