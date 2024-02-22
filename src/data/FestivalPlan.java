@@ -21,22 +21,22 @@ public class FestivalPlan {
         Artist artist1 = new Artist("Ed Sheeran", 95, "Pop");
         artist1.setArtistInfo(standardArtistInfo);
 
-        Artist artist2 = new Artist("Gorillaz", 60, "Indie");
+        Artist artist2 = new Artist("Gorillaz", 30, "Indie");
         artist2.setArtistInfo(standardArtistInfo);
 
         Artist artist3 = new Artist("Suzan en Freek", 70, "Rock");
         artist3.setArtistInfo(standardArtistInfo);
 
-        Artist artist4 = new Artist("Kraantje Pappie", 75, "Rap");
+        Artist artist4 = new Artist("Kraantje Pappie", 10, "Rap");
         artist4.setArtistInfo(standardArtistInfo);
 
-        Artist artist5 = new Artist("Bizzey", 55, "Country");
+        Artist artist5 = new Artist("Bizzey", 0, "Country");
         artist5.setArtistInfo(standardArtistInfo);
 
         Artist artist6 = new Artist("The Weekend", 65, "Rock");
         artist6.setArtistInfo(standardArtistInfo);
 
-        Artist artist7 = new Artist("Snelle", 40, "Pop");
+        Artist artist7 = new Artist("Snelle", 50, "Pop");
         artist7.setArtistInfo(standardArtistInfo);
 
         Artist artist8 = new Artist("Armin van Buuren", 100, "Metal");

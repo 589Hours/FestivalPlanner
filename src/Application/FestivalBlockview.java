@@ -159,7 +159,7 @@ public class FestivalBlockview extends Canvas {
             int popularity = performance.getArtist().getPopularity();
             String genre = performance.getArtist().getGenre();
 
-            Color color = Color.getHSBColor(((float) popularity /100), 1, 1);
+            Color color = Color.getHSBColor(((float) (popularity / 3)/ 100), 1, 1);
 
             RoundRectangle2D roundRectangle = new RoundRectangle2D.Double(x, y, width, height, 5, 5);
             blocks.put(roundRectangle, performance);
