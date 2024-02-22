@@ -21,11 +21,11 @@ public class ArtistInfo extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Label artistName = new Label(this.performance.getArtists().get(0).getName());
+        Label artistName = new Label(this.performance.getArtist().getName());
         artistName.setFont(new Font(25));
 
         //artistInfo label
-        Label aritstInfoLabel = new Label("\n" + this.performance.getArtists().get(0).getArtistInfo());
+        Label aritstInfoLabel = new Label("\n" + this.performance.getArtist().getArtistInfo());
 
         VBox vBox = new VBox(artistName, generateTimesLabel(), aritstInfoLabel);
         Scene scene = new Scene(vBox);
