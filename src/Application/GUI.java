@@ -6,6 +6,7 @@ import data.FestivalPlan;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -73,13 +74,13 @@ public class GUI extends Application {
             }
         });
 
-
         borderPane.setTop(menuBar);
 
         borderPane.setPrefSize(1700, 800);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
+        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
 }
