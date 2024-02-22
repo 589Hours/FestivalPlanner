@@ -33,14 +33,15 @@ public class GUI extends Application {
         festivalPlan = new FestivalPlan();
 
         MenuBar menuBar = new MenuBar();
-        Menu menu1 = new Menu("Saturday");
+        Menu menu1 = new Menu("View");
         MenuItem menuItem1 = new MenuItem("Tableview");
         MenuItem menuItem2 = new MenuItem("Blockview");
         menu1.getItems().addAll(menuItem1, menuItem2);
-        Menu menu2 = new Menu("Sunday");
-        MenuItem menuItem3 = new MenuItem("Tableview");
-        MenuItem menuItem4 = new MenuItem("Blockview");
-        menu2.getItems().addAll(menuItem3, menuItem4);
+        Menu menu2 = new Menu("Create");
+        MenuItem menuItem3 = new MenuItem("Podium");
+        MenuItem menuItem4 = new MenuItem("Artist");
+        MenuItem menuItem5 = new MenuItem("Performance");
+        menu2.getItems().addAll(menuItem3, menuItem4, menuItem5);
         menuBar.getMenus().addAll(menu1, menu2);
 
         menuItem1.setOnAction(event -> {
