@@ -5,19 +5,14 @@ import data.Performance;
 import data.FestivalPlan;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.ResizableCanvas;
 
 import java.awt.geom.Point2D;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
@@ -64,7 +59,16 @@ public class GUI extends Application {
             if (borderPane.getCenter() == canvas){
                 Point2D point2D = new Point2D.Double(event.getX(), event.getY());
                 if (festivalBlockview.checkClicked(point2D) != null) {
-                    System.out.println(festivalBlockview.checkClicked(point2D).getArtist().getName());
+                    Alert info = new Alert(Alert.AlertType.INFORMATION);
+                    info.setTitle(festivalBlockview.checkClicked(point2D).getArtist().getName());
+                    info.setHeaderText(festivalBlockview.checkClicked(point2D).getArtist().getName());
+                    info.setContentText("Podium: " + festivalBlockview.checkClicked(point2D).getStage().getName() + "\n" +
+                            "Tijd: " + festivalBlockview.checkClicked(point2D).getBeginTime() + " - " +
+                                    festivalBlockview.checkClicked(point2D).getEndTime() + "\n" +
+                            "Genre: " + festivalBlockview.checkClicked(point2D).getArtist().getGenre() + "\n" +
+                            "ArtiestBeschrijving: " + festivalBlockview.checkClicked(point2D).getArtist().getArtistInfo());
+                    info.showAndWait();
+                    System.out.println(festivalBlockview.checkClicked(point2D));
                 }
             }
         });
@@ -79,14 +83,14 @@ public class GUI extends Application {
         borderPane.setCenter(hBox);
 
         button.setOnAction(event -> {
-            ArtistInfo artistInfo = new ArtistInfo();
+//            PerformanceInfo performanceInfo = new PerformanceInfo();
             Artist artist = new Artist("Ed Sheeran", 10000, "Pop");
             artist.setArtistInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.");
             data.Stage stage = new data.Stage("Alpha");
-            artistInfo.setArtist(new Performance(artist, stage, 19, 0, 20, 0));
+//            performanceInfo.setPerformance(new Performance(artist, stage, 19, 0, 20, 0));
 
             try {
-                artistInfo.start(new Stage());
+//                performanceInfo.start(new Stage());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

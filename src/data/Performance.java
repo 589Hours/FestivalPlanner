@@ -1,7 +1,5 @@
 package data;
 
-import java.util.ArrayList;
-
 public class Performance {
     private Artist artist;
     private Stage stage;
@@ -10,6 +8,7 @@ public class Performance {
     private int beginMinute;
     private int endHour;
     private int endMinute;
+
 
 
     public Performance(Artist artist, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {

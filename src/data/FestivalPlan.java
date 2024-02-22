@@ -16,22 +16,31 @@ public class FestivalPlan {
 
     private void addTestData() {
         // Artiesten
+        String standardArtistInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.";
+
         Artist artist1 = new Artist("Ed Sheeran", 100, "Pop");
-       
+        artist1.setArtistInfo(standardArtistInfo);
+
         Artist artist2 = new Artist("Gorillaz", 125, "Indie");
+        artist2.setArtistInfo(standardArtistInfo);
 
         Artist artist3 = new Artist("Suzan en Freek", 150, "Rock");
+        artist3.setArtistInfo(standardArtistInfo);
 
         Artist artist4 = new Artist("Kraantje Pappie", 175, "Rap");
+        artist4.setArtistInfo(standardArtistInfo);
 
         Artist artist5 = new Artist("Bizzey", 200, "Country");
+        artist5.setArtistInfo(standardArtistInfo);
 
         Artist artist6 = new Artist("The Weekend", 225, "Rock");
+        artist6.setArtistInfo(standardArtistInfo);
 
         Artist artist7 = new Artist("Snelle", 250, "Pop");
+        artist7.setArtistInfo(standardArtistInfo);
 
         Artist artist8 = new Artist("Armin van Buuren", 275, "Metal");
-
+        artist8.setArtistInfo(standardArtistInfo);
 
         // Podiums
         Stage stage = new Stage("Hoofdpodium");
@@ -56,6 +65,8 @@ public class FestivalPlan {
         Performance performance7 = new Performance(artist8, stage, 20, 0, 24, 0);
         Performance performance8 = new Performance(artist1, stage3, 20, 0, 23, 0);
         Performance performance9 = new Performance(artist2, stage4, 22, 0, 2, 0);
+
+
         performances.add(performance);
         performances.add(performance1);
         performances.add(performance2);
