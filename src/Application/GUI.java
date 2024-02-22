@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jfree.fx.ResizableCanvas;
 
+import java.awt.geom.Point2D;
+
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
     private ResizableCanvas canvas;
@@ -18,6 +20,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
+
 
         festivalPlan = new FestivalPlan();
 
@@ -47,6 +50,17 @@ public class GUI extends Application {
         menuItem4.setOnAction(event -> {
             borderPane.setCenter(canvas);
         });
+
+        // MouseClick
+        canvas.setOnMousePressed(event -> {
+            if (borderPane.getCenter() == canvas){
+                Point2D point2D = new Point2D.Double(event.getX(), event.getY());
+                if (festivalBlockview.checkClicked(point2D) != null) {
+                    System.out.println(festivalBlockview.checkClicked(point2D).getArtists().get(0).getName());
+                }
+            }
+        });
+
 
         borderPane.setTop(menuBar);
 
