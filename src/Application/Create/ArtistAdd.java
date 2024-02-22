@@ -1,4 +1,4 @@
-package Application;
+package Application.Create;
 
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;

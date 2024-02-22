@@ -1,5 +1,8 @@
 package Application;
 
+import Application.Create.ArtistAdd;
+import Application.Create.StageAdd;
+import Application.Delete.DeleteStage;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
@@ -11,14 +14,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.jfree.fx.ResizableCanvas;
 
 import java.awt.geom.Point2D;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
@@ -35,30 +34,51 @@ public class GUI extends Application {
         festivalPlan = new FestivalPlan();
 
         MenuBar menuBar = new MenuBar();
-        Menu menu1 = new Menu("View");
-        MenuItem menuItem1 = new MenuItem("Tableview");
-        MenuItem menuItem2 = new MenuItem("Blockview");
-        menu1.getItems().addAll(menuItem1, menuItem2);
-        Menu menu2 = new Menu("Create");
-        MenuItem menuItem3 = new MenuItem("Podium");
-        MenuItem menuItem4 = new MenuItem("Artist");
-        MenuItem menuItem5 = new MenuItem("Performance");
-        menu2.getItems().addAll(menuItem3, menuItem4, menuItem5);
-        menuBar.getMenus().addAll(menu1, menu2);
+        Menu viewMenu = new Menu("View");
+        MenuItem viewTable = new MenuItem("Tableview");
+        MenuItem viewBlock = new MenuItem("Blockview");
+        viewMenu.getItems().addAll(viewTable, viewBlock);
 
-        menuItem1.setOnAction(event -> {
+        Menu createMenu = new Menu("Create");
+        MenuItem createPodium = new MenuItem("Podium");
+        MenuItem createArtist = new MenuItem("Artist");
+        MenuItem createPerformance = new MenuItem("Performance");
+        createMenu.getItems().addAll(createPodium, createArtist, createPerformance);
+
+        Menu deleteMenu = new Menu("Delete");
+        MenuItem  deleteStage = new MenuItem("Podium");
+        MenuItem  deleteArtist = new MenuItem("Arist");
+        MenuItem  deletePerformance = new MenuItem("Performance");
+        deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
+
+        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu);
+
+        viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
-        menuItem2.setOnAction(event -> {
+        viewBlock.setOnAction(event -> {
             borderPane.setCenter(canvas);
         });
-        menuItem3.setOnAction(event -> {
+        viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
-        menuItem4.setOnAction(event -> {
-            borderPane.setCenter(canvas);
+        createArtist.setOnAction(event -> {
+            new ArtistAdd();
+        });
+
+        createPodium.setOnAction(event -> {
+            new StageAdd(festivalPlan);
+        });
+
+        createPerformance.setOnAction(event -> {
+//            new PerformanceAdd();
+        });
+
+
+        deleteStage.setOnAction(event -> {
+            new DeleteStage(festivalPlan);
         });
 
         // MouseClick
