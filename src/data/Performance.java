@@ -11,9 +11,6 @@ public class Performance {
     private int endHour;
     private int endMinute;
 
-    private String beginTime;
-    private String endTime;
-
 
     public Performance(ArrayList<Artist> artists, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {
         this.artists = artists;
@@ -73,19 +70,17 @@ public class Performance {
     }
 
     public String getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(String beginTime) {
-        this.beginTime = beginTime;
+        if (beginMinute < 10){
+            return (beginHour + ":0" + beginMinute);
+        }
+        return (beginHour + ":" + beginMinute);
     }
 
     public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+        if (endMinute < 10){
+            return (endHour + ":0" + endMinute);
+        }
+        return (endHour + ":" + endMinute);
     }
 
     public int getDuration() {
