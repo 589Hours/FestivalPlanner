@@ -42,4 +42,9 @@ public class Artist implements Serializable {
     public void setArtistInfo(String artistInfo) {
         this.artistInfo = artistInfo;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

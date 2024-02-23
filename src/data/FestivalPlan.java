@@ -17,6 +17,14 @@ public class FestivalPlan implements Serializable {
 
     private void addTestData() {
         // Artiesten
+        artists.add(artist1);
+        artists.add(artist2);
+        artists.add(artist3);
+        artists.add(artist4);
+        artists.add(artist5);
+        artists.add(artist6);
+        artists.add(artist8);
+        artists.add(artist7);
         String standardArtistInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.";
 
         Artist artist1 = new Artist("Ed Sheeran", 95, "Pop");
@@ -112,5 +120,15 @@ public class FestivalPlan implements Serializable {
     }
     public void addStage(Stage stage){
         this.stages.add(stage);
+    }
+
+    public void deleteStage(Stage stage) {
+        stages.remove(stage);
+    }
+    public void deleteArtist(Artist artist) {
+        artists.remove(artist);
+    }
+    public void deletePerformance(Performance performance) {
+        performances.remove(performance);
     }
 }

@@ -1,5 +1,10 @@
 package Application;
 
+import Application.Create.ArtistAdd;
+import Application.Create.StageAdd;
+import Application.Delete.DeleteArtist;
+import Application.Delete.DeletePerformance;
+import Application.Delete.DeleteStage;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
@@ -30,6 +35,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
+        BorderPane buttonPlacement = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
 
         festivalPlan = new FestivalPlan();
@@ -44,28 +50,40 @@ public class GUI extends Application {
         MenuItem menuItem3 = new MenuItem("Podium");
         MenuItem menuItem4 = new MenuItem("Artist");
         MenuItem menuItem5 = new MenuItem("Performance");
-        menu2.getItems().addAll(menuItem3, menuItem4, menuItem5);
 
+        Menu createMenu = new Menu("Create");
+        MenuItem createPodium = new MenuItem("Podium");
+        MenuItem createArtist = new MenuItem("Artist");
+        MenuItem createPerformance = new MenuItem("Performance");
+        createMenu.getItems().addAll(createPodium, createArtist, createPerformance);
+
+        Menu deleteMenu = new Menu("Delete");
+        MenuItem  deleteStage = new MenuItem("Podium");
+        MenuItem  deleteArtist = new MenuItem("Arist");
+        MenuItem  deletePerformance = new MenuItem("Performance");
+        deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
+
+        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu);
+
+        viewTable.setOnAction(event -> {
         Menu saveAndLoadMenu = new Menu("Save & Load");
         MenuItem saveAgenda = new MenuItem("Save");
         MenuItem loadAgenda = new MenuItem("Load");
         saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
 
-        menuBar.getMenus().addAll(menu1, menu2, saveAndLoadMenu);
 
-        menuItem1.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
-        menuItem2.setOnAction(event -> {
+        viewBlock.setOnAction(event -> {
             borderPane.setCenter(canvas);
         });
-        menuItem3.setOnAction(event -> {
+        viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
-        menuItem4.setOnAction(event -> {
-            borderPane.setCenter(canvas);
+        createArtist.setOnAction(event -> {
+            new ArtistAdd();
         });
 
         saveAgenda.setOnAction(event -> {
@@ -80,6 +98,27 @@ public class GUI extends Application {
             } catch (Exception e){
                 System.out.println("file not found or class not found!");
             }
+        });
+
+        createPodium.setOnAction(event -> {
+            new StageAdd(festivalPlan);
+        });
+
+        createPerformance.setOnAction(event -> {
+//            new PerformanceAdd();
+        });
+
+
+        deleteStage.setOnAction(event -> {
+            new DeleteStage(festivalPlan);
+        });
+
+        deleteArtist.setOnAction(event -> {
+            new DeleteArtist(festivalPlan);
+        });
+
+        deletePerformance.setOnAction(event -> {
+            new DeletePerformance(festivalPlan);
         });
 
         // MouseClick
@@ -110,4 +149,5 @@ public class GUI extends Application {
         primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
+
 }

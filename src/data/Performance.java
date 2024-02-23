@@ -116,4 +116,9 @@ public class Performance implements Serializable {
         }
         return totalMinutes;
     }
+
+    @Override
+    public String toString() {
+        return getArtist() + " at " + stage.getName();
+    }
 }
