@@ -41,20 +41,16 @@ public class GUI extends Application {
         festivalPlan = new FestivalPlan();
 
         MenuBar menuBar = new MenuBar();
-        Menu menu1 = new Menu("View");
-        MenuItem menuItem1 = new MenuItem("Tableview");
-        MenuItem menuItem2 = new MenuItem("Blockview");
-        menu1.getItems().addAll(menuItem1, menuItem2);
-
-        Menu menu2 = new Menu("Create");
-        MenuItem menuItem3 = new MenuItem("Podium");
-        MenuItem menuItem4 = new MenuItem("Artist");
-        MenuItem menuItem5 = new MenuItem("Performance");
+        Menu viewMenu = new Menu("View");
+        MenuItem viewTable = new MenuItem("Tableview");
+        MenuItem viewBlock = new MenuItem("Blockview");
+        viewMenu.getItems().addAll(viewTable, viewBlock);
 
         Menu createMenu = new Menu("Create");
         MenuItem createPodium = new MenuItem("Podium");
         MenuItem createArtist = new MenuItem("Artist");
         MenuItem createPerformance = new MenuItem("Performance");
+
         createMenu.getItems().addAll(createPodium, createArtist, createPerformance);
 
         Menu deleteMenu = new Menu("Delete");
@@ -63,15 +59,18 @@ public class GUI extends Application {
         MenuItem  deletePerformance = new MenuItem("Performance");
         deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
 
-        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu);
-
-        viewTable.setOnAction(event -> {
         Menu saveAndLoadMenu = new Menu("Save & Load");
         MenuItem saveAgenda = new MenuItem("Save");
         MenuItem loadAgenda = new MenuItem("Load");
         saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
 
+        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu, saveAndLoadMenu);
 
+
+
+
+
+        viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
