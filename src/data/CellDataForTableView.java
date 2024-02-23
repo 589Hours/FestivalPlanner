@@ -11,11 +11,9 @@ public class CellDataForTableView {
     private final SimpleStringProperty genre;
 
     public CellDataForTableView(Performance performance){
-        //TODO KIEZEN OF WE TOCH 1 ARTIST GAAN DOEN
         Artist artist = performance.getArtist();
         this.artistName = new SimpleStringProperty(artist.getName());
-        
-        //TODO TIME FOR TABLE moeten nog overleggen hoe we de tijd gaan doen.
+
         this.beginTime = new SimpleStringProperty(performance.getBeginTime());
         this.endTime = new SimpleStringProperty(performance.getEndTime());
         

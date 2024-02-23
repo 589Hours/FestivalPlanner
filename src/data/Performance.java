@@ -1,8 +1,8 @@
 package data;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Performance {
+public class Performance implements Serializable {
     private Artist artist;
     private Stage stage;
 
@@ -10,6 +10,7 @@ public class Performance {
     private int beginMinute;
     private int endHour;
     private int endMinute;
+
 
 
     public Performance(Artist artist, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {

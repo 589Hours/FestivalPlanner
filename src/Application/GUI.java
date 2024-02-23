@@ -8,18 +8,24 @@ import Application.Delete.DeleteStage;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
+import data.SaveToFile;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.ResizableCanvas;
 
 import java.awt.geom.Point2D;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
@@ -31,7 +37,6 @@ public class GUI extends Application {
         BorderPane borderPane = new BorderPane();
         BorderPane buttonPlacement = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
-
 
         festivalPlan = new FestivalPlan();
 
@@ -45,6 +50,7 @@ public class GUI extends Application {
         MenuItem createPodium = new MenuItem("Podium");
         MenuItem createArtist = new MenuItem("Artist");
         MenuItem createPerformance = new MenuItem("Performance");
+
         createMenu.getItems().addAll(createPodium, createArtist, createPerformance);
 
         Menu deleteMenu = new Menu("Delete");
@@ -53,7 +59,16 @@ public class GUI extends Application {
         MenuItem  deletePerformance = new MenuItem("Performance");
         deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
 
-        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu);
+        Menu saveAndLoadMenu = new Menu("Save & Load");
+        MenuItem saveAgenda = new MenuItem("Save");
+        MenuItem loadAgenda = new MenuItem("Load");
+        saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
+
+        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu, saveAndLoadMenu);
+
+
+
+
 
         viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
@@ -68,6 +83,20 @@ public class GUI extends Application {
         });
         createArtist.setOnAction(event -> {
             new ArtistAdd();
+        });
+
+        saveAgenda.setOnAction(event -> {
+            SaveToFile save = new SaveToFile(festivalPlan);
+        });
+
+        loadAgenda.setOnAction(event -> {
+            try{
+                FileInputStream fis = new FileInputStream("Saves/SaveFile.ser");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                festivalPlan = (FestivalPlan) ois.readObject();
+            } catch (Exception e){
+                System.out.println("file not found or class not found!");
+            }
         });
 
         createPodium.setOnAction(event -> {
@@ -96,38 +125,27 @@ public class GUI extends Application {
             if (borderPane.getCenter() == canvas){
                 Point2D point2D = new Point2D.Double(event.getX(), event.getY());
                 if (festivalBlockview.checkClicked(point2D) != null) {
-                    System.out.println(festivalBlockview.checkClicked(point2D).getArtist().getName());
+                    Alert info = new Alert(Alert.AlertType.INFORMATION);
+                    info.setTitle(festivalBlockview.checkClicked(point2D).getArtist().getName());
+                    info.setHeaderText(festivalBlockview.checkClicked(point2D).getArtist().getName());
+                    info.setContentText("Podium: " + festivalBlockview.checkClicked(point2D).getStage().getName() + "\n" +
+                            "Tijd: " + festivalBlockview.checkClicked(point2D).getBeginTime() + " - " +
+                                    festivalBlockview.checkClicked(point2D).getEndTime() + "\n" +
+                            "Genre: " + festivalBlockview.checkClicked(point2D).getArtist().getGenre() + "\n" +
+                            "ArtiestBeschrijving: " + festivalBlockview.checkClicked(point2D).getArtist().getArtistInfo());
+                    info.showAndWait();
+                    System.out.println(festivalBlockview.checkClicked(point2D));
                 }
             }
         });
 
-
         borderPane.setTop(menuBar);
-
-
-        //Dit is een test voor ArtistInfo, als dit een mergeConflict geeft kan deze verwijderd worden.
-        Button button = new Button("Artist info check");
-        HBox hBox = new HBox(button);
-        borderPane.setCenter(hBox);
-
-        button.setOnAction(event -> {
-            ArtistInfo artistInfo = new ArtistInfo();
-            Artist artist = new Artist("Ed Sheeran", 10000, "Pop");
-            artist.setArtistInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\nminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit\nin voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia\ndeserunt mollit anim id est laborum.");
-            data.Stage stage = new data.Stage("Alpha");
-            artistInfo.setArtist(new Performance(artist, stage, 19, 0, 20, 0));
-
-            try {
-                artistInfo.start(new Stage());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
 
         borderPane.setPrefSize(1700, 800);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
+        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
 
