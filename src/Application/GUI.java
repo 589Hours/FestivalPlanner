@@ -1,6 +1,7 @@
 package Application;
 
 import Application.Create.ArtistAdd;
+import Application.Create.PerformanceAdd;
 import Application.Create.StageAdd;
 import Application.Delete.DeleteArtist;
 import Application.Delete.DeletePerformance;
@@ -104,7 +105,7 @@ public class GUI extends Application {
         });
 
         createPerformance.setOnAction(event -> {
-//            new PerformanceAdd();
+            new PerformanceAdd(festivalPlan);
         });
 
 
