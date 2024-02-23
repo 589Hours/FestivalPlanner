@@ -1,35 +1,33 @@
 package data;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Performance {
-    private ArrayList<Artist> artists;
+public class Performance implements Serializable {
+    private Artist artist;
     private Stage stage;
 
-    private int beginUur;
-    private int beginMinuut;
-    private int eindUur;
-    private int eindMinuut;
-
-    private String begintijd;
-    private String eindtijd;
+    private int beginHour;
+    private int beginMinute;
+    private int endHour;
+    private int endMinute;
 
 
-    public Performance(ArrayList<Artist> artists, Stage stage, int beginUur, int beginMinuut, int eindUur, int eindMinuut) {
-        this.artists = artists;
+
+    public Performance(Artist artist, Stage stage, int beginHour, int beginMinute, int endHour, int endMinute) {
+        this.artist = artist;
         this.stage = stage;
-        this.beginUur = beginUur;
-        this.beginMinuut = beginMinuut;
-        this.eindUur = eindUur;
-        this.eindMinuut = eindMinuut;
+        this.beginHour = beginHour;
+        this.beginMinute = beginMinute;
+        this.endHour = endHour;
+        this.endMinute = endMinute;
     }
 
-    public ArrayList<Artist> getArtists() {
-        return artists;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtists(ArrayList<Artist> artists) {
-        this.artists = artists;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public Stage getStage() {
@@ -40,51 +38,87 @@ public class Performance {
         this.stage = stage;
     }
 
-    public int getBeginUur() {
-        return beginUur;
+    public int getBeginHour() {
+        return beginHour;
     }
 
-    public void setBeginUur(int beginUur) {
-        this.beginUur = beginUur;
+    public void setBeginHour(int beginHour) {
+        this.beginHour = beginHour;
     }
 
-    public int getBeginMinuut() {
-        return beginMinuut;
+    public int getBeginMinute() {
+        return beginMinute;
     }
 
-    public void setBeginMinuut(int beginMinuut) {
-        this.beginMinuut = beginMinuut;
+    public void setBeginMinute(int beginMinute) {
+        this.beginMinute = beginMinute;
     }
 
-    public int getEindUur() {
-        return eindUur;
+    public int getEndHour() {
+        return endHour;
     }
 
-    public void setEindUur(int eindUur) {
-        this.eindUur = eindUur;
+    public void setEndHour(int endHour) {
+        this.endHour = endHour;
     }
 
-    public int getEindMinuut() {
-        return eindMinuut;
+    public int getEndMinute() {
+        return endMinute;
     }
 
-    public void setEindMinuut(int eindMinuut) {
-        this.eindMinuut = eindMinuut;
+    public void setEndMinute(int endMinute) {
+        this.endMinute = endMinute;
     }
 
-    public String getBegintijd() {
-        return begintijd;
+    public String getBeginTime() {
+        if (beginMinute < 10){
+            return (beginHour + ":0" + beginMinute);
+        }
+        return (beginHour + ":" + beginMinute);
     }
 
-    public void setBegintijd(String begintijd) {
-        this.begintijd = begintijd;
+    public String getEndTime() {
+        if (endMinute < 10){
+            return (endHour + ":0" + endMinute);
+        }
+        return (endHour + ":" + endMinute);
     }
 
-    public String getEindtijd() {
-        return eindtijd;
+    public int getDuration() {
+        // Geeft de duur van het optreden terug in minuten
+        int totalMinutes = 0;
+        if (this.beginHour > this.endHour) {
+            if (this.beginMinute == this.endMinute) {
+                totalMinutes += ((endHour + 24) - beginHour) * 60;
+            } else {
+                if (this.beginMinute == 30) {
+                    totalMinutes += 30;
+                    totalMinutes += (((endHour + 24) - beginHour) - 1) * 60;
+                } else {
+                    totalMinutes += 30;
+                    totalMinutes += (((endHour + 24) - beginHour)) * 60;
+                }
+
+            }
+        } else {
+            if (this.beginMinute == this.endMinute) {
+                totalMinutes += (endHour - beginHour) * 60;
+            } else {
+                if (this.beginMinute == 30) {
+                    totalMinutes += 30;
+                    totalMinutes += ((endHour - beginHour) - 1) * 60;
+                } else {
+                    totalMinutes += 30;
+                    totalMinutes += ((endHour - beginHour)) * 60;
+                }
+
+            }
+        }
+        return totalMinutes;
     }
 
-    public void setEindtijd(String eindtijd) {
-        this.eindtijd = eindtijd;
+    @Override
+    public String toString() {
+        return getArtist() + " at " + stage.getName();
     }
 }

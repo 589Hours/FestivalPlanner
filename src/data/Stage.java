@@ -1,17 +1,26 @@
 package data;
 
-public class Stage {
-    private String naam;
+import java.io.Serializable;
 
-    public Stage(String naam) {
-        this.naam = naam;
+public class Stage implements Serializable {
+    private String name;
+
+    public Stage(String name) {
+        this.name = name;
     }
 
-    public String getNaam() {
-        return naam;
+    public String getName() {
+        return name;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+
 }
