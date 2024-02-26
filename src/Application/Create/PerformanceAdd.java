@@ -57,12 +57,16 @@ public class PerformanceAdd {
         stage.show();
 
         createButton.setOnAction(event -> {
-            boolean artistSelected = artists.getSelectionModel().getSelectedItem() == null;
-            boolean stageSelected = stages.getSelectionModel().getSelectedItem() == null;
+            Object beginHour = beginHourBox.getSelectionModel().getSelectedItem();
+            Object beginMinute = beginMinuteBox.getSelectionModel().getSelectedItem();
+            Object endHour = endHourBox.getSelectionModel().getSelectedItem();
+            Object endMinute = endMinuteBox.getSelectionModel().getSelectedItem();
+            Artist artist = artists.getSelectionModel().getSelectedItem();
+            data.Stage stage1 = stages.getSelectionModel().getSelectedItem();
 
-            if (artists.getSelectionModel().getSelectedItem() != null || stages.getSelectionModel().getSelectedItem() != null || beginHourBox.getSelectionModel().getSelectedItem() != null || endHourBox.getSelectionModel().getSelectedItem() != null || endHourBox.getSelectionModel().getSelectedItem() != null || endMinuteBox.getSelectionModel().getSelectedItem() != null) {
-                if (endHourBox.getSelectionModel().getSelectedItem() < beginHourBox.getSelectionModel().getSelectedItem()) {
-                    if (endMinuteBox.getSelectionModel().getSelectedItem() > beginMinuteBox.getSelectionModel().getSelectedItem()) {
+            if (artist != null || stage1 != null || beginHour != null || beginMinute != null || endHour != null || endMinute != null) {
+                if (endHourBox.getSelectionModel().getSelectedItem() < beginHourBox.getSelectionModel().getSelectedItem() || beginHour == endHour) {
+                    if (endMinuteBox.getSelectionModel().getSelectedItem() < beginMinuteBox.getSelectionModel().getSelectedItem()) {
                         festivalPlan.addPerformance(new Performance(artists.getSelectionModel().getSelectedItem(), stages.getSelectionModel().getSelectedItem(), endHourBox.getSelectionModel().getSelectedItem(), endMinuteBox.getSelectionModel().getSelectedItem(), beginHourBox.getSelectionModel().getSelectedItem(), beginMinuteBox.getSelectionModel().getSelectedItem()));
                     } else {
                         festivalPlan.addPerformance(new Performance(artists.getSelectionModel().getSelectedItem(), stages.getSelectionModel().getSelectedItem(), beginHourBox.getSelectionModel().getSelectedItem(), beginMinuteBox.getSelectionModel().getSelectedItem(), endHourBox.getSelectionModel().getSelectedItem(), endMinuteBox.getSelectionModel().getSelectedItem()));
@@ -70,11 +74,13 @@ public class PerformanceAdd {
                 } else {
                     festivalPlan.addPerformance(new Performance(artists.getSelectionModel().getSelectedItem(), stages.getSelectionModel().getSelectedItem(), beginHourBox.getSelectionModel().getSelectedItem(), beginMinuteBox.getSelectionModel().getSelectedItem(), endHourBox.getSelectionModel().getSelectedItem(), endMinuteBox.getSelectionModel().getSelectedItem()));
                 }
+                stage.close();
             } else {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.getDialogPane().setContent(new Label("Please select a option in every box!"));
+
+                error.show();
             }
-            stage.close();
 
         });
 
