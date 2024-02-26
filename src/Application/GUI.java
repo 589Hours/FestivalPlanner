@@ -56,7 +56,7 @@ public class GUI extends Application {
 
         Menu deleteMenu = new Menu("Delete");
         MenuItem  deleteStage = new MenuItem("Podium");
-        MenuItem  deleteArtist = new MenuItem("Arist");
+        MenuItem  deleteArtist = new MenuItem("Artist");
         MenuItem  deletePerformance = new MenuItem("Performance");
         deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
 
@@ -83,7 +83,7 @@ public class GUI extends Application {
             borderPane.setCenter(festivalTableview);
         });
         createArtist.setOnAction(event -> {
-            new ArtistAdd();
+            new ArtistAdd(festivalPlan);
         });
 
         saveAgenda.setOnAction(event -> {
