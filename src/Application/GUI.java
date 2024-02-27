@@ -88,10 +88,6 @@ public class GUI extends Application {
             canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
             borderPane.setCenter(canvas);
         });
-        viewTable.setOnAction(event -> {
-            FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
-            borderPane.setCenter(festivalTableview);
-        });
         createArtist.setOnAction(event -> {
             new ArtistAdd(festivalPlan);
         });
@@ -165,7 +161,7 @@ public class GUI extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
-//        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
+        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
 

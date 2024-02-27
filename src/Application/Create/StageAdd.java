@@ -41,17 +41,23 @@ public class StageAdd {
         });
 
         buttonCreate.setOnAction(event ->  {
-            if(stageNameText.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.getDialogPane().setContent(new Label("The textfield is empty, please enter a name."));
-                alert.show();
+            if (!(data.getStages().size() >= 5)) {
+                if (stageNameText.getText().isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.getDialogPane().setContent(new Label("The textfield is empty, please enter a name."));
+                    alert.show();
 
+                } else {
+                    data.addStage(new data.Stage(stageNameText.getText(), data.getStages().size() + 1));
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.getDialogPane().setContent(new Label("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!"));
+                    confirmation.show();
+                    stageAdd.close();
+                }
             } else {
-                data.addStage(new data.Stage(stageNameText.getText()));
-                Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmation.getDialogPane().setContent(new Label("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!"));
-                confirmation.show();
-                stageAdd.close();
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.getDialogPane().setContent(new Label("You can't have more than 5 stages"));
+                alert.show();
             }
         });
     }

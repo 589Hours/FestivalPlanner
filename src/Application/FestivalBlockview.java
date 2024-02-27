@@ -141,20 +141,20 @@ public class FestivalBlockview extends Canvas {
 
             int y = 31;
 
-            switch (performance.getStage().getName()) {
-                case "Alpha":
+            switch (performance.getStage().getStageNumber()) {
+                case 1:
                     y = 32;
                     break;
-                case "Bravo":
+                case 2:
                     y = 104;
                     break;
-                case "Charlie":
+                case 3:
                     y = 178;
                     break;
-                case "Delta":
+                case 4:
                     y = 253;
                     break;
-                case "Echo":
+                case 5:
                     y = 328;
                     break;
             }
