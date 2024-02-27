@@ -1,6 +1,7 @@
 package Application;
 
 import Application.Create.ArtistAdd;
+import Application.Create.PerformanceAdd;
 import Application.Create.StageAdd;
 import Application.Delete.DeleteArtist;
 import Application.Delete.DeletePerformance;
@@ -55,7 +56,7 @@ public class GUI extends Application {
 
         Menu deleteMenu = new Menu("Delete");
         MenuItem  deleteStage = new MenuItem("Podium");
-        MenuItem  deleteArtist = new MenuItem("Arist");
+        MenuItem  deleteArtist = new MenuItem("Artist");
         MenuItem  deletePerformance = new MenuItem("Performance");
         deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
 
@@ -82,7 +83,7 @@ public class GUI extends Application {
             borderPane.setCenter(festivalTableview);
         });
         createArtist.setOnAction(event -> {
-            new ArtistAdd();
+            new ArtistAdd(festivalPlan);
         });
 
         saveAgenda.setOnAction(event -> {
@@ -104,7 +105,7 @@ public class GUI extends Application {
         });
 
         createPerformance.setOnAction(event -> {
-//            new PerformanceAdd();
+            new PerformanceAdd(festivalPlan);
         });
 
 
