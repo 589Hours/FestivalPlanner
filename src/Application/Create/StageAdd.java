@@ -48,9 +48,9 @@ public class StageAdd {
 
             } else {
                 data.addStage(new data.Stage(stageNameText.getText()));
-                Alert conformation = new Alert(Alert.AlertType.CONFIRMATION);
-                conformation.getDialogPane().setContent(new Label("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!"));
-                conformation.show();
+                Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmation.getDialogPane().setContent(new Label("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!"));
+                confirmation.show();
                 stageAdd.close();
             }
         });

@@ -1,10 +1,13 @@
 package Application;
 
 import Application.Create.ArtistAdd;
+import Application.Create.PerformanceAdd;
 import Application.Create.StageAdd;
 import Application.Delete.DeleteArtist;
 import Application.Delete.DeletePerformance;
 import Application.Delete.DeleteStage;
+import Application.Edit.EditArtist;
+import Application.Edit.EditStage;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
@@ -36,9 +39,16 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
         BorderPane buttonPlacement = new BorderPane();
-        canvas = new ResizableCanvas(g -> festivalBlockview.draw(g), borderPane);
+        canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
 
         festivalPlan = new FestivalPlan();
+        try{
+            FileInputStream fis = new FileInputStream("Saves/SaveFile.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            festivalPlan = (FestivalPlan) ois.readObject();
+        } catch (Exception e){
+            System.out.println("file not found or class not found!");
+        }
 
         MenuBar menuBar = new MenuBar();
         Menu viewMenu = new Menu("View");
@@ -50,12 +60,16 @@ public class GUI extends Application {
         MenuItem createPodium = new MenuItem("Podium");
         MenuItem createArtist = new MenuItem("Artist");
         MenuItem createPerformance = new MenuItem("Performance");
-
         createMenu.getItems().addAll(createPodium, createArtist, createPerformance);
+
+        Menu editMenu = new Menu("Edit");
+        MenuItem editStage = new MenuItem("Podium");
+        MenuItem editArtist = new MenuItem("Artist");
+        editMenu.getItems().addAll(editStage, editArtist);
 
         Menu deleteMenu = new Menu("Delete");
         MenuItem  deleteStage = new MenuItem("Podium");
-        MenuItem  deleteArtist = new MenuItem("Arist");
+        MenuItem  deleteArtist = new MenuItem("Artist");
         MenuItem  deletePerformance = new MenuItem("Performance");
         deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
 
@@ -64,17 +78,14 @@ public class GUI extends Application {
         MenuItem loadAgenda = new MenuItem("Load");
         saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
 
-        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu, saveAndLoadMenu);
-
-
-
-
+        menuBar.getMenus().addAll(viewMenu, createMenu, editMenu, deleteMenu, saveAndLoadMenu);
 
         viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
         viewBlock.setOnAction(event -> {
+            canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
             borderPane.setCenter(canvas);
         });
         viewTable.setOnAction(event -> {
@@ -82,7 +93,7 @@ public class GUI extends Application {
             borderPane.setCenter(festivalTableview);
         });
         createArtist.setOnAction(event -> {
-            new ArtistAdd();
+            new ArtistAdd(festivalPlan);
         });
 
         saveAgenda.setOnAction(event -> {
@@ -104,7 +115,16 @@ public class GUI extends Application {
         });
 
         createPerformance.setOnAction(event -> {
-//            new PerformanceAdd();
+            new PerformanceAdd(festivalPlan);
+        });
+
+
+        editStage.setOnAction(event -> {
+            new EditStage(festivalPlan);
+        });
+
+        editArtist.setOnAction(event -> {
+            new EditArtist(festivalPlan);
         });
 
 
@@ -145,7 +165,7 @@ public class GUI extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
-        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
+//        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
 

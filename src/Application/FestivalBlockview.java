@@ -18,7 +18,8 @@ public class FestivalBlockview extends Canvas {
     private FestivalPlan festivalPlan = new FestivalPlan();
     private HashMap<RoundRectangle2D, Performance> blocks = new HashMap<>();
 
-    public void draw(FXGraphics2D graphics) {
+    public void draw(FXGraphics2D graphics, FestivalPlan festivalPlan) {
+        this.festivalPlan = festivalPlan;
         // Tekent de basiselementen zoals tijden met bijbehorende tijdvakken.
         drawBasics(graphics);
 
