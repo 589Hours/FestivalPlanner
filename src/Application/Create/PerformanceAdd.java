@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 public class PerformanceAdd {
     public PerformanceAdd(FestivalPlan festivalPlan) {
         Stage stage = new Stage();
+        stage.setTitle("Creating performance");
 
         Label artistLabel = new Label("Choose the artist: ");
         ChoiceBox<Artist> artists = new ChoiceBox<>();
@@ -74,6 +75,10 @@ public class PerformanceAdd {
                 } else {
                     festivalPlan.addPerformance(new Performance(artists.getSelectionModel().getSelectedItem(), stages.getSelectionModel().getSelectedItem(), beginHourBox.getSelectionModel().getSelectedItem(), beginMinuteBox.getSelectionModel().getSelectedItem(), endHourBox.getSelectionModel().getSelectedItem(), endMinuteBox.getSelectionModel().getSelectedItem()));
                 }
+                Alert confirmation = new Alert(Alert.AlertType.WARNING);
+                confirmation.setHeaderText(null);
+                confirmation.getDialogPane().setContent(new Label("The performance was succesfully created!"));
+                confirmation.show();
                 stage.close();
             } else {
                 Alert error = new Alert(Alert.AlertType.ERROR);
