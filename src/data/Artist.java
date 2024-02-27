@@ -14,6 +14,12 @@ public class Artist implements Serializable {
         this.genre = genre;
         this.artistInfo = "";
     }
+    public Artist(String name, int popularity, String genre, String artistInfo){
+        this.name = name;
+        this.popularity = popularity;
+        this.genre = genre;
+        this.artistInfo = artistInfo;
+    }
 
     public String getName() {
         return name;
