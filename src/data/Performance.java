@@ -1,6 +1,8 @@
 package data;
 
-public class Performance {
+import java.io.Serializable;
+
+public class Performance implements Serializable {
     private Artist artist;
     private Stage stage;
 
@@ -113,5 +115,10 @@ public class Performance {
             }
         }
         return totalMinutes;
+    }
+
+    @Override
+    public String toString() {
+        return getArtist() + " at " + stage.getName();
     }
 }

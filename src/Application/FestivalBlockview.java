@@ -18,7 +18,9 @@ public class FestivalBlockview extends Canvas {
     private FestivalPlan festivalPlan = new FestivalPlan();
     private HashMap<RoundRectangle2D, Performance> blocks = new HashMap<>();
 
-    public void draw(FXGraphics2D graphics) {
+
+    public void draw(FXGraphics2D graphics, FestivalPlan festivalPlan) {
+        this.festivalPlan = festivalPlan;
         // Tekent de basiselementen zoals tijden met bijbehorende tijdvakken.
         drawBasics(graphics);
 
@@ -138,20 +140,21 @@ public class FestivalBlockview extends Canvas {
             }
 
             int y = 31;
+
             switch (performance.getStage().getName()) {
-                case "Hoofdpodium":
+                case "Alpha":
                     y = 32;
                     break;
-                case "Testpodium1":
+                case "Bravo":
                     y = 104;
                     break;
-                case "Testpodium2":
+                case "Charlie":
                     y = 178;
                     break;
-                case "Testpodium3":
+                case "Delta":
                     y = 253;
                     break;
-                case "Testpodium4":
+                case "Echo":
                     y = 328;
                     break;
             }

@@ -1,6 +1,8 @@
 package data;
 
-public class Artist {
+import java.io.Serializable;
+
+public class Artist implements Serializable {
     private String name;
     private int popularity;
     private String genre;
@@ -11,6 +13,12 @@ public class Artist {
         this.popularity = popularity;
         this.genre = genre;
         this.artistInfo = "";
+    }
+    public Artist(String name, int popularity, String genre, String artistInfo){
+        this.name = name;
+        this.popularity = popularity;
+        this.genre = genre;
+        this.artistInfo = artistInfo;
     }
 
     public String getName() {
@@ -39,5 +47,10 @@ public class Artist {
     }
     public void setArtistInfo(String artistInfo) {
         this.artistInfo = artistInfo;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

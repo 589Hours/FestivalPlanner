@@ -1,8 +1,9 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FestivalPlan {
+public class FestivalPlan implements Serializable {
     private ArrayList<Performance> performances;
     private ArrayList<Artist> artists;
     private ArrayList<Stage> stages;
@@ -11,7 +12,7 @@ public class FestivalPlan {
         this.performances = new ArrayList<>();
         this.artists = new ArrayList<>();
         this.stages = new ArrayList<>();
-        addTestData();
+//       addTestData();
     }
 
     private void addTestData() {
@@ -41,6 +42,15 @@ public class FestivalPlan {
 
         Artist artist8 = new Artist("Armin van Buuren", 100, "Metal");
         artist8.setArtistInfo(standardArtistInfo);
+
+        artists.add(artist1);
+        artists.add(artist2);
+        artists.add(artist3);
+        artists.add(artist4);
+        artists.add(artist5);
+        artists.add(artist6);
+        artists.add(artist8);
+        artists.add(artist7);
 
         // Podiums
         Stage stage = new Stage("Hoofdpodium");
@@ -111,5 +121,15 @@ public class FestivalPlan {
     }
     public void addStage(Stage stage){
         this.stages.add(stage);
+    }
+
+    public void deleteStage(Stage stage) {
+        stages.remove(stage);
+    }
+    public void deleteArtist(Artist artist) {
+        artists.remove(artist);
+    }
+    public void deletePerformance(Performance performance) {
+        performances.remove(performance);
     }
 }

@@ -1,6 +1,8 @@
 package data;
 
-public class Stage {
+import java.io.Serializable;
+
+public class Stage implements Serializable {
     private String name;
 
     public Stage(String name) {
@@ -14,4 +16,11 @@ public class Stage {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+
 }
