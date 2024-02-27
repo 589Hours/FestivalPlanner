@@ -49,13 +49,15 @@ public class StageAdd {
 
                 } else {
                     data.addStage(new data.Stage(stageNameText.getText(), data.getStages().size() + 1));
-                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmation.getDialogPane().setContent(new Label("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!"));
-                    confirmation.show();
+
+                    Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+                    confirmation.setHeaderText("Succes!");
+                    confirmation.setHeaderText("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!");
+                    confirmation.showAndWait();
                     stageAdd.close();
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.getDialogPane().setContent(new Label("You can't have more than 5 stages"));
                 alert.show();
             }

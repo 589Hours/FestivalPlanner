@@ -1,12 +1,16 @@
 package Application.Delete;
 
+import data.Artist;
 import data.FestivalPlan;
+import data.Performance;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sun.misc.Perf;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class DeleteArtist {
@@ -15,11 +19,11 @@ public class DeleteArtist {
         ChoiceBox<data.Artist> artists = new ChoiceBox<>();
         artists.getItems().addAll(festivalPlan.getArtists());
 
-        Button deleteStage = new Button("Delete");
+        Button deleteArtist = new Button("Delete");
         Button cancelButton = new Button("Cancel");
 
         HBox buttons = new HBox();
-        buttons.getChildren().addAll(deleteStage, cancelButton);
+        buttons.getChildren().addAll(deleteArtist, cancelButton);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(artists, buttons);
@@ -36,7 +40,7 @@ public class DeleteArtist {
             stage.close();
         });
 
-        deleteStage.setOnAction(event -> {
+        deleteArtist.setOnAction(event -> {
             if (artists.getItems().isEmpty()) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.getDialogPane().setContent(new Label("Please select an artist to delete!"));
@@ -46,19 +50,33 @@ public class DeleteArtist {
                 ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 warning.getButtonTypes().addAll(cancel);
 
-                warning.getDialogPane().setContent(new Label("Are you sure you want to delete " + artists.getSelectionModel().getSelectedItem().getName()));
+                String artistName =  artists.getSelectionModel().getSelectedItem().getName();
+                warning.setHeaderText("Are you sure you want to delete " + artistName);
+                warning.setContentText("Deleting this " +artistName+ " will also delete Performances with them.");
 
                 Optional<ButtonType> result = warning.showAndWait();
 
                 if (result.get() == cancel) {
                     warning.close();
                 } else {
-                    festivalPlan.deleteArtist(artists.getSelectionModel().getSelectedItem());
+                    Artist artist = artists.getSelectionModel().getSelectedItem();
+                    festivalPlan.deleteArtist(artist);
                     System.out.println("deleted");
+                    deletePerformanceWithArtist(festivalPlan, artist);
                     warning.close();
                     stage.close();
                 }
             }
         });
+    }
+
+    private void deletePerformanceWithArtist(FestivalPlan festivalPlan, Artist artist) {
+        ArrayList<Performance> tempPerformances = new ArrayList<>(festivalPlan.getPerformances());
+        for (Performance performance : tempPerformances) {
+            if (performance.getArtist().equals(artist)){
+                festivalPlan.deletePerformance(performance);
+            }
+        }
+
     }
 }

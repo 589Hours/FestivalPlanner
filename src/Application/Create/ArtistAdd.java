@@ -23,7 +23,7 @@ public class ArtistAdd {
 
         Label artistName = new Label("Please enter the name of the artist:");
         Label artistGenre = new Label("Please enter the genre in which this artist performs:");
-        Label artistPopularity = new Label("Please enter the expected for this artist ranging from 0-5");
+        Label artistPopularity = new Label("Please enter the expected for this artist ranging from 0-100");
 
 
         Button createButton = new Button("Create");
@@ -49,9 +49,9 @@ public class ArtistAdd {
         artistStage.show();
 
         createButton.setOnAction(event -> {
-            if (artistNameText.getText().isEmpty() || artistGenreText.getText().isEmpty() || Integer.parseInt(artistPop.getText()) < 0 || Integer.parseInt(artistPop.getText()) > 5) {
+            if (artistNameText.getText().isEmpty() || artistGenreText.getText().isEmpty() || Integer.parseInt(artistPop.getText()) < 0 || Integer.parseInt(artistPop.getText()) > 100) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
-                error.getDialogPane().setContent(new Label("Either a textfield is left empty or the given popularity is not between 0-5"));
+                error.getDialogPane().setContent(new Label("Either a textfield is left empty or the given popularity is not between 0-100"));
                 error.show();
             } else {
                 if (description.getText().equals("Optional")){
@@ -60,6 +60,12 @@ public class ArtistAdd {
                     festivalPlan.addArtist(new Artist(artistNameText.getText(), Integer.parseInt(artistPop.getText()), artistGenreText.getText(), description.getText()));
                 }
             }
+
+            Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+            confirmation.setHeaderText("Succes!");
+            confirmation.setContentText("The Artist was succesfully added!");
+            confirmation.showAndWait();
+
             artistStage.close();
         });
         cancelButton.setOnAction(event -> {

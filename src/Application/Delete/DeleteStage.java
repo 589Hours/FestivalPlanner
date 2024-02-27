@@ -1,6 +1,7 @@
 package Application.Delete;
 
 import data.FestivalPlan;
+import data.Performance;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -49,19 +50,32 @@ public class DeleteStage {
                 ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 warning.getButtonTypes().addAll(cancel);
 
-                warning.getDialogPane().setContent(new Label("Are you sure you want to delete " + stages.getSelectionModel().getSelectedItem().getName()) );
+                String stageName = stages.getSelectionModel().getSelectedItem().getName();
+                warning.setHeaderText("Are you sure you want to delete " + stageName);
+                warning.setContentText("Deleting this stage will also delete every performance on it!");
 
                 Optional<ButtonType> result = warning.showAndWait();
 
                 if(result.get() == cancel) {
                     warning.close();
                 } else {
-                    festivalPlan.deleteStage(stages.getSelectionModel().getSelectedItem());
+                    data.Stage festivalStage = stages.getSelectionModel().getSelectedItem();
+                    festivalPlan.deleteStage(festivalStage);
+                    deletePerformancesOnStage(festivalPlan, festivalStage);
                     warning.close();
                     stage.close();
                 }
             }
         });
+    }
+
+    private void deletePerformancesOnStage(FestivalPlan festivalPlan, data.Stage festivalStage) {
+        ArrayList<Performance> temporaryPerformances = new ArrayList<>(festivalPlan.getPerformances());
+        for (Performance performance : temporaryPerformances) {
+            if (performance.getStage().equals(festivalStage)){
+                festivalPlan.deletePerformance(performance);
+            }
+        }
     }
 }
 
