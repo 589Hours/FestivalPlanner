@@ -85,7 +85,7 @@ public class GUI extends Application {
             borderPane.setCenter(festivalTableview);
         });
         viewBlock.setOnAction(event -> {
-            canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
+            festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
             borderPane.setCenter(canvas);
         });
         createArtist.setOnAction(event -> {
