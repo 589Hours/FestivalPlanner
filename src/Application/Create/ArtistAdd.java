@@ -60,6 +60,7 @@ public class ArtistAdd {
                     festivalPlan.addArtist(new Artist(artistNameText.getText(), Integer.parseInt(artistPop.getText()), artistGenreText.getText(), description.getText()));
                 }
             }
+            artistStage.close();
         });
         cancelButton.setOnAction(event -> {
             artistStage.close();

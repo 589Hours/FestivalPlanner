@@ -6,6 +6,8 @@ import Application.Create.StageAdd;
 import Application.Delete.DeleteArtist;
 import Application.Delete.DeletePerformance;
 import Application.Delete.DeleteStage;
+import Application.Edit.EditArtist;
+import Application.Edit.EditStage;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
@@ -40,6 +42,13 @@ public class GUI extends Application {
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
 
         festivalPlan = new FestivalPlan();
+        try{
+            FileInputStream fis = new FileInputStream("Saves/SaveFile.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            festivalPlan = (FestivalPlan) ois.readObject();
+        } catch (Exception e){
+            System.out.println("file not found or class not found!");
+        }
 
         MenuBar menuBar = new MenuBar();
         Menu viewMenu = new Menu("View");
@@ -51,8 +60,12 @@ public class GUI extends Application {
         MenuItem createPodium = new MenuItem("Podium");
         MenuItem createArtist = new MenuItem("Artist");
         MenuItem createPerformance = new MenuItem("Performance");
-
         createMenu.getItems().addAll(createPodium, createArtist, createPerformance);
+
+        Menu editMenu = new Menu("Edit");
+        MenuItem editStage = new MenuItem("Podium");
+        MenuItem editArtist = new MenuItem("Artist");
+        editMenu.getItems().addAll(editStage, editArtist);
 
         Menu deleteMenu = new Menu("Delete");
         MenuItem  deleteStage = new MenuItem("Podium");
@@ -65,7 +78,7 @@ public class GUI extends Application {
         MenuItem loadAgenda = new MenuItem("Load");
         saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
 
-        menuBar.getMenus().addAll(viewMenu, createMenu, deleteMenu, saveAndLoadMenu);
+        menuBar.getMenus().addAll(viewMenu, createMenu, editMenu, deleteMenu, saveAndLoadMenu);
 
         viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
@@ -106,6 +119,15 @@ public class GUI extends Application {
         });
 
 
+        editStage.setOnAction(event -> {
+            new EditStage(festivalPlan);
+        });
+
+        editArtist.setOnAction(event -> {
+            new EditArtist(festivalPlan);
+        });
+
+
         deleteStage.setOnAction(event -> {
             new DeleteStage(festivalPlan);
         });
@@ -143,7 +165,7 @@ public class GUI extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
-        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
+//        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
 
