@@ -127,6 +127,8 @@ public class GUI extends Application {
                 warning.close();
             } else {
                 this.festivalPlan = new FestivalPlan();
+                festivalBlockview.deleteAllBlocks();
+                festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
                 try {
                     PrintWriter printWriter = new PrintWriter(saveFilePath);
                     printWriter.write("");

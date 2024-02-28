@@ -199,6 +199,10 @@ public class FestivalBlockview extends Canvas {
         blocks.remove(delete);
     }
 
+    public void deleteAllBlocks(){
+        blocks.clear();
+    }
+
     public FXGraphics2D getFxGraphics2D() {
         return fxGraphics2D;
     }
