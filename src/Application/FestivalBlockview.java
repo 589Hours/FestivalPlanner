@@ -189,6 +189,15 @@ public class FestivalBlockview extends Canvas {
         }
         return null;
     }
+    public void deleteBlock(Performance performance){
+        RoundRectangle2D delete = null;
+        for (RoundRectangle2D rectangle2D : blocks.keySet()) {
+            if (blocks.get(rectangle2D) == performance){
+                delete = rectangle2D;
+            }
+        }
+        blocks.remove(delete);
+    }
 
     public FXGraphics2D getFxGraphics2D() {
         return fxGraphics2D;

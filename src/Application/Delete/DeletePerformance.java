@@ -1,5 +1,6 @@
 package Application.Delete;
 
+import Application.FestivalBlockview;
 import data.Artist;
 import data.FestivalPlan;
 import data.Performance;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 import java.util.Optional;
 
 public class DeletePerformance {
-    public DeletePerformance(FestivalPlan festivalPlan) {
+    public DeletePerformance(FestivalPlan festivalPlan, FestivalBlockview festivalBlockview) {
         Stage stage = new Stage();
         ChoiceBox<Performance> performances = new ChoiceBox<>();
         performances.getItems().addAll(festivalPlan.getPerformances());
@@ -56,6 +57,7 @@ public class DeletePerformance {
                     warning.close();
                 } else {
                     festivalPlan.deletePerformance(performances.getSelectionModel().getSelectedItem());
+                    festivalBlockview.deleteBlock(performances.getSelectionModel().getSelectedItem());
                     System.out.println("deleted");
                     warning.close();
                     stage.close();

@@ -158,15 +158,15 @@ public class GUI extends Application {
 
 
         deleteStage.setOnAction(event -> {
-            new DeleteStage(festivalPlan);
+            new DeleteStage(festivalPlan, festivalBlockview);
         });
 
         deleteArtist.setOnAction(event -> {
-            new DeleteArtist(festivalPlan);
+            new DeleteArtist(festivalPlan, festivalBlockview);
         });
 
         deletePerformance.setOnAction(event -> {
-            new DeletePerformance(festivalPlan);
+            new DeletePerformance(festivalPlan,festivalBlockview);
         });
 
         // MouseClick
