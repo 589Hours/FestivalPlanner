@@ -1,5 +1,6 @@
 package Application.Delete;
 
+import Application.FestivalBlockview;
 import data.Artist;
 import data.FestivalPlan;
 import data.Performance;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class DeleteArtist {
-    public DeleteArtist(FestivalPlan festivalPlan) {
+    public DeleteArtist(FestivalPlan festivalPlan, FestivalBlockview festivalBlockview) {
         Stage stage = new Stage();
         ChoiceBox<data.Artist> artists = new ChoiceBox<>();
         artists.getItems().addAll(festivalPlan.getArtists());
@@ -62,7 +63,7 @@ public class DeleteArtist {
                     Artist artist = artists.getSelectionModel().getSelectedItem();
                     festivalPlan.deleteArtist(artist);
                     System.out.println("deleted");
-                    deletePerformanceWithArtist(festivalPlan, artist);
+                    deletePerformanceWithArtist(festivalPlan, artist, festivalBlockview);
                     warning.close();
                     stage.close();
                 }
@@ -70,11 +71,12 @@ public class DeleteArtist {
         });
     }
 
-    private void deletePerformanceWithArtist(FestivalPlan festivalPlan, Artist artist) {
+    private void deletePerformanceWithArtist(FestivalPlan festivalPlan, Artist artist, FestivalBlockview festivalBlockview) {
         ArrayList<Performance> tempPerformances = new ArrayList<>(festivalPlan.getPerformances());
         for (Performance performance : tempPerformances) {
             if (performance.getArtist().equals(artist)){
                 festivalPlan.deletePerformance(performance);
+                festivalBlockview.deleteBlock(performance);
             }
         }
 
