@@ -19,7 +19,7 @@ public class Map {
 
         this.width = root.getInt("width");
         this.height = root.getInt("height");
-        Layer layer = new Layer(root);
+        Layer layer = new Layer(root, width, height, 0);
     }
 
     public void draw(Graphics2D g) {
