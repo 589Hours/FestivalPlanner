@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.Line;
 import java.util.Optional;
 
 public class EditArtist {
@@ -44,8 +45,6 @@ public class EditArtist {
                 error.show();
             } else {
                 stage.close();
-                Alert warning = new Alert(Alert.AlertType.CONFIRMATION);
-                ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 Stage artistStage = new Stage();
                 TextField artistNameText = new TextField();
                 TextField artistGenreText = new TextField();
@@ -84,12 +83,20 @@ public class EditArtist {
                             artists.getSelectionModel().getSelectedItem().setGenre(artistGenreText.getText());
                             artists.getSelectionModel().getSelectedItem().setPopularity(Integer.parseInt(artistPop.getText()));
                             artists.getSelectionModel().getSelectedItem().setArtistInfo(finalDescription.getText());
+
+                            Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+                            confirmation.setHeaderText("Succes!");
+                            confirmation.setContentText("The artist was successfully edited");
+                            confirmation.showAndWait();
+
+                            artistStage.close();
+
                         } else {
                             Alert error = new Alert(Alert.AlertType.ERROR);
                             error.getDialogPane().setContent(new Label("Either a textfield is left empty or the given popularity is not between 0-100"));
                             error.show();
                         }
-                        artistStage.close();
+
                     });
 
                     cancelButtonPopup.setOnAction(event1 -> {

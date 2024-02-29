@@ -75,10 +75,11 @@ public class PerformanceAdd {
                 } else {
                     festivalPlan.addPerformance(new Performance(artists.getSelectionModel().getSelectedItem(), stages.getSelectionModel().getSelectedItem(), beginHourBox.getSelectionModel().getSelectedItem(), beginMinuteBox.getSelectionModel().getSelectedItem(), endHourBox.getSelectionModel().getSelectedItem(), endMinuteBox.getSelectionModel().getSelectedItem()));
                 }
-                Alert confirmation = new Alert(Alert.AlertType.WARNING);
-                confirmation.setHeaderText(null);
-                confirmation.getDialogPane().setContent(new Label("The performance was succesfully created!"));
-                confirmation.show();
+
+                Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+                confirmation.setHeaderText("Succes!");
+                confirmation.setContentText("The performance was succesfully created!");
+                confirmation.showAndWait();
                 stage.close();
             } else {
                 Alert error = new Alert(Alert.AlertType.ERROR);

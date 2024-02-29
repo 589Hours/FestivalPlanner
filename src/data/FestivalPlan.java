@@ -12,7 +12,7 @@ public class FestivalPlan implements Serializable {
         this.performances = new ArrayList<>();
         this.artists = new ArrayList<>();
         this.stages = new ArrayList<>();
-//       addTestData();
+//        addTestData();
     }
 
     private void addTestData() {
@@ -53,11 +53,11 @@ public class FestivalPlan implements Serializable {
         artists.add(artist7);
 
         // Podiums
-        Stage stage = new Stage("Hoofdpodium");
-        Stage stage2 = new Stage("Testpodium1");
-        Stage stage3 = new Stage("Testpodium2");
-        Stage stage4 = new Stage("Testpodium3");
-        Stage stage5 = new Stage("Testpodium4");
+        Stage stage = new Stage("Hoofdpodium", 1);
+        Stage stage2 = new Stage("Testpodium1", 2);
+        Stage stage3 = new Stage("Testpodium2", 3);
+        Stage stage4 = new Stage("Testpodium3", 4);
+        Stage stage5 = new Stage("Testpodium4", 5);
         stages.add(stage);
         stages.add(stage2);
         stages.add(stage3);

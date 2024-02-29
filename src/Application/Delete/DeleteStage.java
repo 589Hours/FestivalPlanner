@@ -1,6 +1,8 @@
 package Application.Delete;
 
+import Application.FestivalBlockview;
 import data.FestivalPlan;
+import data.Performance;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class DeleteStage {
-    public DeleteStage(FestivalPlan festivalPlan) {
+    public DeleteStage(FestivalPlan festivalPlan, FestivalBlockview festivalBlockview) {
         Stage stage = new Stage();
         ChoiceBox<data.Stage> stages = new ChoiceBox<>();
         stages.getItems().addAll(festivalPlan.getStages());
@@ -49,19 +51,33 @@ public class DeleteStage {
                 ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 warning.getButtonTypes().addAll(cancel);
 
-                warning.getDialogPane().setContent(new Label("Are you sure you want to delete " + stages.getSelectionModel().getSelectedItem().getName()) );
+                String stageName = stages.getSelectionModel().getSelectedItem().getName();
+                warning.setHeaderText("Are you sure you want to delete " + stageName);
+                warning.setContentText("Deleting this stage will also delete every performance on it!");
 
                 Optional<ButtonType> result = warning.showAndWait();
 
                 if(result.get() == cancel) {
                     warning.close();
                 } else {
-                    festivalPlan.deleteStage(stages.getSelectionModel().getSelectedItem());
+                    data.Stage festivalStage = stages.getSelectionModel().getSelectedItem();
+                    festivalPlan.deleteStage(festivalStage);
+                    deletePerformancesOnStage(festivalPlan, festivalStage, festivalBlockview);
                     warning.close();
                     stage.close();
                 }
             }
         });
+    }
+
+    private void deletePerformancesOnStage(FestivalPlan festivalPlan, data.Stage festivalStage, FestivalBlockview festivalBlockview) {
+        ArrayList<Performance> temporaryPerformances = new ArrayList<>(festivalPlan.getPerformances());
+        for (Performance performance : temporaryPerformances) {
+            if (performance.getStage().equals(festivalStage)){
+                festivalPlan.deletePerformance(performance);
+                festivalBlockview.deleteBlock(performance);
+            }
+        }
     }
 }
 

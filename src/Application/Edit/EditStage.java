@@ -44,8 +44,6 @@ public class EditStage {
                 error.show();
             } else {
                 stage.close();
-                Alert warning = new Alert(Alert.AlertType.CONFIRMATION);
-                ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 Stage artistStage = new Stage();
                 TextField stageName = new TextField();
 
@@ -63,7 +61,6 @@ public class EditStage {
                 artistAdd.getChildren().addAll(stageNameLabel, stageName, buttonsBox);
 
                 cancelButtonPopup.setOnAction(event1 -> {
-                    stage.close();
                     artistStage.close();
                 });
 
@@ -74,15 +71,19 @@ public class EditStage {
                         alert.getDialogPane().setContent(new Label("The textfield is empty, please enter a name."));
                         alert.show();
                     } else {
-                        stage.close();
                         stages.getSelectionModel().getSelectedItem().setName(stageName.getText());
+
+                        Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+                        confirmation.setHeaderText("Succes!");
+                        confirmation.setContentText("The stage was successfully edited!");
+                        confirmation.showAndWait();
                         artistStage.close();
                     }
                 });
 
 
-                Scene artistScene = new Scene(artistAdd);
-                artistStage.setScene(artistScene);
+                Scene stageScene = new Scene(artistAdd);
+                artistStage.setScene(stageScene);
                 artistStage.setWidth(750);
                 artistStage.setHeight(500);
                 artistStage.setTitle("Artist");

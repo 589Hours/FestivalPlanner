@@ -27,12 +27,15 @@ import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
     private ResizableCanvas canvas;
+    private String saveFilePath;
     FestivalBlockview festivalBlockview = new FestivalBlockview();
 
     @Override
@@ -42,8 +45,10 @@ public class GUI extends Application {
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
 
         festivalPlan = new FestivalPlan();
+        saveFilePath = "Saves/SaveFile.ser";
         try{
-            FileInputStream fis = new FileInputStream("Saves/SaveFile.ser");
+
+            FileInputStream fis = new FileInputStream(saveFilePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
             festivalPlan = (FestivalPlan) ois.readObject();
         } catch (Exception e){
@@ -76,7 +81,8 @@ public class GUI extends Application {
         Menu saveAndLoadMenu = new Menu("Save & Load");
         MenuItem saveAgenda = new MenuItem("Save");
         MenuItem loadAgenda = new MenuItem("Load");
-        saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda);
+        MenuItem clearAgenda = new MenuItem("Clear");
+        saveAndLoadMenu.getItems().addAll(saveAgenda, loadAgenda, clearAgenda);
 
         menuBar.getMenus().addAll(viewMenu, createMenu, editMenu, deleteMenu, saveAndLoadMenu);
 
@@ -85,12 +91,8 @@ public class GUI extends Application {
             borderPane.setCenter(festivalTableview);
         });
         viewBlock.setOnAction(event -> {
-            canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
+            festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
             borderPane.setCenter(canvas);
-        });
-        viewTable.setOnAction(event -> {
-            FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
-            borderPane.setCenter(festivalTableview);
         });
         createArtist.setOnAction(event -> {
             new ArtistAdd(festivalPlan);
@@ -102,11 +104,40 @@ public class GUI extends Application {
 
         loadAgenda.setOnAction(event -> {
             try{
-                FileInputStream fis = new FileInputStream("Saves/SaveFile.ser");
+                FileInputStream fis = new FileInputStream(saveFilePath);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 festivalPlan = (FestivalPlan) ois.readObject();
+                succesPopup("File successfully loaded!");
             } catch (Exception e){
+                fileNotFoundNotification(1);
                 System.out.println("file not found or class not found!");
+            }
+        });
+
+        clearAgenda.setOnAction(event -> {
+            Alert warning = new Alert(Alert.AlertType.WARNING);
+            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            warning.getButtonTypes().addAll(cancel);
+
+            warning.getDialogPane().setContent(new Label("Are you sure you want to clear the agenda? \nThis will make you lose your save file and all data! "));
+
+            Optional<ButtonType> result = warning.showAndWait();
+
+            if (result.get() == cancel) {
+                warning.close();
+            } else {
+                this.festivalPlan = new FestivalPlan();
+                festivalBlockview.deleteAllBlocks();
+                festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
+                try {
+                    PrintWriter printWriter = new PrintWriter(saveFilePath);
+                    printWriter.write("");
+                    printWriter.close();
+                } catch (IOException e){
+                    fileNotFoundNotification(2);
+                }
+                succesPopup("Successfully cleared the agenda and save file");
+                warning.close();
             }
         });
 
@@ -129,15 +160,15 @@ public class GUI extends Application {
 
 
         deleteStage.setOnAction(event -> {
-            new DeleteStage(festivalPlan);
+            new DeleteStage(festivalPlan, festivalBlockview);
         });
 
         deleteArtist.setOnAction(event -> {
-            new DeleteArtist(festivalPlan);
+            new DeleteArtist(festivalPlan, festivalBlockview);
         });
 
         deletePerformance.setOnAction(event -> {
-            new DeletePerformance(festivalPlan);
+            new DeletePerformance(festivalPlan,festivalBlockview);
         });
 
         // MouseClick
@@ -165,8 +196,24 @@ public class GUI extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Festival Planner");
-//        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
+        primaryStage.getIcons().add(new Image("icons8-festival-64.png"));
         primaryStage.show();
     }
 
+    private void fileNotFoundNotification(int errorType) {
+        Alert fileNotFound = new Alert(Alert.AlertType.ERROR);
+        if (errorType == 1){
+            fileNotFound.setContentText("Could not find a file to load!");
+        } else {
+            fileNotFound.setContentText("Could not find a file to clear!");
+        }
+        fileNotFound.showAndWait();
+    }
+
+    public static void succesPopup(String contextString){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Succes!");
+        alert.setContentText(contextString);
+        alert.showAndWait();
+    }
 }

@@ -17,9 +17,12 @@ public class FestivalBlockview extends Canvas {
 
     private FestivalPlan festivalPlan = new FestivalPlan();
     private HashMap<RoundRectangle2D, Performance> blocks = new HashMap<>();
+    private FXGraphics2D fxGraphics2D;
+
 
     public void draw(FXGraphics2D graphics, FestivalPlan festivalPlan) {
         this.festivalPlan = festivalPlan;
+        this.fxGraphics2D = graphics;
         // Tekent de basiselementen zoals tijden met bijbehorende tijdvakken.
         drawBasics(graphics);
 
@@ -139,20 +142,21 @@ public class FestivalBlockview extends Canvas {
             }
 
             int y = 31;
-            switch (performance.getStage().getName()) {
-                case "Hoofdpodium":
+
+            switch (performance.getStage().getStageNumber()) {
+                case 1:
                     y = 32;
                     break;
-                case "Testpodium1":
+                case 2:
                     y = 104;
                     break;
-                case "Testpodium2":
+                case 3:
                     y = 178;
                     break;
-                case "Testpodium3":
+                case 4:
                     y = 253;
                     break;
-                case "Testpodium4":
+                case 5:
                     y = 328;
                     break;
             }
@@ -184,5 +188,22 @@ public class FestivalBlockview extends Canvas {
             }
         }
         return null;
+    }
+    public void deleteBlock(Performance performance){
+        RoundRectangle2D delete = null;
+        for (RoundRectangle2D rectangle2D : blocks.keySet()) {
+            if (blocks.get(rectangle2D) == performance){
+                delete = rectangle2D;
+            }
+        }
+        blocks.remove(delete);
+    }
+
+    public void deleteAllBlocks(){
+        blocks.clear();
+    }
+
+    public FXGraphics2D getFxGraphics2D() {
+        return fxGraphics2D;
     }
 }

@@ -25,7 +25,6 @@ public class FestivalTableview extends TableView {
 
 
     public FestivalTableview(FestivalPlan festivalPlan){
-        //TODO receive data for the table
         this.festivalPlan = festivalPlan;
         setUpTable();
     }
