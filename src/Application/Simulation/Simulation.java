@@ -45,7 +45,7 @@ public class Simulation extends Application {
 
 
     public void init() {
-        map = new Map("TestMap.json");
+        map = new Map("/FestivalMap.json");
     }
 
 

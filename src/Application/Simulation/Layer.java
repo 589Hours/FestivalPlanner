@@ -22,24 +22,12 @@ public class Layer {
 
         //TODO: overal de juiste locatie in de json file neerzetten
 
-        try {
-            // TODO: Meerdere toevoegen voor elke tileset
-            layerTiledMap = ImageIO.read(getClass().getResourceAsStream(root.getJsonObject("tilesets").getString("source")));
 
-            tileHeight = root.getInt("tileheight");
-            tileWidth = root.getInt("tilewidth");
-
-            for (int y = 0; y < layerTiledMap.getHeight(); y += tileHeight) {
-                for (int x = 0; x < layerTiledMap.getWidth(); x += tileWidth) {
-                    tiles.add(layerTiledMap.getSubimage(x, y, tileWidth, tileHeight));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         layerMap = new int[mapHeight][mapWidth];
-        for (int y = 0; y < mapHeight; y++) {
-            for (int x = 0; x < mapWidth; x++) {
+        for(int y = 0; y < mapHeight; y++)
+        {
+            for(int x = 0; x < mapWidth; x++)
+            {
                 layerMap[y][x] = root.getJsonArray("map").getJsonArray(y).getInt(x);
             }
         }

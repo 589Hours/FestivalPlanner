@@ -2564,7 +2564,7 @@
         {
          "columns":32,
          "firstgid":1,
-         "image":"..\/..\/Downloads\/PotentialTiles\/PotentialTiles\/10_Vehicles_32x32.png",
+         "image":"UsedTiles\/10_Vehicles_32x32.png",
          "imageheight":3456,
          "imagewidth":1024,
          "margin":0,
@@ -2577,7 +2577,7 @@
         {
          "columns":32,
          "firstgid":3457,
-         "image":"..\/..\/Downloads\/PotentialTiles\/PotentialTiles\/11_Camping_32x32.png",
+         "image":"UsedTiles\/11_Camping_32x32.png",
          "imageheight":5792,
          "imagewidth":1024,
          "margin":0,
@@ -2708,7 +2708,7 @@
         {
          "columns":32,
          "firstgid":9249,
-         "image":"..\/..\/Downloads\/PotentialTiles\/PotentialTiles\/17_Garden_32x32.png",
+         "image":"UsedTiles\/17_Garden_32x32.png",
          "imageheight":6272,
          "imagewidth":1024,
          "margin":0,
@@ -2721,7 +2721,7 @@
         {
          "columns":33,
          "firstgid":15521,
-         "image":"..\/..\/Downloads\/PotentialTiles\/PotentialTiles\/18_Roofstage_32x32.png",
+         "image":"UsedTiles\/18_Roofstage_32x32.png",
          "imageheight":960,
          "imagewidth":1056,
          "margin":0,
@@ -2734,7 +2734,7 @@
         {
          "columns":32,
          "firstgid":16511,
-         "image":"..\/..\/Downloads\/PotentialTiles\/PotentialTiles\/20_Bench_32x32.png",
+         "image":"UsedTiles\/20_Bench_32x32.png",
          "imageheight":5920,
          "imagewidth":1024,
          "margin":0,
@@ -2747,7 +2747,7 @@
         {
          "columns":176,
          "firstgid":22431,
-         "image":"..\/..\/Downloads\/modernexteriors-win\/Modern_Exteriors_32x32\/Modern_Exteriors_Complete_Tileset_32x32.png",
+         "image":"UsedTiles\/Modern_Exteriors_Complete_Tileset_32x32.png",
          "imageheight":10144,
          "imagewidth":5632,
          "margin":0,
