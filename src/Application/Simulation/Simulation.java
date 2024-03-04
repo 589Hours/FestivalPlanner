@@ -43,7 +43,6 @@ public class Simulation extends Application {
 
     }
 
-
     public void init() {
         map = new Map("/FestivalMap.json");
     }
@@ -56,7 +55,6 @@ public class Simulation extends Application {
     }
 
     public void update(double deltaTime) {
-
 
     }
 
