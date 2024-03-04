@@ -14,6 +14,7 @@ public class Simulation extends Application {
 
     private Map map;
     private ResizableCanvas canvas;
+    private Camera camera;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -21,6 +22,9 @@ public class Simulation extends Application {
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
         canvas.setHeight(1024);
+
+        canvas.setOnScroll(event -> camera.mouseScroll(event));
+
         mainPane.setCenter(canvas);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
 
@@ -41,23 +45,23 @@ public class Simulation extends Application {
         stage.setTitle("Fading image");
         stage.show();
         draw(g2d);
-
-
     }
 
     public void init() {
+        camera = new Camera();
         map = new Map("/FestivalMap.json");
     }
 
 
     public void draw(Graphics2D g) {
-        g.setBackground(Color.black);
         g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
+        g.setTransform(camera.getTransform());
+        g.setBackground(Color.black);
         map.draw(g);
     }
 
     public void update(double deltaTime) {
-
+        camera.getTransform();
     }
 
 
