@@ -31,27 +31,7 @@ public class Map {
         this.width = root.getInt("width");
         this.height = root.getInt("height");
 
-
-        try {
-            String imageFileName = "/"+ root.getJsonArray("tilesets").getJsonObject(0).getString("image");
-            System.out.println(imageFileName);
-            BufferedImage tilemap = ImageIO.read(getClass().getResourceAsStream(fileName));
-
-            tileHeight = root.getJsonObject("tilemap").getJsonObject("tile").getInt("height");
-            tileWidth = root.getJsonObject("tilemap").getJsonObject("tile").getInt("width");
-
-            for(int y = 0; y < tilemap.getHeight(); y += tileHeight)
-            {
-                for(int x = 0; x < tilemap.getWidth(); x += tileWidth)
-                {
-                    tiles.add(tilemap.getSubimage(x, y, tileWidth, tileHeight));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Layer layer = new Layer(root, width, height, 1);
+        Layer layer = new Layer(root, width, height, 1, fileName);
         layers.add(layer);
     }
 

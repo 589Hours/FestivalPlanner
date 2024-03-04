@@ -17,10 +17,27 @@ public class Layer {
     private BufferedImage layerTiledMap;
     private int[][] layerMap;
 
-    public Layer(JsonObject root, int mapWidth, int mapHeight, int layerNum) {
+    public Layer(JsonObject root, int mapWidth, int mapHeight, int layerNum, String fileName) {
         this.layerNum = layerNum;
 
-        //TODO: overal de juiste locatie in de json file neerzetten
+        try {
+            String imageFileName = "/"+ root.getJsonArray("tilesets").getJsonObject(layerNum).getString("image");
+            System.out.println(imageFileName);
+            BufferedImage tilemap = ImageIO.read(getClass().getResourceAsStream(fileName));
+
+            tileHeight = root.getJsonArray("layers").getJsonObject(layerNum).getInt("height");
+            tileWidth = root.getJsonArray("layers").getJsonObject(layerNum).getInt("height");
+
+            for(int y = 0; y < mapHeight; y += tileHeight)
+            {
+                for(int x = 0; x < mapWidth; x += tileWidth)
+                {
+//                    tiles.add(tilemap.getSubimage(x, y, tileWidth, tileHeight));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         layerMap = new int[mapHeight][mapWidth];
@@ -28,16 +45,11 @@ public class Layer {
         {
             for(int x = 0; x < mapWidth; x++)
             {
-                layerMap[y][x] = root.getJsonArray("map").getJsonArray(y).getInt(x);
+//                layerMap[y][x] = root.getJsonArray("map").getJsonArray(y).getInt(x);
             }
         }
     }
 
     public void draw(Graphics2D g) {
-        for (int y = 0; y < layerTiledMap.getHeight(); y += tileHeight) {
-            for (int x = 0; x < layerTiledMap.getWidth(); x += tileWidth) {
-                g.drawImage(tiles.get(layerMap[y][x]), AffineTransform.getTranslateInstance(x * tileWidth, y * tileHeight), null);
-            }
-        }
     }
 }
