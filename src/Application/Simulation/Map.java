@@ -52,9 +52,10 @@ public class Map {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        Layer layer = new Layer(root, width, height, 0, tiles);
-        layers.add(layer);
+        for (int i = 0; i < 3; i++) {
+            Layer layer = new Layer(root, width, height, i, tiles);
+            layers.add(layer);
+        };
     }
 
 

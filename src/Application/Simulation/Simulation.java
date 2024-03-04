@@ -19,6 +19,8 @@ public class Simulation extends Application {
     public void start(Stage stage) throws Exception {
         BorderPane mainPane = new BorderPane();
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
+        canvas.setWidth(1024);
+        canvas.setHeight(1024);
         mainPane.setCenter(canvas);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
 

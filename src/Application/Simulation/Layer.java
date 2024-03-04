@@ -40,11 +40,15 @@ public class Layer {
         AffineTransform transform = new AffineTransform();
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapHeight; x++) {
-                transform.translate(x*tileWidth, y*tileHeight);
+                transform.translate(x*(tileWidth/4), y*(tileHeight/4));
+                transform.scale(0.25,0.25);
                 if (layerMap[y][x] > tiles.size()){
                     // Te hoog getal
                 } else {
-                    g.drawImage(tiles.get(layerMap[y][x]), transform, null);
+                    if (layerMap[y][x] != 0){
+                        g.drawImage(tiles.get(layerMap[y][x]-1), transform, null);
+                    }
+
                 }
                 transform.setToTranslation(0,0);
             }
