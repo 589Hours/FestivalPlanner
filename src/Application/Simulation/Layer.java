@@ -34,6 +34,11 @@ public class Layer {
                 layerMap[y][x] = root.getJsonArray("layers").getJsonObject(layerNum).getJsonArray("data").getInt((y * 128) + x);
                 if (layerMap[y][x] > tiles.size()) {
                     // Te hoog getal
+                    int num = layerMap[y][x];
+                    int realTiled = num & 0xFFFFFFF;
+                    mapTiles[y][x] = tiles.get(realTiled-1);
+
+                    int flippedBit = num >> 30;
                 } else {
                     if (layerMap[y][x] != 0) {
                         mapTiles[y][x] = tiles.get(layerMap[y][x] - 1);
