@@ -26,7 +26,12 @@ public class Camera {
         if (event.isControlDown()){
             // Zoom
             System.out.println("Zoom");
-            this.zoom += (int) (1 + event.getDeltaY() / 500.0f);
+            if (event.getDeltaY() > 0) {
+                this.zoom += (int) (1 + event.getDeltaY() / 500.0f);
+            } else {
+                this.zoom += (int) (-1 + event.getDeltaY() / 500.0f);
+            }
+            System.out.println(this.zoom);
         } else if (event.isShiftDown()){
             // X aanpassen
             System.out.println("X");
