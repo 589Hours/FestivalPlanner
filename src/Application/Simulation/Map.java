@@ -4,11 +4,10 @@ import javax.imageio.ImageIO;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.JsonValue;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Map {
@@ -59,8 +58,9 @@ public class Map {
     }
 
 
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g, AffineTransform transform) {
         for (Layer layer : layers) {
+            g.setTransform(transform);
             layer.draw(g);
         }
     }

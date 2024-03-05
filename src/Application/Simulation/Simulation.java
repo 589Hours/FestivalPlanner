@@ -55,13 +55,11 @@ public class Simulation extends Application {
 
     public void draw(Graphics2D g) {
         g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-        g.setTransform(camera.getTransform());
         g.setBackground(Color.black);
-        map.draw(g);
+        map.draw(g, camera.getTransform());
     }
 
     public void update(double deltaTime) {
-        camera.getTransform();
     }
 
 
