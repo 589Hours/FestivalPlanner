@@ -39,8 +39,12 @@ public class Layer {
                     mapTiles[y][x] = tiles.get(realTiled-1);
 
                     int flippedBit = num >> 30;
+                    boolean horizontallyFlipped = (flippedBit & 0x1) != 0;
+                    boolean verticallyFlipped = (flippedBit & 0x2) != 0;
+                    boolean diagonallyFlipped = (flippedBit & 0x4) != 0;
+
                 } else {
-                    if (layerMap[y][x] != 0) {
+                    if (layerMap[y][x] > 0) {
                         mapTiles[y][x] = tiles.get(layerMap[y][x] - 1);
                     }
                 }
