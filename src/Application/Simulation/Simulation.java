@@ -19,6 +19,7 @@ public class Simulation extends Application {
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
 
+
     @Override
     public void start(Stage stage) throws Exception {
         BorderPane mainPane = new BorderPane();
@@ -27,6 +28,11 @@ public class Simulation extends Application {
         canvas.setHeight(1024);
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
+        canvas.setOnMouseMoved(event -> {
+            for (Visitor visitor : visitors) {
+                visitor.setTargetPosition(new Point2D.Double(event.getX(), event.getY()));
+            }
+        });
 
         mainPane.setCenter(canvas);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
@@ -53,10 +59,13 @@ public class Simulation extends Application {
     public void init() {
         camera = new Camera();
         map = new Map("/FestivalMap.json");
-        Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),
-                new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),
-                1);
-        visitors.add(visitor);
+        for (int i = 0; i < 20; i++) {
+            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),
+                    new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),
+                    1);
+            visitors.add(visitor);
+        }
+
     }
 
 
@@ -71,7 +80,7 @@ public class Simulation extends Application {
 
     public void update(double deltaTime) {
         for (Visitor visitor : visitors) {
-            visitor.update();
+            visitor.update(visitors);
         }
     }
 
