@@ -5,7 +5,11 @@ import javax.json.JsonObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class Layer {
@@ -50,21 +54,26 @@ public class Layer {
                 }
             }
         }
+        createImage();
     }
 
-    public void draw(Graphics2D g) {
+    public void createImage(){
         AffineTransform transform = new AffineTransform();
+        int customTileSize = 32;
+        this.layerTiledMap = new BufferedImage(customTileSize*mapWidth, customTileSize*mapHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = this.layerTiledMap.createGraphics();
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapHeight; x++) {
-                transform.translate(x * (tileWidth / 4), y * (tileHeight / 4));
-                transform.scale(0.25, 0.25);
+                transform.translate(x * (customTileSize), y * (customTileSize));
 
-                g.drawImage(mapTiles[y][x], transform, null);
-
+                g2d.drawImage(mapTiles[y][x], transform, null);
 
                 transform.setToTranslation(0, 0);
             }
-
         }
+        layerMap = new int[0][0];
+    }
+    public void draw(Graphics2D g) {
+        g.drawImage(this.layerTiledMap, new AffineTransform(), null);
     }
 }
