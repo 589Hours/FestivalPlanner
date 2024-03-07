@@ -10,7 +10,7 @@ public class Camera {
     private Point2D.Double centerPoint;
 
     public Camera() {
-        this.zoom = 1;
+        this.zoom = 0.25;
         this.centerPoint = new Point2D.Double(0, 0);
     }
 
