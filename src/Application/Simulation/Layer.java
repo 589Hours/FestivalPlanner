@@ -50,21 +50,27 @@ public class Layer {
                 }
             }
         }
+        createImage();
     }
 
-    public void draw(Graphics2D g) {
+    public void createImage(){
         AffineTransform transform = new AffineTransform();
+        this.layerTiledMap = new BufferedImage(tileWidth*mapWidth, tileHeight*mapHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = this.layerTiledMap.createGraphics();
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapHeight; x++) {
                 transform.translate(x * (tileWidth / 4), y * (tileHeight / 4));
                 transform.scale(0.25, 0.25);
 
-                g.drawImage(mapTiles[y][x], transform, null);
-
+                g2d.drawImage(mapTiles[y][x], transform, null);
 
                 transform.setToTranslation(0, 0);
             }
-
         }
+    }
+
+    public void draw(Graphics2D g) {
+        g.drawImage(this.layerTiledMap, new AffineTransform(), null);
+
     }
 }
