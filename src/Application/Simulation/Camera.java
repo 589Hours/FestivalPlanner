@@ -39,4 +39,8 @@ public class Camera {
             System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
         }
     }
+
+    public double getZoom(){
+        return this.zoom;
+    }
 }

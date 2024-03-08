@@ -30,7 +30,7 @@ public class Simulation extends Application {
         canvas.setOnScroll(event -> camera.mouseScroll(event));
         canvas.setOnMouseMoved(event -> {
             for (Visitor visitor : visitors) {
-                visitor.setTargetPosition(new Point2D.Double(event.getX(), event.getY()));
+                visitor.setTargetPosition(new Point2D.Double(event.getX() * (1/camera.getZoom()), event.getY() * (1/camera.getZoom())));
             }
         });
 
@@ -59,10 +59,8 @@ public class Simulation extends Application {
     public void init() {
         camera = new Camera();
         map = new Map("/FestivalMap.json");
-        for (int i = 0; i < 20; i++) {
-            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),
-                    new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),
-                    1);
+        for (int i = 0; i < 3; i++) {
+            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
             visitors.add(visitor);
         }
 
