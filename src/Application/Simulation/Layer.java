@@ -40,12 +40,14 @@ public class Layer {
                     // Te hoog getal
                     int num = layerMap[y][x];
                     int realTiled = num & 0xFFFFFFF;
-                    mapTiles[y][x] = tiles.get(realTiled-1);
+//                    mapTiles[y][x] = tiles.get(realTiled-1);
 
                     int flippedBit = num >> 30;
                     boolean horizontallyFlipped = (flippedBit & 0x1) != 0;
                     boolean verticallyFlipped = (flippedBit & 0x2) != 0;
                     boolean diagonallyFlipped = (flippedBit & 0x4) != 0;
+
+                    mapTiles[y][x] = rotate(tiles.get(realTiled-1), 90);
 
                 } else {
                     if (layerMap[y][x] > 0) {
@@ -72,6 +74,32 @@ public class Layer {
             }
         }
         layerMap = new int[0][0];
+    }
+
+    public BufferedImage rotate (BufferedImage image, double angle) {
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = image.getWidth();
+        int h = image.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+        int x = w / 2;
+        int y = h / 2;
+
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, null);
+//        g2d.setColor(Color.RED);
+//        g2d.drawRect(0, 0, newWidth - 1, newHeight - 1);
+        g2d.dispose();
+
+        return rotated;
     }
     public void draw(Graphics2D g) {
         g.drawImage(this.layerTiledMap, new AffineTransform(), null);

@@ -51,7 +51,7 @@ public class Map {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 18; i++) {
             Layer layer = new Layer(root, width, height, i, tiles);
             layers.add(layer);
         };
