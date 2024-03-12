@@ -15,7 +15,7 @@ public class Map {
     private int height;
     private int tileWidth;
     private int tileHeight;
-
+    private boolean nightMode = false;
     private ArrayList<Layer> layers = new ArrayList<>();
     private ArrayList<BufferedImage> tiles = new ArrayList<>();
 
@@ -51,17 +51,46 @@ public class Map {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 18; i++) {
             Layer layer = new Layer(root, width, height, i, tiles);
             layers.add(layer);
         };
+        createEndImage();
+        layers.clear();
+
+        Layer nightLayer = new Layer(root, width, height, 18, tiles);
+        layers.add(nightLayer);
+        Layer nightDecoration = new Layer(root, width, height, 19, tiles);
+        layers.add(nightDecoration);
+        setUpNightImage();
     }
 
 
-    public void draw(Graphics2D g, AffineTransform transform) {
+    private BufferedImage endImage;
+    private BufferedImage nightLayer;
+
+    private void createEndImage() {
+        this.endImage = new BufferedImage(32*width, 32*height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = this.endImage.createGraphics();
         for (Layer layer : layers) {
-            g.setTransform(transform);
             layer.draw(g);
+        }
+    }
+    private void setUpNightImage() {
+        this.nightLayer = new BufferedImage(32*width, 32*height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = this.nightLayer.createGraphics();
+        for (Layer layer : layers) {
+            layer.draw(g);
+        }
+    }
+
+    public void draw(Graphics2D g, AffineTransform transform) {
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        g.drawImage(this.endImage, transform, null);
+        nightMode = true;
+        if (nightMode){
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            g.drawImage(this.nightLayer, transform, null);
         }
     }
 }
