@@ -32,41 +32,43 @@ public class Visitor {
     }
 
     public void update(ArrayList<Visitor> visitors) {
-        if (this.position == this.targetPosition){
+        if (this.position == this.targetPosition) {
             return;
         }
         double newAngle = Math.atan2(targetPosition.getY() - position.getY(), targetPosition.getX() - position.getX());
 
-        double differance = newAngle - angle;
-        if (differance < -Math.PI) {
-            differance += 2 * Math.PI;
+        double difference = angle - newAngle;
+        
+        while (difference > Math.PI) {
+            difference -= 2 * Math.PI;
         }
-        if (differance > Math.PI) {
-            differance -= 2 * Math.PI;
+        while (difference < -Math.PI) {
+            difference += 2 * Math.PI;
         }
 
-        if (Math.abs(differance) < 0.1) {
-            angle = newAngle;
-        } else if (newAngle > 0) {
+        if (difference < -0.1) {
             angle += 0.1;
-        } else {
+        } else if (difference > 0.1) {
             angle -= 0.1;
-        }
+        } else
+            angle = newAngle;
 
         Point2D newPosition = new Point2D.Double(
                 position.getX() + speed * Math.cos(angle),
-                position.getY() + speed * Math.sin(angle));
+                position.getY() + speed * Math.sin(angle)
+        );
 
-        boolean hasCollision = false;
+        boolean collision = false;
+
         for (Visitor visitor : visitors) {
-            if (visitor != this){
-                if (visitor.position.distance(this.position) < 64){
-                    hasCollision = true;
+            if (visitor != this) {
+                if (visitor.position.distance(newPosition) <= 64) {
+                    collision = true;
                 }
             }
         }
 
-        if (!hasCollision) {
+        if (!collision) {
             this.position = newPosition;
         } else {
             this.angle += 0.2;
@@ -75,11 +77,12 @@ public class Visitor {
 
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
-        transform.translate(position.getX() - (this.image.getWidth()/2), position.getY() - (this.image.getHeight()/2));
-        transform.rotate(this.angle);
+
+        transform.translate(position.getX() - image.getWidth() / 2, position.getY() - image.getHeight() / 2);
+        transform.rotate(this.angle, image.getWidth() / 2, image.getHeight() / 2);
 
         graphics2D.setColor(Color.red);
-        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(),this.targetPosition.getY(),10,10));
+        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
         graphics2D.drawImage(this.image, transform, null);
     }
 
