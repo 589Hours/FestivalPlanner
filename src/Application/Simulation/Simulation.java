@@ -9,6 +9,8 @@ import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -28,9 +30,15 @@ public class Simulation extends Application {
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
         canvas.setOnMouseMoved(event -> {
-            for (Visitor visitor : visitors) {
-                visitor.setTargetPosition(new Point2D.Double(event.getX() * (1/camera.getZoom()), event.getY() * (1/camera.getZoom())));
+            try {
+                Point2D mousePos = camera.getWorldPosition(new Point2D.Double(event.getX(), event.getY()));
+                for (Visitor visitor : visitors) {
+                    visitor.setTargetPosition(mousePos);
+                }
+            } catch (NoninvertibleTransformException e) {
+                throw new RuntimeException(e);
             }
+
         });
 
         mainPane.setCenter(canvas);
@@ -50,7 +58,7 @@ public class Simulation extends Application {
         }.start();
 
         stage.setScene(new Scene(mainPane));
-        stage.setTitle("Fading image");
+        stage.setTitle("Festival Planner");
         stage.show();
         draw(g2d);
     }
@@ -71,10 +79,12 @@ public class Simulation extends Application {
     public void draw(Graphics2D g) {
         g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         g.setBackground(Color.black);
-        map.draw(g, camera.getTransform());
+        g.setTransform(camera.getTransform());
+        map.draw(g);
         for (Visitor visitor : visitors) {
             visitor.draw(g);
         }
+        g.setTransform(new AffineTransform());
     }
 
     public void update(double deltaTime) {

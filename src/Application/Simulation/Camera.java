@@ -3,6 +3,7 @@ package Application.Simulation;
 import javafx.scene.input.ScrollEvent;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 public class Camera {
@@ -19,6 +20,11 @@ public class Camera {
         transform.scale(zoom, zoom);
         transform.translate(centerPoint.getX(), centerPoint.getY());
         return transform;
+    }
+
+    public Point2D getWorldPosition(Point2D screenPos) throws NoninvertibleTransformException {
+        AffineTransform tx = getTransform();
+        return tx.inverseTransform(screenPos, null);
     }
 
     public void mouseScroll(ScrollEvent event) {

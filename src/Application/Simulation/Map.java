@@ -51,16 +51,20 @@ public class Map {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0; i < 18; i++) {
-            Layer layer = new Layer(root, width, height, i, tiles);
-            layers.add(layer);
+        for (int i = 0; i < 19; i++) {
+            String type = root.getJsonArray("layers").getJsonObject(i).getString("type");
+            if (type.equals("tilelayer")){
+                Layer layer = new Layer(root, width, height, i, tiles);
+                layers.add(layer);
+            }
+
         };
         createEndImage();
         layers.clear();
 
-        Layer nightLayer = new Layer(root, width, height, 18, tiles);
+        Layer nightLayer = new Layer(root, width, height, 19, tiles);
         layers.add(nightLayer);
-        Layer nightDecoration = new Layer(root, width, height, 19, tiles);
+        Layer nightDecoration = new Layer(root, width, height, 20, tiles);
         layers.add(nightDecoration);
         setUpNightImage();
     }
@@ -84,13 +88,17 @@ public class Map {
         }
     }
 
-    public void draw(Graphics2D g, AffineTransform transform) {
+    public void draw(Graphics2D g) {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-        g.drawImage(this.endImage, transform, null);
+        g.drawImage(this.endImage, new AffineTransform(), null);
         nightMode = true;
         if (nightMode){
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-            g.drawImage(this.nightLayer, transform, null);
+            g.drawImage(this.nightLayer, new AffineTransform(), null);
         }
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
     }
+
+    // CollisionID = 78225
+    // LocatieID = 78224
 }
