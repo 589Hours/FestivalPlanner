@@ -10,7 +10,7 @@ public class Camera {
     private Point2D.Double centerPoint;
 
     public Camera() {
-        this.zoom = 1;
+        this.zoom = 0.25;
         this.centerPoint = new Point2D.Double(0, 0);
     }
 
@@ -37,5 +37,9 @@ public class Camera {
             centerPoint = new Point2D.Double(centerPoint.getX(), centerPoint.getY() + (event.getDeltaY()*1.5));
             System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
         }
+    }
+
+    public double getZoom(){
+        return this.zoom;
     }
 }
