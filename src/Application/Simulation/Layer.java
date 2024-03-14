@@ -32,8 +32,8 @@ public class Layer {
         layerMap = new int[mapHeight][mapWidth];
         mapTiles = new BufferedImage[mapHeight][mapWidth];
 
-        for (int y = 0; y < this.mapHeight-1; y++) {
-            for (int x = 0; x < this.mapWidth-1; x++) {
+        for (int y = 0; y < this.mapHeight; y++) {
+            for (int x = 0; x < this.mapWidth; x++) {
                 layerMap[y][x] = root.getJsonArray("layers").getJsonObject(layerNum).getJsonArray("data").getInt((y * 128) + x);
                 if (layerMap[y][x] > tiles.size()) {
 //                    // Te hoog getal
