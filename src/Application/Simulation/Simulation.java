@@ -19,7 +19,6 @@ public class Simulation extends Application {
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
 
-
     @Override
     public void start(Stage stage) throws Exception {
         BorderPane mainPane = new BorderPane();
@@ -56,13 +55,15 @@ public class Simulation extends Application {
         draw(g2d);
     }
 
-    public void init() {
+    public void init() throws Exception {
         camera = new Camera();
         map = new Map("/FestivalMap.json");
         for (int i = 0; i < 3; i++) {
             Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
             visitors.add(visitor);
         }
+
+        start(new Stage());
 
     }
 
@@ -81,11 +82,5 @@ public class Simulation extends Application {
             visitor.update(visitors);
         }
     }
-
-
-    public static void main(String[] args) {
-        launch(Simulation.class);
-    }
-
 }
 
