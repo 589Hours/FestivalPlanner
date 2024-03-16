@@ -1,5 +1,6 @@
 package Application.Simulation;
 
+import data.FestivalPlan;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,15 +15,16 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class Simulation extends Application {
+public class Simulation {
 
     private Map map;
     private ResizableCanvas canvas;
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
+    private FestivalPlan festivalPlan;
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void start(FestivalPlan festivalPlan) throws Exception {
+        Stage stage = new Stage();
         BorderPane mainPane = new BorderPane();
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
@@ -63,15 +65,16 @@ public class Simulation extends Application {
         draw(g2d);
     }
 
-    public void init() throws Exception {
+    public void init(FestivalPlan festivalPlan) throws Exception {
         camera = new Camera();
-        map = new Map("/FestivalMap.json");
+        this.festivalPlan = festivalPlan;
+        map = new Map("/FestivalMap.json", this);
         for (int i = 0; i < 3; i++) {
             Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
             visitors.add(visitor);
         }
 
-        start(new Stage());
+        start(festivalPlan);
 
     }
 
@@ -91,6 +94,10 @@ public class Simulation extends Application {
         for (Visitor visitor : visitors) {
             visitor.update(visitors);
         }
+    }
+
+    public FestivalPlan getFestivalPlan() {
+        return festivalPlan;
     }
 }
 

@@ -18,11 +18,10 @@ public class Map {
     private boolean nightMode = false;
     private ArrayList<Layer> layers = new ArrayList<>();
     private ArrayList<BufferedImage> tiles = new ArrayList<>();
-
     private ArrayList<BufferedImage> tilesets = new ArrayList<>();
 
 
-    public Map(String fileName) {
+    public Map(String fileName, Simulation simulation) {
         JsonReader reader = null;
         reader = Json.createReader(getClass().getResourceAsStream(fileName));
         JsonObject root = reader.readObject();
@@ -51,21 +50,21 @@ public class Map {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0; i < 19; i++) {
+
+        for (int i = 0; i < 4; i++) {
             String type = root.getJsonArray("layers").getJsonObject(i).getString("type");
             if (type.equals("tilelayer")){
                 Layer layer = new Layer(root, width, height, i, tiles);
                 layers.add(layer);
             }
-
-        };
+        }
         createEndImage();
         layers.clear();
 
         Layer nightLayer = new Layer(root, width, height, 19, tiles);
-        layers.add(nightLayer);
+//        layers.add(nightLayer);
         Layer nightDecoration = new Layer(root, width, height, 20, tiles);
-        layers.add(nightDecoration);
+//        layers.add(nightDecoration);
         setUpNightImage();
     }
 
