@@ -20,6 +20,7 @@ public class Simulation extends Application {
     private ResizableCanvas canvas;
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
+    private PathFinder pathFinder = new PathFinder(new Point2D.Double(0, 0));
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -65,7 +66,7 @@ public class Simulation extends Application {
 
     public void init() throws Exception {
         camera = new Camera();
-        map = new Map("/FestivalMap.json");
+        map = new Map("/FestivalMap.json", this.pathFinder);
         for (int i = 0; i < 3; i++) {
             Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
             visitors.add(visitor);
