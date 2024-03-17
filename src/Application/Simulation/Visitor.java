@@ -62,7 +62,8 @@ public class Visitor {
 
         for (Visitor visitor : visitors) {
             if (visitor != this) {
-                if (visitor.position.distance(newPosition) <= 64) {
+                //32 so the heads can collide (giving the 2.5D effect we want)
+                if (visitor.position.distance(newPosition) <= 32) {
                     collision = true;
                 }
             }
@@ -78,12 +79,15 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - image.getWidth() / 2, position.getY() - image.getHeight() / 2);
+        transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
         transform.rotate(this.angle, image.getWidth() / 2, image.getHeight() / 2);
 
         graphics2D.setColor(Color.red);
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
         graphics2D.drawImage(this.image, transform, null);
+        graphics2D.setColor(Color.green);
+        graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
+        graphics2D.setColor(Color.black);
     }
 
     public void setTargetPosition(Point2D targetPosition) {
