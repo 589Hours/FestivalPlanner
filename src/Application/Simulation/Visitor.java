@@ -82,6 +82,7 @@ public class Visitor {
         transform.rotate(this.angle, image.getWidth() / 2, image.getHeight() / 2);
 
         graphics2D.setColor(Color.red);
+//        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
         graphics2D.drawImage(this.image, transform, null);
     }
