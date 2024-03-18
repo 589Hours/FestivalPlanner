@@ -104,6 +104,5 @@ public class Map {
     }
 
 
-    // CollisionID = 78225
-    // LocatieID = 78224
+
 }
