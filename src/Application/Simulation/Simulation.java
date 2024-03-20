@@ -25,13 +25,13 @@ public class Simulation {
     private int minutes;
     private int counter;
 
-    public void start(FestivalPlan festivalPlan) throws Exception {
+    public void start(FestivalPlan festivalPlan) {
         Stage stage = new Stage();
         BorderPane mainPane = new BorderPane();
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
         canvas.setHeight(1024);
-        hours = 19;
+        hours = 3;
         minutes = 0;
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
@@ -100,7 +100,7 @@ public class Simulation {
         for (Visitor visitor : visitors) {
             visitor.update(visitors);
         }
-        if(counter % 100 == 0) {
+        if(counter % 3 == 0) {
             updateTime();
         }
     }
