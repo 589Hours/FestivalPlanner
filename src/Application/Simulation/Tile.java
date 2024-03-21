@@ -1,11 +1,17 @@
 package Application.Simulation;
 
 public class Tile {
-    private int x;
     private int y;
-    public Tile(int x, int y) {
-        this.x = x;
+    private int x;
+    private String ID;
+    public Tile(int y, int x) {
         this.y = y;
+        this.x = x;
+        this.ID = y+","+x;
+    }
+
+    public String getID() {
+        return ID;
     }
 
     public void setX(int x) {
