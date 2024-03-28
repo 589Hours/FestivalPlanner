@@ -11,34 +11,63 @@ import java.util.ArrayList;
 
 public class Visitor {
 
+    private PathFinder pathFinder;
     private Point2D position;
     private Point2D targetPosition;
     private double angle;
     private double speed;
+    private double currentDistance = Integer.MAX_VALUE;
     private BufferedImage image;
+    private Tile currentTile;
 
-    public Visitor(Point2D position, double speed) {
+    public Visitor(Point2D position, PathFinder pathFinder, Tile spawnTile, double speed) {
         try {
             this.image = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
             this.image = image.getSubimage(0, 0, image.getWidth() / 11, image.getHeight() / 6);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        this.pathFinder = pathFinder;
         this.position = position;
+        this.currentTile = spawnTile;
         this.targetPosition = position;
         this.angle = 0;
         this.speed = speed;
     }
 
     public void update(ArrayList<Visitor> visitors) {
-        if (this.position == this.targetPosition) {
-            return;
-        }
+//        for (Tile tile : pathFinder.path.keySet()) {
+//            int newDistance = pathFinder.path.get(tile);
+//            System.out.println(newDistance);
+//            System.out.println(tile.isNeighbour(tile));
+//            if (newDistance < currentDistance && tile.isNeighbour(tile)) {
+//                currentDistance = newDistance;
+//                this.targetPosition = new Point2D.Double(tile.getPointX(), tile.getPointY());
+//            }
+//        }
+
+//        if (position.getX() <= targetPosition.getX()+1000 ||
+//                position.getX() >= targetPosition.getX()-1000 &&
+//                position.getY() <= targetPosition.getY()+1000 ||
+//                position.getY() >= targetPosition.getY()-1000){
+            for (Tile tile : currentTile.getNeighbours()) {
+                int newDistance = pathFinder.path.get(tile);
+                System.out.println(newDistance);
+                System.out.println(tile.isNeighbour(tile));
+                if (newDistance < currentDistance) {
+                    currentDistance = newDistance;
+                    this.targetPosition = new Point2D.Double(tile.getPointX(), tile.getPointY());
+                    this.currentTile = tile;
+                }
+            }
+//        }
+
         double newAngle = Math.atan2(targetPosition.getY() - position.getY(), targetPosition.getX() - position.getX());
 
         double difference = angle - newAngle;
-        
+
+//        System.out.println(difference);
+
         while (difference > Math.PI) {
             difference -= 2 * Math.PI;
         }
@@ -57,6 +86,8 @@ public class Visitor {
                 position.getX() + speed * Math.cos(angle),
                 position.getY() + speed * Math.sin(angle)
         );
+
+//        System.out.println(newPosition);
 
         boolean collision = false;
 

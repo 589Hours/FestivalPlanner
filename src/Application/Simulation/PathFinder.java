@@ -17,7 +17,9 @@ public class PathFinder {
     private int collisionTileID = 78225;
     private int locationID = 78224;
     private Tile lastTile;
-//    private int distanceValue = 1;
+    private Tile spawnTile;
+
+    //    private int distanceValue = 1;
     public PathFinder(Tile targetTile) {
         this.targetTile = targetTile;
     }
@@ -31,17 +33,23 @@ public class PathFinder {
         todo.add(targetTile);
         path.put(targetTile, 0);
         lastTile = targetTile;
+//        checkedTiles.add("126,64");
         while(!todo.isEmpty()){
             Tile current = todo.poll();
             int x = current.getX();
             int y = current.getY();
-            System.out.println("Current: " + y + "-" + x + "\n");
             if (x == 127 || x == 0 || y == 127 || y == 0) {
                 continue;
             }
+            if (current.getID().equals("126,64")) {
+                path.put(current, Integer.MAX_VALUE);
+                current.addNeighbour(new Tile(127, 64));
+                current.addNeighbour(new Tile(125, 64));
+                current.addNeighbour(new Tile(126, 63));
+                current.addNeighbour(new Tile(126, 65));
+            }
 
             int distanceValue = path.get(lastTile);
-
             //tile rechts
             if (collisionLayer[y+1][x] != collisionTileID){
                 Tile newTile = new Tile(y+1, x);
@@ -49,6 +57,7 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
+                    current.addNeighbour(newTile);
                 }
             }
 
@@ -59,6 +68,7 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
+                    current.addNeighbour(newTile);
                 }
 
             }
@@ -70,6 +80,7 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
+                    current.addNeighbour(newTile);
                 }
 
             }
@@ -81,12 +92,16 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
+                    current.addNeighbour(newTile);
                 }
             }
-
+            
+            if (current.getID().equals("126,64")){
+                System.out.println("here");
+                this.spawnTile = current;
+            }
             lastTile = current;
             checkedTiles.add(current.getID());
-            System.out.println(checkedTiles.size());
             todo.remove(current);
         }
     }
@@ -107,5 +122,8 @@ public class PathFinder {
 
     public int[][] getCollisionLayer() {
         return collisionLayer;
+    }
+    public Tile getSpawnTile(){
+        return this.spawnTile;
     }
 }
