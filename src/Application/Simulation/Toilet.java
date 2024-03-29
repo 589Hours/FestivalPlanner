@@ -20,7 +20,7 @@ public class Toilet {
         this.status = 0;
         this.images = new ArrayList<>();
         try {
-            File file = new File("C:\\Users\\leonb\\OneDrive\\Documents\\GitKrakenCode\\FestivalPlanner\\res\\UsedTiles\\Portable_Toilet.png");
+            File file = new File("res/UsedTiles/Portable_Toilet.png");
             this.tileset = ImageIO.read(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -38,12 +38,11 @@ public class Toilet {
     }
 
     private void createImages() {
-
-        for (int y = 0; y < 960; y += 240) {
-            images.add(tileset.getSubimage(0, y, 100, 240));
-            images.add(tileset.getSubimage(188, y, 100, 240));
+        for (int x = 0; x < 180; x+= 96) {
+            for (int y = 0; y < 960; y += 240) {
+                images.add(tileset.getSubimage(x, y, 100, 240));
+            }
         }
-
     }
 
     public void update(double deltatime) {
@@ -59,22 +58,24 @@ public class Toilet {
         // Openen van de deur
         if (this.status <= 1) {
             graphics.drawImage(images.get(0), (int) this.position.getX(), (int) this.position.getY(), null);
-        } else if (this.status > 1 && this.status <= 2) {
+        } else if (this.status >= 1 && this.status < 2) {
             graphics.drawImage(images.get(1), (int) this.position.getX(), (int) this.position.getY(), null);
-        } else if (this.status > 2 && this.status <= 3) {
+        } else if (this.status >= 2 && this.status < 3) {
             graphics.drawImage(images.get(2), (int) this.position.getX(), (int) this.position.getY(), null);
-        } else if (this.status > 3 && this.status <= 10) {
+        } else if (this.status >= 3 && this.status < 10) {
             graphics.drawImage(images.get(3), (int) this.position.getX(), (int) this.position.getY(), null);
         }
 
         // Sluiten van de deur
-        else if (this.status > 10 && this.status <= 11) {
+        else if (this.status >= 10 && this.status < 11) {
             graphics.drawImage(images.get(4), (int) this.position.getX(), (int) this.position.getY(), null);
-        } else if (this.status > 11 && this.status <= 12) {
+        } else if (this.status >= 11 && this.status < 12) {
             graphics.drawImage(images.get(5), (int) this.position.getX(), (int) this.position.getY(), null);
-        } else if (this.status > 12 && this.status <= 13) {
+        } else if (this.status >= 12 && this.status < 13) {
             graphics.drawImage(images.get(6), (int) this.position.getX(), (int) this.position.getY(), null);
-        } else if (this.status > 13 && this.status <= 15) {
+        } else if (this.status >= 13 && this.status < 14) {
+            graphics.drawImage(images.get(7), (int) this.position.getX(), (int) this.position.getY(), null);
+        } else {
             graphics.drawImage(images.get(7), (int) this.position.getX(), (int) this.position.getY(), null);
         }
     }
