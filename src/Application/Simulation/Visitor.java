@@ -14,7 +14,6 @@ public class Visitor {
     private PathFinder pathFinder;
     private Point2D position;
     private Point2D targetPosition;
-    private double angle;
     private double speed;
     private double currentDistance = Integer.MAX_VALUE;
     private BufferedImage image;
@@ -29,10 +28,10 @@ public class Visitor {
         }
         this.pathFinder = pathFinder;
         this.position = position;
-        this.currentTile = spawnTile;
+        this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
         this.targetPosition = position;
-        this.angle = 0;
         this.speed = speed;
+
     }
 
     public void update(ArrayList<Visitor> visitors) {
@@ -50,44 +49,56 @@ public class Visitor {
 //                position.getX() >= targetPosition.getX()-1000 &&
 //                position.getY() <= targetPosition.getY()+1000 ||
 //                position.getY() >= targetPosition.getY()-1000){
+//        System.out.println(currentTile.getX() + "," + currentTile.getY());
+//        System.out.println(currentTile.getNeighbours());
+
             for (Tile tile : currentTile.getNeighbours()) {
+                System.out.println("deze sout is om te checken hoevaak edeze in doe fraol lokp komt");
+                if (pathFinder.path.get(tile) == null) {
+                    System.out.println("is null");
+                    continue;
+                }
+
                 int newDistance = pathFinder.path.get(tile);
-                System.out.println(newDistance);
-                System.out.println(tile.isNeighbour(tile));
+//                System.out.println(newDistance);
+//                System.out.println(this.currentTile.isNeighbour(tile));
+                System.out.println("newDistance: " + newDistance);
+                System.out.println("Currentdistance: " + currentDistance);
                 if (newDistance < currentDistance) {
+                    System.out.println("NewDistance is smaller!");
+                    System.out.println(tile.getNeighbours());
                     currentDistance = newDistance;
-                    this.targetPosition = new Point2D.Double(tile.getPointX(), tile.getPointY());
+
+                    double x = tile.getPointX();
+                    double y = tile.getPointY();
+
+                    this.targetPosition = new Point2D.Double(x, y);
                     this.currentTile = tile;
+
+                    //break when a closer tile is found
+                    break;
                 }
             }
 //        }
 
-        double newAngle = Math.atan2(targetPosition.getY() - position.getY(), targetPosition.getX() - position.getX());
-
-        double difference = angle - newAngle;
-
-//        System.out.println(difference);
-
-        while (difference > Math.PI) {
-            difference -= 2 * Math.PI;
-        }
-        while (difference < -Math.PI) {
-            difference += 2 * Math.PI;
+        double speedX;
+        if (position.getX() - targetPosition.getX() < 0){
+            speedX = speed;
+        } else {
+            speedX = -speed;
         }
 
-        if (difference < -0.1) {
-            angle += 0.1;
-        } else if (difference > 0.1) {
-            angle -= 0.1;
-        } else
-            angle = newAngle;
+        double speedY;
+        if (position.getY() - targetPosition.getY() < 0){
+            speedY = speed;
+        } else{
+            speedY = -speed;
+        }
 
         Point2D newPosition = new Point2D.Double(
-                position.getX() + speed * Math.cos(angle),
-                position.getY() + speed * Math.sin(angle)
+                position.getX() + speedX,
+                position.getY() + speedY
         );
-
-//        System.out.println(newPosition);
 
         boolean collision = false;
 
@@ -102,8 +113,6 @@ public class Visitor {
 
         if (!collision) {
             this.position = newPosition;
-        } else {
-            this.angle += 0.2;
         }
     }
 
@@ -111,7 +120,6 @@ public class Visitor {
         AffineTransform transform = new AffineTransform();
 
         transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
-        transform.rotate(this.angle, image.getWidth() / 2, image.getHeight() / 2);
 
         graphics2D.setColor(Color.red);
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));

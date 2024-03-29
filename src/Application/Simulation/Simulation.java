@@ -94,7 +94,7 @@ public class Simulation extends Application {
 //        }
 
         alphaPathFinder.calculateDistanceMap();
-        spawnTile = alphaPathFinder.getSpawnTile();
+//        spawnTile = alphaPathFinder.getSpawnTile();
 //        betaPathFinder.calculateDistanceMap();
 //        charliePathFinder.calculateDistanceMap();
 //        deltaPathFinder.calculateDistanceMap();

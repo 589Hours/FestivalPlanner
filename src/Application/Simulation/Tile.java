@@ -53,4 +53,17 @@ public class Tile {
     public ArrayList<Tile> getNeighbours() {
         return neighbours;
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "y=" + y +
+                ", x=" + x +
+                ", ID='" + ID + '\'' +
+                '}';
+    }
+
+    public void printNeighbours() {
+        System.out.println(neighbours);
+    }
 }
