@@ -9,6 +9,8 @@ import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -18,7 +20,8 @@ public class Simulation extends Application {
     private ResizableCanvas canvas;
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
-
+    private PathFinder pathFinder = new PathFinder(new Tile(50, 10));
+    private ArrayList<Toilet> toilets = new ArrayList<>();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -29,9 +32,15 @@ public class Simulation extends Application {
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
         canvas.setOnMouseMoved(event -> {
-            for (Visitor visitor : visitors) {
-                visitor.setTargetPosition(new Point2D.Double(event.getX() * (1/camera.getZoom()), event.getY() * (1/camera.getZoom())));
+            try {
+                Point2D mousePos = camera.getWorldPosition(new Point2D.Double(event.getX(), event.getY()));
+                for (Visitor visitor : visitors) {
+                    visitor.setTargetPosition(mousePos);
+                }
+            } catch (NoninvertibleTransformException e) {
+                throw new RuntimeException(e);
             }
+
         });
 
         mainPane.setCenter(canvas);
@@ -51,18 +60,26 @@ public class Simulation extends Application {
         }.start();
 
         stage.setScene(new Scene(mainPane));
-        stage.setTitle("Fading image");
+        stage.setTitle("Festival Planner");
         stage.show();
         draw(g2d);
     }
 
-    public void init() {
+    public void init() throws Exception {
         camera = new Camera();
-        map = new Map("/FestivalMap.json");
-        for (int i = 0; i < 3; i++) {
-            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
-            visitors.add(visitor);
+        map = new Map("/FestivalMap.json", this.pathFinder);
+        for (int i = 0; i < 9; i++) {
+            this.toilets.add(new Toilet(new Point2D.Double(282 + (i*99 - (i*4)),4312)));
         }
+
+
+//        for (int i = 0; i < 3; i++) {
+//            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
+//            visitors.add(visitor);
+//        }
+
+        pathFinder.calculateDistanceMap();
+        start(new Stage());
 
     }
 
@@ -70,22 +87,26 @@ public class Simulation extends Application {
     public void draw(Graphics2D g) {
         g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         g.setBackground(Color.black);
-        map.draw(g, camera.getTransform());
+        g.setTransform(camera.getTransform());
+        map.draw(g);
+        for (Toilet toilet : toilets) {
+            toilet.draw(g);
+        }
         for (Visitor visitor : visitors) {
             visitor.draw(g);
         }
+
+        pathFinder.draw(g);
+        g.setTransform(new AffineTransform());
     }
 
     public void update(double deltaTime) {
+        for (Toilet toilet : toilets) {
+            toilet.update(deltaTime);
+        }
         for (Visitor visitor : visitors) {
             visitor.update(visitors);
         }
     }
-
-
-    public static void main(String[] args) {
-        launch(Simulation.class);
-    }
-
 }
 

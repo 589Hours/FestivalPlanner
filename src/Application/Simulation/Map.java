@@ -15,14 +15,14 @@ public class Map {
     private int height;
     private int tileWidth;
     private int tileHeight;
-
+    private boolean nightMode = false;
     private ArrayList<Layer> layers = new ArrayList<>();
     private ArrayList<BufferedImage> tiles = new ArrayList<>();
 
     private ArrayList<BufferedImage> tilesets = new ArrayList<>();
 
 
-    public Map(String fileName) {
+    public Map(String fileName, PathFinder pathFinder) {
         JsonReader reader = null;
         reader = Json.createReader(getClass().getResourceAsStream(fileName));
         JsonObject root = reader.readObject();
@@ -51,17 +51,58 @@ public class Map {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (int i = 0; i < 18; i++) {
-            Layer layer = new Layer(root, width, height, i, tiles);
-            layers.add(layer);
+        for (int i = 0; i < 19; i++) {
+            String type = root.getJsonArray("layers").getJsonObject(i).getString("type");
+            String layerName = root.getJsonArray("layers").getJsonObject(i).getString("name");
+            if (type.equals("tilelayer")){
+                Layer layer = new Layer(root, width, height, i, tiles);
+                if (layerName.equals("Collision")){
+                    pathFinder.setCollisionLayer(layer.getCollisionLayer());
+                }
+                layers.add(layer);
+            }
+
         };
+        createEndImage();
+        layers.clear();
+
+        Layer nightLayer = new Layer(root, width, height, 19, tiles);
+        layers.add(nightLayer);
+        Layer nightDecoration = new Layer(root, width, height, 20, tiles);
+        layers.add(nightDecoration);
+        setUpNightImage();
     }
 
 
-    public void draw(Graphics2D g, AffineTransform transform) {
+    private BufferedImage endImage;
+    private BufferedImage nightLayer;
+
+    private void createEndImage() {
+        this.endImage = new BufferedImage(32*width, 32*height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = this.endImage.createGraphics();
         for (Layer layer : layers) {
-            g.setTransform(transform);
             layer.draw(g);
         }
     }
+    private void setUpNightImage() {
+        this.nightLayer = new BufferedImage(32*width, 32*height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = this.nightLayer.createGraphics();
+        for (Layer layer : layers) {
+            layer.draw(g);
+        }
+    }
+
+    public void draw(Graphics2D g) {
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        g.drawImage(this.endImage, new AffineTransform(), null);
+        nightMode = true;
+        if (nightMode){
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            g.drawImage(this.nightLayer, new AffineTransform(), null);
+        }
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+    }
+
+
+
 }

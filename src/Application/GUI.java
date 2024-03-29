@@ -8,6 +8,7 @@ import Application.Delete.DeletePerformance;
 import Application.Delete.DeleteStage;
 import Application.Edit.EditArtist;
 import Application.Edit.EditStage;
+import Application.Simulation.Simulation;
 import data.Artist;
 import data.Performance;
 import data.FestivalPlan;
@@ -37,12 +38,15 @@ public class GUI extends Application {
     private ResizableCanvas canvas;
     private String saveFilePath;
     FestivalBlockview festivalBlockview = new FestivalBlockview();
+    boolean started;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
         BorderPane buttonPlacement = new BorderPane();
         canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
+        started = false;
 
         festivalPlan = new FestivalPlan();
         saveFilePath = "Saves/SaveFile.ser";
@@ -191,6 +195,19 @@ public class GUI extends Application {
         });
 
         borderPane.setTop(menuBar);
+
+        Button simulationButton = new Button("Start simulation");
+        borderPane.setBottom(simulationButton);
+
+        simulationButton.setOnAction(event ->  {
+            try {
+                new Simulation().init();
+                started = true;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
 
         borderPane.setPrefSize(1700, 800);
         Scene scene = new Scene(borderPane);

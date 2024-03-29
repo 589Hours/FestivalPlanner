@@ -3,6 +3,7 @@ package Application.Simulation;
 import javafx.scene.input.ScrollEvent;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 public class Camera {
@@ -16,10 +17,14 @@ public class Camera {
 
     public AffineTransform getTransform() {
         AffineTransform transform = new AffineTransform();
-        transform.translate(centerPoint.getX(), centerPoint.getY());
         transform.scale(zoom, zoom);
-
+        transform.translate(centerPoint.getX(), centerPoint.getY());
         return transform;
+    }
+
+    public Point2D getWorldPosition(Point2D screenPos) throws NoninvertibleTransformException {
+        AffineTransform tx = getTransform();
+        return tx.inverseTransform(screenPos, null);
     }
 
     public void mouseScroll(ScrollEvent event) {
@@ -30,12 +35,12 @@ public class Camera {
         } else if (event.isShiftDown()) {
             // X aanpassen
             System.out.println("X");
-            centerPoint = new Point2D.Double(centerPoint.getX() + (event.getDeltaX() / 4), centerPoint.getY());
+            centerPoint = new Point2D.Double(centerPoint.getX() + (event.getDeltaX()*1.5), centerPoint.getY());
             System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
         } else {
             // Y aanpassen
             System.out.println("Y");
-            centerPoint = new Point2D.Double(centerPoint.getX(), centerPoint.getY() + (event.getDeltaY() / 4));
+            centerPoint = new Point2D.Double(centerPoint.getX(), centerPoint.getY() + (event.getDeltaY()*1.5));
             System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
         }
     }
