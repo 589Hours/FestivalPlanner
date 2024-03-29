@@ -73,10 +73,10 @@ public class Simulation extends Application {
         }
 
 
-//        for (int i = 0; i < 3; i++) {
-//            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
-//            visitors.add(visitor);
-//        }
+        for (int i = 0; i < 1; i++) {
+            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
+            visitors.add(visitor);
+        }
 
         pathFinder.calculateDistanceMap();
         start(new Stage());
@@ -105,7 +105,7 @@ public class Simulation extends Application {
             toilet.update(deltaTime);
         }
         for (Visitor visitor : visitors) {
-            visitor.update(visitors);
+            visitor.update(visitors, deltaTime);
         }
     }
 }

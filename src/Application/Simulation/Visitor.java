@@ -3,7 +3,6 @@ package Application.Simulation;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,30 +14,46 @@ public class Visitor {
     private Point2D targetPosition;
     private double angle;
     private double speed;
-    private BufferedImage image;
+    private BufferedImage spriteSheet;
+    private ArrayList<BufferedImage> characterDown = new ArrayList<>();
+    private ArrayList<BufferedImage> characterLeft = new ArrayList<>();
+    private ArrayList<BufferedImage> characterRight = new ArrayList<>();
+    private ArrayList<BufferedImage> characterUp = new ArrayList<>();
+    private int imageWidth;
+    private int imageHeight;
 
     public Visitor(Point2D position, double speed) {
         try {
-            this.image = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
-            this.image = image.getSubimage(0, 0, image.getWidth() / 11, image.getHeight() / 6);
+            this.spriteSheet = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         this.position = position;
         this.targetPosition = position;
         this.angle = 0;
         this.speed = speed;
+        this.imageWidth = 50;
+        this.imageHeight = 100;
+        CreateImages();
     }
 
-    public void update(ArrayList<Visitor> visitors) {
+    private void CreateImages() {
+        for (int x = 0; x < 3; x++) {
+            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
+            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
+        }
+    }
+
+    public void update(ArrayList<Visitor> visitors, double deltatime) {
         if (this.position == this.targetPosition) {
             return;
         }
         double newAngle = Math.atan2(targetPosition.getY() - position.getY(), targetPosition.getX() - position.getX());
 
         double difference = angle - newAngle;
-        
+
         while (difference > Math.PI) {
             difference -= 2 * Math.PI;
         }
@@ -79,15 +94,19 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
-        transform.rotate(this.angle, image.getWidth() / 2, image.getHeight() / 2);
+        transform.translate(position.getX() - spriteSheet.getWidth() / 2, position.getY() - spriteSheet.getHeight() / 1.5);
+        transform.rotate(this.angle, this.imageWidth / 2, this.imageHeight / 2);
+        
+        if (this.angle == -Math.PI/2){
+            graphics2D.drawImage(this.characterDown.get(0), transform, null);
+        } else if (this.angle == Math.PI/2){
+            graphics2D.drawImage(this.characterUp.get(0), transform, null);
+        } else if (this.angle > -Math.PI/2 && this.angle < Math.PI/2){
+            graphics2D.drawImage(this.characterRight.get(0), transform, null);
+        } else {
+            graphics2D.drawImage(this.characterLeft.get(0), transform, null);
+        }
 
-        graphics2D.setColor(Color.red);
-        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
-        graphics2D.drawImage(this.image, transform, null);
-        graphics2D.setColor(Color.green);
-        graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
-        graphics2D.setColor(Color.black);
     }
 
     public void setTargetPosition(Point2D targetPosition) {
