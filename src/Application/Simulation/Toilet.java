@@ -2,6 +2,7 @@ package Application.Simulation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -56,6 +57,8 @@ public class Toilet {
 
     public void draw(Graphics2D graphics) {
         // Openen van de deur
+        AffineTransform original = graphics.getTransform();
+        graphics.scale(0.675, 0.675);
         if (this.status <= 1) {
             graphics.drawImage(images.get(0), (int) this.position.getX(), (int) this.position.getY(), null);
         } else if (this.status >= 1 && this.status < 2) {
@@ -78,5 +81,6 @@ public class Toilet {
         } else {
             graphics.drawImage(images.get(7), (int) this.position.getX(), (int) this.position.getY(), null);
         }
+        graphics.setTransform(original);
     }
 }
