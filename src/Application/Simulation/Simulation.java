@@ -21,7 +21,7 @@ public class Simulation extends Application {
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
     private PathFinder pathFinder = new PathFinder(new Tile(50, 10));
-    private Toilet toilet;
+    private ArrayList<Toilet> toilets = new ArrayList<>();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -68,7 +68,11 @@ public class Simulation extends Application {
     public void init() throws Exception {
         camera = new Camera();
         map = new Map("/FestivalMap.json", this.pathFinder);
-        this.toilet = new Toilet(new Point2D.Double(282,4312));
+        for (int i = 0; i < 9; i++) {
+            this.toilets.add(new Toilet(new Point2D.Double(282 + (i*99 - (i*4)),4312)));
+        }
+
+
 //        for (int i = 0; i < 3; i++) {
 //            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
 //            visitors.add(visitor);
@@ -85,7 +89,9 @@ public class Simulation extends Application {
         g.setBackground(Color.black);
         g.setTransform(camera.getTransform());
         map.draw(g);
-        this.toilet.draw(g);
+        for (Toilet toilet : toilets) {
+            toilet.draw(g);
+        }
         for (Visitor visitor : visitors) {
             visitor.draw(g);
         }
@@ -95,7 +101,9 @@ public class Simulation extends Application {
     }
 
     public void update(double deltaTime) {
-        this.toilet.update(deltaTime);
+        for (Toilet toilet : toilets) {
+            toilet.update(deltaTime);
+        }
         for (Visitor visitor : visitors) {
             visitor.update(visitors);
         }
