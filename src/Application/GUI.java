@@ -58,9 +58,10 @@ public class GUI extends Application {
 
         MenuBar menuBar = new MenuBar();
         Menu viewMenu = new Menu("View");
+        MenuItem viewBegin = new MenuItem("BeginView");
         MenuItem viewTable = new MenuItem("Tableview");
         MenuItem viewBlock = new MenuItem("Blockview");
-        viewMenu.getItems().addAll(viewTable, viewBlock);
+        viewMenu.getItems().addAll(viewBegin, viewTable, viewBlock);
 
         Menu createMenu = new Menu("Create");
         MenuItem createPodium = new MenuItem("Podium");
@@ -87,6 +88,10 @@ public class GUI extends Application {
 
         menuBar.getMenus().addAll(viewMenu, createMenu, editMenu, deleteMenu, saveAndLoadMenu);
 
+        viewBegin.setOnAction(event -> {
+            beginScreen.draw(beginScreen.getFxGraphics2D());
+            borderPane.setCenter(canvas);
+        });
         viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
@@ -95,6 +100,8 @@ public class GUI extends Application {
             festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
             borderPane.setCenter(canvasBlockView);
         });
+
+
         createArtist.setOnAction(event -> {
             new ArtistAdd(festivalPlan);
         });
