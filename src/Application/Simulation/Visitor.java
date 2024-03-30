@@ -53,12 +53,13 @@ public class Visitor {
 //        System.out.println(currentTile.getNeighbours());
 
             for (Tile tile : currentTile.getNeighbours()) {
-                System.out.println("deze sout is om te checken hoevaak edeze in doe fraol lokp komt");
-                if (pathFinder.path.get(tile) == null) {
-                    System.out.println("is null");
-                    continue;
-                }
 
+//                if (pathFinder.path.get(tile) == null) {
+//                    System.out.println("is null");
+//                    continue;
+//                }
+                System.out.println(tile);
+                System.out.println(pathFinder.getDistanceValue(tile));
                 int newDistance = pathFinder.path.get(tile);
 //                System.out.println(newDistance);
 //                System.out.println(this.currentTile.isNeighbour(tile));
@@ -73,7 +74,7 @@ public class Visitor {
                     double y = tile.getPointY();
 
                     this.targetPosition = new Point2D.Double(x, y);
-                    this.currentTile = tile;
+                    this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x/32, y/32));
 
                     //break when a closer tile is found
                     break;

@@ -33,6 +33,7 @@ public class PathFinder {
         todo.add(targetTile);
         path.put(targetTile, 0);
         lastTile = targetTile;
+
 //        checkedTiles.add("126,64");
         while(!todo.isEmpty()){
             Tile current = todo.poll();
@@ -160,10 +161,19 @@ public class PathFinder {
     public Tile getTileFromPosition(Point2D point) {
         for (Tile tile : path.keySet()) {
             if (tile.getX() ==point.getX() && tile.getY() == point.getY()) {
-                System.out.println("getTileFromPos");
+                System.out.println("getTileFromPos: " + tile );
                 return tile;
             }
         }
         return null;
+    }
+
+    public int getDistanceValue(Tile tile) {
+        return path.get(tile);
+    }
+    public void printNeighboursforTile(Tile thisTile) {
+        for (Tile tile : thisTile.getNeighbours()) {
+            System.out.println("Tile: "+ thisTile + " has neighbour " + tile);
+        }
     }
 }
