@@ -1,8 +1,6 @@
 package Application.Simulation;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,13 +16,45 @@ public class PathFinder {
     private int locationID = 78224;
     private Tile lastTile;
     private Tile spawnTile;
+    private Graph graph;
 
     //    private int distanceValue = 1;
-    public PathFinder(Tile targetTile) {
-        this.targetTile = targetTile;
+    public PathFinder(Tile targetTile, Graph graph) {
+//        this.targetTile = targetTile;
+        this.graph = graph;
     }
     // CollisionID = 78225
     // LocatieID = 78224
+
+
+    public void calculateDistanceMapWithGraph(){
+        Queue<Tile> todo = new LinkedList();
+        ArrayList<Tile> checkedTiles = new ArrayList<>();
+        this.targetTile = graph.getNodes()[126][64];
+
+        todo.add(targetTile);
+        path.put(targetTile, 0);
+        lastTile = targetTile;
+
+        while(!todo.isEmpty()){
+            Tile current = todo.poll();
+
+            int distanceValue = path.get(lastTile);
+            for (Tile neighbor : current.getNeighbours()) {
+                if (collisionLayer[neighbor.getY()][neighbor.getX()] != collisionTileID){
+                    if(!checkedTiles.contains(neighbor)) {
+                        todo.add(neighbor);
+                        path.put(neighbor, distanceValue+1);
+                    }
+                }
+            }
+
+            lastTile = current;
+            checkedTiles.add(current);
+            todo.remove(current);
+        }
+    }
+
 
     public void calculateDistanceMap(){
         Queue<Tile> todo = new LinkedList();
@@ -44,30 +74,9 @@ public class PathFinder {
             if (x == 127 || x == 0 || y == 127 || y == 0) {
                 continue;
             }
-//            current.addNeighbour(lastTile);
-//
-//            if (current.getID().equals("64,126")) {
-//                path.put(current, Integer.MAX_VALUE);
-//                Tile topNeighbour = new Tile(127, 64);
-//                Tile bottomNeighbour = new Tile(125, 64);
-//                Tile leftNeighbour = new Tile(126, 63);
-//                Tile rightNeighbour = new Tile(126, 65);
-//                current.addNeighbour(topNeighbour);
-//                current.addNeighbour(bottomNeighbour);
-//                current.addNeighbour(leftNeighbour);
-//                current.addNeighbour(rightNeighbour);
-//                path.put(topNeighbour, Integer.MAX_VALUE-1);
-//                path.put(bottomNeighbour, Integer.MAX_VALUE-1);
-//                path.put(leftNeighbour, Integer.MAX_VALUE-1);
-//                path.put(rightNeighbour, Integer.MAX_VALUE-1);
-//                checkedTiles.add(current.getID());
-//                checkedTiles.add(topNeighbour.getID());
-//                checkedTiles.add(bottomNeighbour.getID());
-//                checkedTiles.add(leftNeighbour.getID());
-//                checkedTiles.add(rightNeighbour.getID());
-//            }
 
             int distanceValue = path.get(lastTile);
+            System.out.println(distanceValue);
 
             //tile rechts
             if (collisionLayer[y+1][x] != collisionTileID){
@@ -76,12 +85,10 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
+                    current.addNeighbour(newTile);
+                } else if (current.getY()+1 == lastTile.getY()){
+                    current.addNeighbour(lastTile);
                 }
-
-                if (y+1 != 127){
-                   current.addNeighbour(newTile);
-                }
-
             }
 
             //tile links
@@ -91,10 +98,11 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
-                }
-                if (y-1 != 0){
                     current.addNeighbour(newTile);
+                } else if (current.getY()-1 == lastTile.getY()){
+                    current.addNeighbour(lastTile);
                 }
+
             }
 
             //tile boven
@@ -104,10 +112,12 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
-                }
-                if (x+1 != 127){
                     current.addNeighbour(newTile);
+                } else if (current.getY()+1 == lastTile.getY() ||
+                        current.getY()-1 == lastTile.getY()){
+                    current.addNeighbour(lastTile);
                 }
+
             }
 
             //tile onder
@@ -117,9 +127,10 @@ public class PathFinder {
                     todo.add(newTile);
                     checkedTiles.add(newTile.getID());
                     path.put(newTile, distanceValue+1);
-                }
-                if (x-1 != 0){
                     current.addNeighbour(newTile);
+                } else if (current.getY()+1 == lastTile.getY() ||
+                        current.getY()-1 == lastTile.getY()){
+                    current.addNeighbour(lastTile);
                 }
             }
             
@@ -159,13 +170,7 @@ public class PathFinder {
     }
 
     public Tile getTileFromPosition(Point2D point) {
-        for (Tile tile : path.keySet()) {
-            if (tile.getX() ==point.getX() && tile.getY() == point.getY()) {
-                System.out.println("getTileFromPos: " + tile );
-                return tile;
-            }
-        }
-        return null;
+        return graph.getNodes()[(int) point.getY()][(int) point.getX()];
     }
 
     public int getDistanceValue(Tile tile) {

@@ -79,12 +79,13 @@ public class Simulation extends Application {
     }
 
     public void init() throws Exception {
-        alphaPathFinder = new PathFinder(alphaStage);
-        alphaPathFinder.path.put(spawnTile, Integer.MAX_VALUE);
-        betaPathFinder = new PathFinder(betaStage);
-        charliePathFinder = new PathFinder(charlieStage);
-        deltaPathFinder = new PathFinder(deltaStage);
-        echoPathFinder = new PathFinder(echoStage);
+        Graph graph = new Graph();
+        alphaPathFinder = new PathFinder(alphaStage, graph);
+//        alphaPathFinder.path.put(spawnTile, Integer.MAX_VALUE);
+//        betaPathFinder = new PathFinder(betaStage);
+//        charliePathFinder = new PathFinder(charlieStage);
+//        deltaPathFinder = new PathFinder(deltaStage);
+//        echoPathFinder = new PathFinder(echoStage);
 
         camera = new Camera();
         map = new Map("/FestivalMap.json", this.alphaPathFinder);
@@ -93,7 +94,7 @@ public class Simulation extends Application {
 //
 //        }
 
-        alphaPathFinder.calculateDistanceMap();
+        alphaPathFinder.calculateDistanceMapWithGraph();
 //        spawnTile = alphaPathFinder.getSpawnTile();
 //        betaPathFinder.calculateDistanceMap();
 //        charliePathFinder.calculateDistanceMap();

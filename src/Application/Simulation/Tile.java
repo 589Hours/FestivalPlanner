@@ -5,12 +5,14 @@ import java.util.ArrayList;
 public class Tile {
     private int y;
     private int x;
+    private int distanceValue;
     private String ID;
     private ArrayList<Tile> neighbours;
     public Tile(int y, int x) {
         this.y = y;
         this.x = x;
         this.ID = y+","+x;
+//        this.distanceValue = -1;
         this.neighbours = new ArrayList<>();
     }
 
@@ -44,6 +46,13 @@ public class Tile {
 
     public void addNeighbour(Tile tile) {
         neighbours.add(tile);
+    }
+    public void setDistanceValue(int distanceValue) {
+        this.distanceValue = distanceValue;
+    }
+
+    public int getDistanceValue() {
+        return distanceValue;
     }
 
     public boolean isNeighbour(Tile tile) {

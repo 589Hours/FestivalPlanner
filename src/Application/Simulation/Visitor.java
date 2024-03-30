@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Visitor {
 
@@ -31,7 +32,6 @@ public class Visitor {
         this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
         this.targetPosition = position;
         this.speed = speed;
-
     }
 
     public void update(ArrayList<Visitor> visitors) {
@@ -59,12 +59,11 @@ public class Visitor {
 //                    continue;
 //                }
                 System.out.println(tile);
-                System.out.println(pathFinder.getDistanceValue(tile));
-                int newDistance = pathFinder.path.get(tile);
-//                System.out.println(newDistance);
-//                System.out.println(this.currentTile.isNeighbour(tile));
+                int newDistance = this.pathFinder.path.get(tile);
+
                 System.out.println("newDistance: " + newDistance);
                 System.out.println("Currentdistance: " + currentDistance);
+
                 if (newDistance < currentDistance) {
                     System.out.println("NewDistance is smaller!");
                     System.out.println(tile.getNeighbours());
