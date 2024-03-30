@@ -21,6 +21,8 @@ public class Simulation extends Application {
     private ResizableCanvas canvas;
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
+    private PathFinder pathFinder = new PathFinder(new Tile(50, 10));
+    private ArrayList<Toilet> toilets = new ArrayList<>();
     private int timer;
 
     private Tile alphaStage = new Tile(65, 19);
@@ -87,10 +89,15 @@ public class Simulation extends Application {
         echoPathFinder = new PathFinder(echoStage);
 
         camera = new Camera();
-        map = new Map("/FestivalMap.json", this.alphaPathFinder);
+        map = new Map("/FestivalMap.json", this.pathFinder);
+        for (int i = 0; i < 9; i++) {
+            this.toilets.add(new Toilet(new Point2D.Double(282 + (i*99 - (i*4)),4312)));
+        }
 
-//        for (int i = 0; i < 1; i++) {
-//
+
+//        for (int i = 0; i < 3; i++) {
+//            Visitor visitor = new Visitor(new Point2D.Double(Math.random()*(128*8), Math.random()*(128*8)),1);
+//            visitors.add(visitor);
 //        }
 
         alphaPathFinder.calculateDistanceMap();
@@ -110,6 +117,9 @@ public class Simulation extends Application {
         g.setBackground(Color.black);
         g.setTransform(camera.getTransform());
         map.draw(g);
+        for (Toilet toilet : toilets) {
+            toilet.draw(g);
+        }
         for (Visitor visitor : visitors) {
             visitor.draw(g);
         }
@@ -119,6 +129,9 @@ public class Simulation extends Application {
     }
 
     public void update(double deltaTime) {
+        for (Toilet toilet : toilets) {
+            toilet.update(deltaTime);
+        }
         if (timer % 144 == 0) {
             if (visitors.size() < 1) {
                 Visitor visitor = new Visitor(
