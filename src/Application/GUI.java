@@ -197,6 +197,27 @@ public class GUI extends Application {
                 }
             }
         });
+        canvas.setOnMousePressed(event -> {
+            if (borderPane.getCenter() == canvas){
+                Point2D point2D = new Point2D.Double(event.getX(), event.getY());
+                if (beginScreen.checkClicked(point2D) != null) {
+                    if (beginScreen.checkClicked(point2D).equals("TableView")){
+                        FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
+                        borderPane.setCenter(festivalTableview);
+                    } else if (beginScreen.checkClicked(point2D).equals("BlockView")){
+                        festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
+                        borderPane.setCenter(canvasBlockView);
+                    } else if (beginScreen.checkClicked(point2D).equals("StartSimulation")){
+                        try {
+                            new Simulation().init();
+                            started = true;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        });
 
         borderPane.setTop(menuBar);
 

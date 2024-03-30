@@ -1,10 +1,14 @@
 package Application;
 
+import data.Performance;
 import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -50,5 +54,16 @@ public class BeginScreen extends Canvas {
 
     public FXGraphics2D getFxGraphics2D() {
         return fxGraphics2D;
+    }
+
+    public String checkClicked(Point2D point2D) {
+        if (point2D.getX() > 560 && point2D.getX() < 1060 && point2D.getY() > 222 && point2D.getY() < 322){
+            return "TableView";
+        } else if (point2D.getX() > 560 && point2D.getX() < 1060 && point2D.getY() > 370 && point2D.getY() < 470){
+            return "BlockView";
+        } else if (point2D.getX() > 467 && point2D.getX() < 1167 && point2D.getY() > 520 && point2D.getY() < 620){
+            return "StartSimulation";
+        }
+        return null;
     }
 }
