@@ -40,11 +40,14 @@ public class PathFinder {
             Tile current = todo.poll();
 
             int distanceValue = path.get(lastTile);
+
             for (Tile neighbor : current.getNeighbours()) {
                 if (collisionLayer[neighbor.getY()][neighbor.getX()] != collisionTileID){
+                    if (!path.containsKey(neighbor)){
+                        path.put(neighbor, distanceValue+1);
+                    }
                     if(!checkedTiles.contains(neighbor)) {
                         todo.add(neighbor);
-                        path.put(neighbor, distanceValue+1);
                     }
                 }
             }
@@ -162,9 +165,6 @@ public class PathFinder {
         this.collisionLayer = collisionLayer;
     }
 
-    public int[][] getCollisionLayer() {
-        return collisionLayer;
-    }
     public Tile getSpawnTile(){
         return this.spawnTile;
     }
@@ -173,9 +173,6 @@ public class PathFinder {
         return graph.getNodes()[(int) point.getY()][(int) point.getX()];
     }
 
-    public int getDistanceValue(Tile tile) {
-        return path.get(tile);
-    }
     public void printNeighboursforTile(Tile thisTile) {
         for (Tile tile : thisTile.getNeighbours()) {
             System.out.println("Tile: "+ thisTile + " has neighbour " + tile);

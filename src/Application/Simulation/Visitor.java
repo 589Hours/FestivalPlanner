@@ -59,6 +59,10 @@ public class Visitor {
 //                    continue;
 //                }
                 System.out.println(tile);
+
+                if (this.pathFinder.path.get(tile) == null)
+                    continue;
+
                 int newDistance = this.pathFinder.path.get(tile);
 
                 System.out.println("newDistance: " + newDistance);
@@ -73,6 +77,7 @@ public class Visitor {
                     double y = tile.getPointY();
 
                     this.targetPosition = new Point2D.Double(x, y);
+                    this.position = targetPosition;
                     this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x/32, y/32));
 
                     //break when a closer tile is found
