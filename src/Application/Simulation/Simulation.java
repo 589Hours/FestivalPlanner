@@ -23,12 +23,7 @@ public class Simulation extends Application {
     private ArrayList<Visitor> visitors = new ArrayList<>();
     private int timer;
 
-    private Tile alphaStage = new Tile(65, 19);
-    private Tile betaStage = new Tile(18, 110);
-    private Tile charlieStage = new Tile(110, 110);
-    private Tile deltaStage = new Tile(18, 40);
-    private Tile echoStage = new Tile(110, 40);
-    private Tile spawnTile = new Tile(126, 64);
+
 
     private PathFinder alphaPathFinder;
     private PathFinder betaPathFinder;
@@ -58,7 +53,7 @@ public class Simulation extends Application {
         mainPane.setCenter(canvas);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
 
-        spawnTile = new Tile(126, 64);
+        Tile spawnTile = new Tile(126, 64);
         new AnimationTimer() {
             long last = -1;
 
@@ -80,6 +75,12 @@ public class Simulation extends Application {
 
     public void init() throws Exception {
         Graph graph = new Graph();
+        Tile alphaStage = graph.getNodes()[65][19];
+        Tile betaStage = new Tile(18, 110);
+        Tile charlieStage = new Tile(110, 110);
+        Tile deltaStage = new Tile(18, 40);
+        Tile echoStage = new Tile(110, 40);
+        Tile spawnTile = new Tile(126, 64);
         alphaPathFinder = new PathFinder(alphaStage, graph);
 //        alphaPathFinder.path.put(spawnTile, Integer.MAX_VALUE);
 //        betaPathFinder = new PathFinder(betaStage);
@@ -89,10 +90,7 @@ public class Simulation extends Application {
 
         camera = new Camera();
         map = new Map("/FestivalMap.json", this.alphaPathFinder);
-
-//        for (int i = 0; i < 1; i++) {
-//
-//        }
+        
 
         alphaPathFinder.calculateDistanceMapWithGraph();
 //        spawnTile = alphaPathFinder.getSpawnTile();
@@ -121,12 +119,11 @@ public class Simulation extends Application {
 
     public void update(double deltaTime) {
         if (timer % 144 == 0) {
-            if (visitors.size() < 1) {
+            if (visitors.size() < 5) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
                         alphaPathFinder,
-                        spawnTile,
-                        1);
+                        0.001);
                 visitors.add(visitor);
             }
         }
