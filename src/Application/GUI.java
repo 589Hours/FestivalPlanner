@@ -201,7 +201,7 @@ public class GUI extends Application {
 
         simulationButton.setOnAction(event ->  {
             try {
-                new Simulation().init();
+                new Simulation().init(festivalPlan);
                 started = true;
             } catch (Exception e) {
                 throw new RuntimeException(e);

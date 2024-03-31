@@ -110,6 +110,7 @@ public class Visitor {
         transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
 
         graphics2D.setColor(Color.red);
+//        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
         graphics2D.drawImage(this.image, transform, null);
         graphics2D.setColor(Color.green);

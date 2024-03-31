@@ -1,7 +1,7 @@
 package Application.Simulation;
 
+import data.FestivalPlan;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -15,13 +15,17 @@ import java.awt.geom.Point2D;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class Simulation extends Application {
+public class Simulation {
 
     private Map map;
     private ResizableCanvas canvas;
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
     private int timer;
+    private FestivalPlan festivalPlan;
+    private int hours;
+    private int minutes;
+    private int counter;
 
 
 
@@ -31,12 +35,14 @@ public class Simulation extends Application {
     private PathFinder deltaPathFinder;
     private PathFinder echoPathFinder;
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void start(FestivalPlan festivalPlan) {
+        Stage stage = new Stage();
         BorderPane mainPane = new BorderPane();
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
         canvas.setHeight(1024);
+        hours = 3;
+        minutes = 0;
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
 //        canvas.setOnMouseMoved(event -> {
@@ -70,13 +76,14 @@ public class Simulation extends Application {
         stage.setScene(new Scene(mainPane));
         stage.setTitle("Festival Planner");
         stage.show();
-        draw(g2d);
     }
 
-    public void init() throws Exception {
+    public void init(FestivalPlan festivalPlan) throws Exception {
         camera = new Camera();
         map = new Map("/FestivalMap.json", this.alphaPathFinder);
         int[][] collisionLayer = map.getCollisionLayer();
+        this.festivalPlan = festivalPlan;
+        map = new Map("/FestivalMap.json", festivalPlan, this);
 
         Graph graph = new Graph();
         Tile alphaStage = graph.getNodes()[65][19];
@@ -100,7 +107,7 @@ public class Simulation extends Application {
         deltaPathFinder.calculateDistanceMapWithGraph();
         echoPathFinder.calculateDistanceMapWithGraph();
 
-        start(new Stage());
+        start(festivalPlan);
 
     }
 
@@ -110,6 +117,7 @@ public class Simulation extends Application {
         g.setBackground(Color.black);
         g.setTransform(camera.getTransform());
         map.draw(g);
+
         for (Visitor visitor : visitors) {
             visitor.draw(g);
         }
@@ -119,6 +127,7 @@ public class Simulation extends Application {
     }
 
     public void update(double deltaTime) {
+        counter++;
         if (timer % 144 == 0) {
             if (visitors.size() < 5) {
                 Visitor visitor = new Visitor(
@@ -131,7 +140,32 @@ public class Simulation extends Application {
         for (Visitor visitor : visitors) {
             visitor.update(visitors);
         }
+        if(counter % 3 == 0) {
+            updateTime();
+        }
         timer++;
+    }
+
+    private void updateTime() {
+        this.minutes++;
+        if(this.minutes == 60) {
+            this.minutes = 0;
+            this.hours++;
+
+            if(this.hours == 24) {
+                this.hours = 0;
+            }
+        }
+        map.updateOpacity();
+    }
+
+    public int getHours() {
+
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
     }
 }
 
