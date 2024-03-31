@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Visitor {
 
@@ -18,13 +17,19 @@ public class Visitor {
     private double angle;
     private double speed;
     private double currentDistance = Integer.MAX_VALUE;
-    private BufferedImage image;
+    private BufferedImage spriteSheet;
     private Tile currentTile;
+    private ArrayList<BufferedImage> characterDown = new ArrayList<>();
+    private ArrayList<BufferedImage> characterLeft = new ArrayList<>();
+    private ArrayList<BufferedImage> characterRight = new ArrayList<>();
+    private ArrayList<BufferedImage> characterUp = new ArrayList<>();
+    private int imageWidth;
+    private int imageHeight;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
-            this.image = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
-            this.image = image.getSubimage(0, 0, image.getWidth() / 11, image.getHeight() / 6);
+            this.spriteSheet = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
+            this.spriteSheet = spriteSheet.getSubimage(0, 0, spriteSheet.getWidth() / 11, spriteSheet.getHeight() / 6);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -34,6 +39,18 @@ public class Visitor {
         this.targetPosition = position;
         this.speed = speed;
         this.angle = 0;
+        this.imageWidth = 50;
+        this.imageHeight = 100;
+        CreateImages();
+    }
+
+    private void CreateImages() {
+        for (int x = 0; x < 3; x++) {
+            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
+            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
+        }
     }
 
     public void update(ArrayList<Visitor> visitors) {
@@ -104,11 +121,11 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
+        transform.translate(position.getX() - spriteSheet.getWidth() /2 , position.getY() - spriteSheet.getHeight() /1.5);
 
         graphics2D.setColor(Color.red);
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
-        graphics2D.drawImage(this.image, transform, null);
+        graphics2D.drawImage(this.spriteSheet, transform, null);
         graphics2D.setColor(Color.green);
         graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
         graphics2D.setColor(Color.black);
