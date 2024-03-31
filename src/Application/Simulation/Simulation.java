@@ -74,30 +74,31 @@ public class Simulation extends Application {
     }
 
     public void init() throws Exception {
-        Graph graph = new Graph();
-        Tile alphaStage = graph.getNodes()[65][19];
-        Tile betaStage = new Tile(18, 110);
-        Tile charlieStage = new Tile(110, 110);
-        Tile deltaStage = new Tile(18, 40);
-        Tile echoStage = new Tile(110, 40);
-        Tile spawnTile = new Tile(126, 64);
-        alphaPathFinder = new PathFinder(alphaStage, graph);
-//        alphaPathFinder.path.put(spawnTile, Integer.MAX_VALUE);
-//        betaPathFinder = new PathFinder(betaStage);
-//        charliePathFinder = new PathFinder(charlieStage);
-//        deltaPathFinder = new PathFinder(deltaStage);
-//        echoPathFinder = new PathFinder(echoStage);
-
         camera = new Camera();
         map = new Map("/FestivalMap.json", this.alphaPathFinder);
+        int[][] collisionLayer = map.getCollisionLayer();
+
+        Graph graph = new Graph();
+        Tile alphaStage = graph.getNodes()[65][19];
+        Tile betaStage = graph.getNodes()[18][110];
+        Tile charlieStage = graph.getNodes()[110][110];
+        Tile deltaStage = graph.getNodes()[18][40];
+        Tile echoStage =  graph.getNodes()[110][40];
+        Tile spawnTile = new Tile(126, 64);
+
+        alphaPathFinder = new PathFinder(alphaStage, graph, collisionLayer);
+        betaPathFinder = new PathFinder(betaStage, graph, collisionLayer);
+        charliePathFinder = new PathFinder(charlieStage, graph, collisionLayer);
+        deltaPathFinder = new PathFinder(deltaStage, graph, collisionLayer);
+        echoPathFinder = new PathFinder(echoStage, graph, collisionLayer);
         
 
         alphaPathFinder.calculateDistanceMapWithGraph();
-//        spawnTile = alphaPathFinder.getSpawnTile();
-//        betaPathFinder.calculateDistanceMap();
-//        charliePathFinder.calculateDistanceMap();
-//        deltaPathFinder.calculateDistanceMap();
-//        echoPathFinder.calculateDistanceMap();
+        spawnTile = alphaPathFinder.getSpawnTile();
+        betaPathFinder.calculateDistanceMapWithGraph();
+        charliePathFinder.calculateDistanceMapWithGraph();
+        deltaPathFinder.calculateDistanceMapWithGraph();
+        echoPathFinder.calculateDistanceMapWithGraph();
 
         start(new Stage());
 
@@ -122,7 +123,7 @@ public class Simulation extends Application {
             if (visitors.size() < 5) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
-                        alphaPathFinder,
+                        echoPathFinder,
                         0.001);
                 visitors.add(visitor);
             }

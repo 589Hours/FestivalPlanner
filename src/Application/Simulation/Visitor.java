@@ -37,24 +37,27 @@ public class Visitor {
     }
 
     public void update(ArrayList<Visitor> visitors) {
-        for (Tile tile : currentTile.getNeighbours()) {
 
-            if (this.pathFinder.path.get(tile) == null)
-                continue;
+        if (position.distance(targetPosition) < 20) {
+            for (Tile tile : currentTile.getNeighbours()) {
 
-            int newDistance = this.pathFinder.path.get(tile);
+                if (this.pathFinder.path.get(tile) == null)
+                    continue;
 
-            if (newDistance < currentDistance) {
-                currentDistance = newDistance;
+                int newDistance = this.pathFinder.path.get(tile);
 
-                double x = tile.getPointX();
-                double y = tile.getPointY();
+                if (newDistance < currentDistance) {
+                    currentDistance = newDistance;
 
-                this.targetPosition = new Point2D.Double(x, y);
-                this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x/32, y/32));
+                    double x = tile.getPointX();
+                    double y = tile.getPointY();
 
-                //break when a closer tile is found
-                break;
+                    this.targetPosition = new Point2D.Double(x, y);
+                    this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x / 32, y / 32));
+
+                    //break when a closer tile is found
+                    break;
+                }
             }
         }
 

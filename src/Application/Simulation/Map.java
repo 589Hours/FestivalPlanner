@@ -16,6 +16,7 @@ public class Map {
     private int tileWidth;
     private int tileHeight;
     private boolean nightMode = false;
+    private int[][] collisionLayer;
     private ArrayList<Layer> layers = new ArrayList<>();
     private ArrayList<BufferedImage> tiles = new ArrayList<>();
 
@@ -57,7 +58,8 @@ public class Map {
             if (type.equals("tilelayer")){
                 Layer layer = new Layer(root, width, height, i, tiles);
                 if (layerName.equals("Collision")){
-                    pathFinder.setCollisionLayer(layer.getCollisionLayer());
+                    collisionLayer = layer.getCollisionLayer();
+//                    pathFinder.setCollisionLayer(layer.getCollisionLayer());
                 }
                 layers.add(layer);
             }
@@ -104,5 +106,7 @@ public class Map {
     }
 
 
-
+    public int[][] getCollisionLayer() {
+        return this.collisionLayer;
+    }
 }
