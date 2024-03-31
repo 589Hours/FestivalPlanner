@@ -29,7 +29,6 @@ public class Visitor {
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
             this.spriteSheet = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
-            this.spriteSheet = spriteSheet.getSubimage(0, 0, spriteSheet.getWidth() / 11, spriteSheet.getHeight() / 6);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -40,11 +39,12 @@ public class Visitor {
         this.speed = speed;
         this.angle = 0;
         this.imageWidth = 50;
-        this.imageHeight = 100;
+        this.imageHeight = 130;
         CreateImages();
     }
 
     private void CreateImages() {
+
         for (int x = 0; x < 3; x++) {
             this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
             this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
@@ -121,11 +121,10 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - spriteSheet.getWidth() /2 , position.getY() - spriteSheet.getHeight() /1.5);
+        transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 2.3);
 
-        graphics2D.setColor(Color.red);
-        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
-        graphics2D.drawImage(this.spriteSheet, transform, null);
+        
+        graphics2D.drawImage(this.characterDown.get(0), transform, null);
         graphics2D.setColor(Color.green);
         graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
         graphics2D.setColor(Color.black);
