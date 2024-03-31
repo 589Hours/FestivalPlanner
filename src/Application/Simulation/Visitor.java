@@ -122,4 +122,8 @@ public class Visitor {
         this.targetPosition = targetPosition;
     }
 
+    public PathFinder getPath(){
+        return pathFinder;
+    }
+
 }

@@ -10,9 +10,7 @@ import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Simulation {
@@ -21,13 +19,10 @@ public class Simulation {
     private ResizableCanvas canvas;
     private Camera camera;
     private ArrayList<Visitor> visitors = new ArrayList<>();
-    private int timer;
     private FestivalPlan festivalPlan;
     private int hours;
     private int minutes;
     private int counter;
-
-
 
     private PathFinder alphaPathFinder;
     private PathFinder betaPathFinder;
@@ -41,7 +36,7 @@ public class Simulation {
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
         canvas.setHeight(1024);
-        hours = 3;
+        hours = 12;
         minutes = 0;
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
@@ -80,28 +75,26 @@ public class Simulation {
 
     public void init(FestivalPlan festivalPlan) throws Exception {
         camera = new Camera();
-        map = new Map("/FestivalMap.json", this.alphaPathFinder);
-        int[][] collisionLayer = map.getCollisionLayer();
+
         this.festivalPlan = festivalPlan;
         map = new Map("/FestivalMap.json", festivalPlan, this);
+        int[][] collisionLayer = map.getCollisionLayer();
 
         Graph graph = new Graph();
+
         Tile alphaStage = graph.getNodes()[65][19];
         Tile betaStage = graph.getNodes()[18][110];
         Tile charlieStage = graph.getNodes()[110][110];
         Tile deltaStage = graph.getNodes()[18][40];
         Tile echoStage =  graph.getNodes()[110][40];
-        Tile spawnTile = new Tile(126, 64);
 
         alphaPathFinder = new PathFinder(alphaStage, graph, collisionLayer);
         betaPathFinder = new PathFinder(betaStage, graph, collisionLayer);
         charliePathFinder = new PathFinder(charlieStage, graph, collisionLayer);
         deltaPathFinder = new PathFinder(deltaStage, graph, collisionLayer);
         echoPathFinder = new PathFinder(echoStage, graph, collisionLayer);
-        
 
         alphaPathFinder.calculateDistanceMapWithGraph();
-        spawnTile = alphaPathFinder.getSpawnTile();
         betaPathFinder.calculateDistanceMapWithGraph();
         charliePathFinder.calculateDistanceMapWithGraph();
         deltaPathFinder.calculateDistanceMapWithGraph();
@@ -122,13 +115,16 @@ public class Simulation {
             visitor.draw(g);
         }
 
-        alphaPathFinder.draw(g);
+        if (visitors.size() == 1){
+            visitors.get(0).getPath().draw(g);
+        }
+
         g.setTransform(new AffineTransform());
     }
 
     public void update(double deltaTime) {
-        counter++;
-        if (timer % 144 == 0) {
+
+        if (counter % 144 == 0) {
             if (visitors.size() < 5) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
@@ -143,7 +139,7 @@ public class Simulation {
         if(counter % 3 == 0) {
             updateTime();
         }
-        timer++;
+        counter++;
     }
 
     private void updateTime() {

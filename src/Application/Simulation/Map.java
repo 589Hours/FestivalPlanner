@@ -63,12 +63,10 @@ public class Map {
                 Layer layer = new Layer(root, width, height, i, tiles);
                 if (layerName.equals("Collision")){
                     collisionLayer = layer.getCollisionLayer();
-//                    pathFinder.setCollisionLayer(layer.getCollisionLayer());
                 }
                 layers.add(layer);
             }
         }
-
 
         createEndImage();
         layers.clear();
@@ -116,11 +114,17 @@ public class Map {
             timeString = sim.getHours() + ":" + sim.getMinutes();
         }
 
+        Font oldFont = g.getFont();
+
         g.setColor(Color.black);
         g.setFont(new Font("Arial", Font.PLAIN, 140));
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         g.drawString(timeString, 2200, 600);
+
+        g.setFont(oldFont);
+
+
 
 
     }
@@ -131,10 +135,16 @@ public class Map {
     }
     public void updateOpacity() {
         if (sim.getHours() == 19) {
+            if (nightOpacity >= 0.9f){
+                nightOpacity = 0.7f;
+            }
             nightOpacity = nightOpacity + 0.7f / 60f;
         }
 
         if (sim.getHours() == 6) {
+            if (nightOpacity <= 0.1f){
+                nightOpacity = 0.1f;
+            }
             nightOpacity = nightOpacity - 0.7f / 60f;
         }
 
