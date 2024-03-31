@@ -30,18 +30,18 @@ public class Camera {
     public void mouseScroll(ScrollEvent event) {
         if (event.isControlDown()) {
             // Zoom
-//            System.out.println("Zoom");
+            System.out.println("Zoom");
             this.zoom *= 1 + event.getDeltaY()/250.0f;
         } else if (event.isShiftDown()) {
             // X aanpassen
-//            System.out.println("X");
+            System.out.println("X");
             centerPoint = new Point2D.Double(centerPoint.getX() + (event.getDeltaX()*1.5), centerPoint.getY());
-//            System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
+            System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
         } else {
             // Y aanpassen
-//            System.out.println("Y");
+            System.out.println("Y");
             centerPoint = new Point2D.Double(centerPoint.getX(), centerPoint.getY() + (event.getDeltaY()*1.5));
-//            System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
+            System.out.println(centerPoint.getX() + ", " + centerPoint.getY());
         }
     }
 
