@@ -22,7 +22,7 @@ public class Map {
     private ArrayList<BufferedImage> tilesets = new ArrayList<>();
 
 
-    public Map(String fileName, PathFinder pathFinder) {
+    public Map(String fileName) {
         JsonReader reader = null;
         reader = Json.createReader(getClass().getResourceAsStream(fileName));
         JsonObject root = reader.readObject();
@@ -53,12 +53,8 @@ public class Map {
         }
         for (int i = 0; i < 19; i++) {
             String type = root.getJsonArray("layers").getJsonObject(i).getString("type");
-            String layerName = root.getJsonArray("layers").getJsonObject(i).getString("name");
             if (type.equals("tilelayer")){
                 Layer layer = new Layer(root, width, height, i, tiles);
-                if (layerName.equals("Collision")){
-                    pathFinder.setCollisionLayer(layer.getCollisionLayer());
-                }
                 layers.add(layer);
             }
 
@@ -103,6 +99,6 @@ public class Map {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
     }
 
-
-
+    // CollisionID = 78225
+    // LocatieID = 78224
 }
