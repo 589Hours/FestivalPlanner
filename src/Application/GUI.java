@@ -9,8 +9,6 @@ import Application.Delete.DeleteStage;
 import Application.Edit.EditArtist;
 import Application.Edit.EditStage;
 import Application.Simulation.Simulation;
-import data.Artist;
-import data.Performance;
 import data.FestivalPlan;
 import data.SaveToFile;
 import javafx.application.Application;
@@ -18,8 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.ResizableCanvas;
 
@@ -29,15 +25,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class GUI extends Application {
     private FestivalPlan festivalPlan;
     private ResizableCanvas canvas;
+    private ResizableCanvas canvasBlockView;
     private String saveFilePath;
     FestivalBlockview festivalBlockview = new FestivalBlockview();
+    BeginScreen beginScreen = new BeginScreen();
     boolean started;
 
 
@@ -45,7 +41,8 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         BorderPane borderPane = new BorderPane();
         BorderPane buttonPlacement = new BorderPane();
-        canvas = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
+        canvas = new ResizableCanvas(g -> beginScreen.draw(g), borderPane);
+        canvasBlockView = new ResizableCanvas(g -> festivalBlockview.draw(g, festivalPlan), borderPane);
         started = false;
 
         festivalPlan = new FestivalPlan();
@@ -61,9 +58,10 @@ public class GUI extends Application {
 
         MenuBar menuBar = new MenuBar();
         Menu viewMenu = new Menu("View");
+        MenuItem viewBegin = new MenuItem("BeginView");
         MenuItem viewTable = new MenuItem("Tableview");
         MenuItem viewBlock = new MenuItem("Blockview");
-        viewMenu.getItems().addAll(viewTable, viewBlock);
+        viewMenu.getItems().addAll(viewBegin, viewTable, viewBlock);
 
         Menu createMenu = new Menu("Create");
         MenuItem createPodium = new MenuItem("Podium");
@@ -90,14 +88,20 @@ public class GUI extends Application {
 
         menuBar.getMenus().addAll(viewMenu, createMenu, editMenu, deleteMenu, saveAndLoadMenu);
 
+        viewBegin.setOnAction(event -> {
+            beginScreen.draw(beginScreen.getFxGraphics2D());
+            borderPane.setCenter(canvas);
+        });
         viewTable.setOnAction(event -> {
             FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
             borderPane.setCenter(festivalTableview);
         });
         viewBlock.setOnAction(event -> {
             festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
-            borderPane.setCenter(canvas);
+            borderPane.setCenter(canvasBlockView);
         });
+
+
         createArtist.setOnAction(event -> {
             new ArtistAdd(festivalPlan);
         });
@@ -176,8 +180,8 @@ public class GUI extends Application {
         });
 
         // MouseClick
-        canvas.setOnMousePressed(event -> {
-            if (borderPane.getCenter() == canvas){
+        canvasBlockView.setOnMousePressed(event -> {
+            if (borderPane.getCenter() == canvasBlockView){
                 Point2D point2D = new Point2D.Double(event.getX(), event.getY());
                 if (festivalBlockview.checkClicked(point2D) != null) {
                     Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -193,8 +197,32 @@ public class GUI extends Application {
                 }
             }
         });
+        canvas.setOnMousePressed(event -> {
+            if (borderPane.getCenter() == canvas){
+                Point2D point2D = new Point2D.Double(event.getX(), event.getY());
+                if (beginScreen.checkClicked(point2D) != null) {
+                    if (beginScreen.checkClicked(point2D).equals("TableView")){
+                        FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
+                        borderPane.setCenter(festivalTableview);
+                    } else if (beginScreen.checkClicked(point2D).equals("BlockView")){
+                        festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
+                        borderPane.setCenter(canvasBlockView);
+                    } else if (beginScreen.checkClicked(point2D).equals("StartSimulation")){
+                        try {
+                            new Simulation().init();
+                            started = true;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        });
 
         borderPane.setTop(menuBar);
+
+        beginScreen.draw(beginScreen.getFxGraphics2D());
+        borderPane.setCenter(canvas);
 
         Button simulationButton = new Button("Start simulation");
         borderPane.setBottom(simulationButton);
