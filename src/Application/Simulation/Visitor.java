@@ -146,6 +146,10 @@ public class Visitor {
             graphics2D.drawImage(this.characterLeft.get((int)this.animationCounter), transform, null);
         }
 
+        //test draw the target location
+        graphics2D.setColor(Color.red);
+        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
+
         graphics2D.setColor(Color.green);
         graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
         graphics2D.setColor(Color.black);
@@ -165,5 +169,25 @@ public class Visitor {
 
     public void setPathFinder(PathFinder pathFinder) {
         this.pathFinder = pathFinder;
+
+        //get the distanceValue from current Tile in another pathfinder
+        int newPathCurrentDistanceValue = this.pathFinder.path.get(this.currentTile);
+
+        //initialize the first target tile so the npc moves
+        for (Tile neighbour : this.currentTile.getNeighbours()) {
+            int newPathDistance = pathFinder.path.get(neighbour);
+            if (newPathDistance < newPathCurrentDistanceValue){
+                this.currentDistance = newPathDistance;
+
+                double x = neighbour.getPointX();
+                double y = neighbour.getPointY();
+
+                this.targetPosition = new Point2D.Double(x, y);
+                this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x / 32, y / 32));
+
+                //break when a closer tile is found
+                break;
+            }
+        }
     }
 }
