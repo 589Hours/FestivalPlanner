@@ -2,7 +2,7 @@ package data;
 
 import java.io.Serializable;
 
-public class Performance implements Serializable {
+public class Performance implements Serializable, Comparable<Performance> {
     private Artist artist;
     private Stage stage;
 
@@ -115,10 +115,17 @@ public class Performance implements Serializable {
             }
         }
         return totalMinutes;
+
     }
 
     @Override
     public String toString() {
         return getArtist() + " at " + stage.getName();
+    }
+
+    @Override
+    public int compareTo(Performance o) {
+
+        return this.getBeginHour();
     }
 }

@@ -1,5 +1,8 @@
 package Application.Simulation;
 
+import data.FestivalPlan;
+import data.Performance;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -8,7 +11,9 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Visitor {
 
@@ -20,8 +25,9 @@ public class Visitor {
     private double currentDistance = Integer.MAX_VALUE;
     private BufferedImage image;
     private Tile currentTile;
+    private ArrayList<Performance> planning;
 
-    public Visitor(Point2D position, PathFinder pathFinder, double speed) {
+    public Visitor(Point2D position, PathFinder pathFinder, double speed, FestivalPlan festivalPlan) {
         try {
             this.image = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
             this.image = image.getSubimage(0, 0, image.getWidth() / 11, image.getHeight() / 6);
@@ -34,6 +40,98 @@ public class Visitor {
         this.targetPosition = position;
         this.speed = speed;
         this.angle = 0;
+        this.planning = new ArrayList<>();
+        Random random = new Random();
+        int totalPopularity = 0;
+        int lastBeginMin = 0;
+        int lastBeginHour = 0;
+        ArrayList<Performance> sameTimePerformances = new ArrayList<>();
+        ArrayList<Performance> sortedPerformance = new ArrayList<>(festivalPlan.getPerformances());
+        Collections.sort(sortedPerformance, new CustomHourComparator());
+        for (Performance performance : sortedPerformance) {
+            if (totalPopularity == 0) {
+                totalPopularity = performance.getArtist().getPopularity();
+                sameTimePerformances.add(performance);
+                lastBeginMin = performance.getBeginMinute();
+                lastBeginHour = performance.getBeginHour();
+                continue;
+            }
+
+            if (performance.getBeginMinute() == lastBeginMin && performance.getBeginHour() == lastBeginHour) {
+                totalPopularity += performance.getArtist().getPopularity();
+                sameTimePerformances.add(performance);
+            } else {
+                int randomInt = random.nextInt(totalPopularity);
+
+                switch (sameTimePerformances.size()) {
+                    case 1:
+                        planning.add(sameTimePerformances.get(0));
+                        break;
+                    case 2:
+                        if (sameTimePerformances.get(0).getArtist().getPopularity() >= randomInt) {
+                            planning.add(sameTimePerformances.get(0));
+                            break;
+                        }
+                        planning.add(sameTimePerformances.get(1));
+                        break;
+                    case 3:
+                        if (sameTimePerformances.get(0).getArtist().getPopularity() >= randomInt) {
+                            planning.add(sameTimePerformances.get(0));
+                            break;
+                        }
+                        if (sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(1));
+                            break;
+                        }
+                        planning.add(sameTimePerformances.get(2));
+                        break;
+                    case 4:
+                        if (sameTimePerformances.get(0).getArtist().getPopularity() >= randomInt) {
+                            planning.add(sameTimePerformances.get(0));
+                            break;
+                        }
+                        if (sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(1));
+                            break;
+                        }
+                        if (sameTimePerformances.get(2).getArtist().getPopularity() + sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(2));
+                            break;
+                        }
+                        planning.add(sameTimePerformances.get(3));
+                        break;
+                    case 5:
+                        if (sameTimePerformances.get(0).getArtist().getPopularity() >= randomInt) {
+                            planning.add(sameTimePerformances.get(0));
+                            break;
+                        }
+                        if (sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(1));
+                            break;
+                        }
+                        if (sameTimePerformances.get(2).getArtist().getPopularity() + sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(2));
+                            break;
+                        }
+                        if(sameTimePerformances.get(3).getArtist().getPopularity() + sameTimePerformances.get(2).getArtist().getPopularity() + sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(3));
+                            break;
+                        }
+                        planning.add(sameTimePerformances.get(4));
+                        break;
+                }
+
+                sameTimePerformances.clear();
+                sameTimePerformances.add(performance);
+                totalPopularity = performance.getArtist().getPopularity();
+            }
+            totalPopularity += performance.getArtist().getPopularity();
+        }
+        for (Performance performance1 : planning) {
+            System.out.println(performance1);
+        }
+        System.out.println("\n");
+
     }
 
     public void update(ArrayList<Visitor> visitors) {
@@ -107,14 +205,14 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
+        transform.translate(position.getX() - image.getWidth() / 2, position.getY() - image.getHeight() / 1.5);
 
         graphics2D.setColor(Color.red);
 //        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
         graphics2D.drawImage(this.image, transform, null);
         graphics2D.setColor(Color.green);
-        graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
+        graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10, 10));
         graphics2D.setColor(Color.black);
     }
 
@@ -122,7 +220,7 @@ public class Visitor {
         this.targetPosition = targetPosition;
     }
 
-    public PathFinder getPath(){
+    public PathFinder getPath() {
         return pathFinder;
     }
 

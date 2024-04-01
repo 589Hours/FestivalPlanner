@@ -129,7 +129,8 @@ public class Simulation {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
                         echoPathFinder,
-                        0.001);
+                        0.001,
+                        festivalPlan);
                 visitors.add(visitor);
             }
         }
