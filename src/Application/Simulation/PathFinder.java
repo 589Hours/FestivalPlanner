@@ -65,6 +65,10 @@ public class PathFinder {
         this.collisionLayer = collisionLayer;
     }
 
+    public Tile getTargetTile() {
+        return targetTile;
+    }
+
     public Tile getSpawnTile(){
         return this.spawnTile;
     }

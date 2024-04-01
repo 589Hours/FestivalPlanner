@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Visitor {
-
+    private PathFinder prevPathFinder;
     private PathFinder pathFinder;
     private Point2D position;
     private Point2D targetPosition;
@@ -28,6 +28,7 @@ public class Visitor {
     private double animationCounter;
     private double newAngle;
     private double drinkCounter;
+    private boolean isInToilet;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
@@ -47,6 +48,7 @@ public class Visitor {
         this.animationCounter = 0;
         this.newAngle = 0;
         this.drinkCounter = 0;
+        this.isInToilet = false;
     }
 
     private void CreateImages() {
@@ -155,8 +157,12 @@ public class Visitor {
         graphics2D.setColor(Color.black);
     }
 
-    public void setTargetPosition(Point2D targetPosition) {
-        this.targetPosition = targetPosition;
+    public Tile getCurrentTile() {
+        return currentTile;
+    }
+
+    public PathFinder getPathFinder() {
+        return pathFinder;
     }
 
     public double getDrinkCounter() {
@@ -189,5 +195,21 @@ public class Visitor {
                 break;
             }
         }
+    }
+
+    public boolean isInToilet() {
+        return isInToilet;
+    }
+
+    public void setInToilet(boolean inToilet) {
+        isInToilet = inToilet;
+    }
+
+    public PathFinder getPrevPathFinder() {
+        return prevPathFinder;
+    }
+
+    public void setPrevPathFinder(PathFinder prevPathFinder) {
+        this.prevPathFinder = prevPathFinder;
     }
 }
