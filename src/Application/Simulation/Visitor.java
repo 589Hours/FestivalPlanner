@@ -27,6 +27,7 @@ public class Visitor {
     private int imageHeight;
     private double animationCounter;
     private double newAngle;
+    private double drinkCounter;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
@@ -45,6 +46,7 @@ public class Visitor {
         CreateImages();
         this.animationCounter = 0;
         this.newAngle = 0;
+        this.drinkCounter = 0;
     }
 
     private void CreateImages() {
@@ -61,6 +63,7 @@ public class Visitor {
         if (this.animationCounter > 3){
             this.animationCounter = 0;
         }
+        this.drinkCounter += (deltaTime*10)*Math.random();
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
@@ -152,4 +155,15 @@ public class Visitor {
         this.targetPosition = targetPosition;
     }
 
+    public double getDrinkCounter() {
+        return drinkCounter;
+    }
+
+    public void setDrinkCounter(double drinkCounter) {
+        this.drinkCounter = drinkCounter;
+    }
+
+    public void setPathFinder(PathFinder pathFinder) {
+        this.pathFinder = pathFinder;
+    }
 }

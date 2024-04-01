@@ -30,6 +30,16 @@ public class Simulation extends Application {
     private PathFinder charliePathFinder;
     private PathFinder deltaPathFinder;
     private PathFinder echoPathFinder;
+    private PathFinder toiletPathFinder;
+    private PathFinder toilet1PathFinder;
+    private PathFinder toilet2PathFinder;
+    private PathFinder toilet3PathFinder;
+    private PathFinder toilet4PathFinder;
+    private PathFinder toilet5PathFinder;
+    private PathFinder toilet6PathFinder;
+    private PathFinder toilet7PathFinder;
+    private PathFinder toilet8PathFinder;
+    private PathFinder toilet9PathFinder;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -85,13 +95,35 @@ public class Simulation extends Application {
         Tile deltaStage = graph.getNodes()[18][40];
         Tile echoStage =  graph.getNodes()[110][40];
         Tile spawnTile = new Tile(126, 64);
+        Tile toilets = graph.getNodes()[98][18];
+
+        Tile toilet1 = graph.getNodes()[94][7];
+        Tile toilet2 = graph.getNodes()[94][9];
+        Tile toilet3 = graph.getNodes()[94][11];
+        Tile toilet4 = graph.getNodes()[94][13];
+        Tile toilet5 = graph.getNodes()[94][15];
+        Tile toilet6 = graph.getNodes()[94][17];
+        Tile toilet7 = graph.getNodes()[94][19];
+        Tile toilet8 = graph.getNodes()[94][21];
+        Tile toilet9 = graph.getNodes()[94][23];
 
         alphaPathFinder = new PathFinder(alphaStage, graph, collisionLayer);
         betaPathFinder = new PathFinder(betaStage, graph, collisionLayer);
         charliePathFinder = new PathFinder(charlieStage, graph, collisionLayer);
         deltaPathFinder = new PathFinder(deltaStage, graph, collisionLayer);
         echoPathFinder = new PathFinder(echoStage, graph, collisionLayer);
-        
+
+        toiletPathFinder = new PathFinder(toilets, graph, collisionLayer);
+        toilet1PathFinder = new PathFinder(toilet1, graph, collisionLayer);
+        toilet2PathFinder = new PathFinder(toilet2, graph, collisionLayer);
+        toilet3PathFinder = new PathFinder(toilet3, graph, collisionLayer);
+        toilet4PathFinder = new PathFinder(toilet4, graph, collisionLayer);
+        toilet5PathFinder = new PathFinder(toilet5, graph, collisionLayer);
+        toilet6PathFinder = new PathFinder(toilet6, graph, collisionLayer);
+        toilet7PathFinder = new PathFinder(toilet7, graph, collisionLayer);
+        toilet8PathFinder = new PathFinder(toilet8, graph, collisionLayer);
+        toilet9PathFinder = new PathFinder(toilet9, graph, collisionLayer);
+
 
         alphaPathFinder.calculateDistanceMapWithGraph();
         spawnTile = alphaPathFinder.getSpawnTile();
@@ -100,8 +132,18 @@ public class Simulation extends Application {
         deltaPathFinder.calculateDistanceMapWithGraph();
         echoPathFinder.calculateDistanceMapWithGraph();
 
-        start(new Stage());
+        toiletPathFinder.calculateDistanceMapWithGraph();
+        toilet1PathFinder.calculateDistanceMapWithGraph();
+        toilet2PathFinder.calculateDistanceMapWithGraph();
+        toilet3PathFinder.calculateDistanceMapWithGraph();
+        toilet4PathFinder.calculateDistanceMapWithGraph();
+        toilet5PathFinder.calculateDistanceMapWithGraph();
+        toilet6PathFinder.calculateDistanceMapWithGraph();
+        toilet7PathFinder.calculateDistanceMapWithGraph();
+        toilet8PathFinder.calculateDistanceMapWithGraph();
+        toilet9PathFinder.calculateDistanceMapWithGraph();
 
+        start(new Stage());
     }
 
 
@@ -114,22 +156,27 @@ public class Simulation extends Application {
             visitor.draw(g);
         }
 
-        alphaPathFinder.draw(g);
+        toiletPathFinder.draw(g);
         g.setTransform(new AffineTransform());
     }
 
     public void update(double deltaTime) {
         if (timer % 144 == 0) {
-            if (visitors.size() < 5) {
+            if (visitors.size() < 1) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
-                        betaPathFinder,
+                        alphaPathFinder,
                         0.001);
                 visitors.add(visitor);
             }
         }
         for (Visitor visitor : visitors) {
             visitor.update(visitors, deltaTime);
+            if (visitor.getDrinkCounter() >= 100){
+                visitor.setDrinkCounter(0);
+                System.out.println("Er moet iemand naar het toilet");
+                visitor.setPathFinder(toiletPathFinder);
+            }
         }
         timer++;
     }
