@@ -25,6 +25,7 @@ public class Visitor {
     private ArrayList<BufferedImage> characterUp = new ArrayList<>();
     private int imageWidth;
     private int imageHeight;
+    int drinkTimer = 0;
     private double animationCounter;
     private double newAngle;
     private double drinkCounter;
@@ -67,6 +68,7 @@ public class Visitor {
         if ((int)this.animationCounter >= 3){
             this.animationCounter = 0;
         }
+       
         this.drinkCounter += (deltaTime*10)*Math.random();
 
         if (position.distance(targetPosition) < 20) {
@@ -184,7 +186,7 @@ public class Visitor {
         //initialize the first target tile so the npc moves
         for (Tile neighbour : this.currentTile.getNeighbours()) {
             int newPathDistance = pathFinder.path.get(neighbour);
-            if (newPathDistance < newPathCurrentDistanceValue){
+            if (newPathDistance < newPathCurrentDistanceValue) {
                 this.currentDistance = newPathDistance;
 
                 double x = neighbour.getPointX();

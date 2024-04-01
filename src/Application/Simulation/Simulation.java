@@ -184,7 +184,7 @@ public class Simulation extends Application {
             toilet.update(deltaTime);
         }
         if (timer % 144 == 0) {
-            if (visitors.size() < 1) {
+            if (visitors.size() < 5) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126 * 32, 64 * 32),
                         alphaPathFinder,
@@ -195,29 +195,28 @@ public class Simulation extends Application {
 
         for (Visitor visitor : visitors) {
             visitor.update(visitors, deltaTime);
-
             if (visitor.getDrinkCounter() >= 100 && !visitor.isGoingToToilet()) {
                 visitor.setPrevPathFinder(visitor.getPathFinder());
                 if (!visitor.getPathFinder().equals(toiletPathFinder)) {
                     System.out.println("Er moet iemand naar het toilet");
                     visitor.setPathFinder(toiletPathFinder);
-                    visitor.setGoingToToilet(true);
-                    visitor.setDrinkCounter(0);
                 }
             }
-            if (visitor.getCurrentTile().toString().equals(visitor.getPathFinder().getTargetTile().toString()) &&
-            visitor.isGoingToToilet()) {
+            if (visitor.getCurrentTile().equals(toiletPathFinder.getTargetTile()) && visitor.getDrinkCounter() >= 100) {
                 for (Toilet toilet : toilets) {
-                    if (!toilet.isOccupied()) {
+                    System.out.println("checking toilet: " + toilet);
+                    if (!toilet.isOccupied() && !visitor.isGoingToToilet()) {
                         System.out.println("gaat toilet in: " + toilet);
+                        visitor.setGoingToToilet(true);
                         toilet.setAnimationStarted(true);
                         visitor.setPathFinder(toiletsPaths.get(toilets.indexOf(toilet)));
                         break;
                     }
                 }
-
-
             }
+//            if (toiletsPaths.contains(visitor.getPathFinder())){
+//                visitor.setGoingToToilet(true);
+//            }
             for (Toilet toilet : toilets) {
                 if (toilet.isAnimationStarted()) {
                     if (toilet.getAnimationTimer() >= 0 && toilet.getAnimationTimer() < 5) {
@@ -230,9 +229,10 @@ public class Simulation extends Application {
                         visitor.setDrinkCounter(0);
                     } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
                         visitor.setInToilet(false);
-                        visitor.setPathFinder(visitor.getPrevPathFinder());
+                        visitor.setPathFinder(toiletPathFinder);
                         visitor.setGoingToToilet(false);
                     } else {
+                        visitor.setPathFinder(visitor.getPrevPathFinder());
                         toilet.setOccupied(false);
                         toilet.setAnimationStarted(false);
                         toilet.setStatus(0);
