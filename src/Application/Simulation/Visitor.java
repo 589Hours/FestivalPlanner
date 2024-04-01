@@ -60,7 +60,7 @@ public class Visitor {
 
     public void update(ArrayList<Visitor> visitors, double deltaTime) {
         this.animationCounter += (5*deltaTime);
-        if (this.animationCounter >= 3.4){
+        if (this.animationCounter > 3){
             this.animationCounter = 0;
         }
         this.drinkCounter += (deltaTime*10)*Math.random();
