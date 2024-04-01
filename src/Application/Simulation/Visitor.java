@@ -109,8 +109,8 @@ public class Visitor {
         }
 
         Point2D newPosition = new Point2D.Double(
-                position.getX() + speed * Math.cos(angle) * targetPosition.getX(),
-                position.getY() + speed * Math.sin(angle) * targetPosition.getY()
+                position.getX() + speed * Math.cos(angle) * 1500,
+                position.getY() + speed * Math.sin(angle) * 1500
         );
 
         boolean collision = false;
