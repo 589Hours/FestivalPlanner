@@ -123,7 +123,7 @@ public class Simulation extends Application {
             if (visitors.size() < 5) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
-                        echoPathFinder,
+                        betaPathFinder,
                         0.001);
                 visitors.add(visitor);
             }

@@ -26,6 +26,7 @@ public class Visitor {
     private int imageWidth;
     private int imageHeight;
     private double animationCounter;
+    private double newAngle;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
@@ -43,22 +44,23 @@ public class Visitor {
         this.imageHeight = 100;
         CreateImages();
         this.animationCounter = 0;
+        this.newAngle = 0;
     }
 
     private void CreateImages() {
-//        for (int x = 0; x < 3; x++) {
-//            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
-//            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
-//            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
-//            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
-//        }
+        for (int x = 0; x < 3; x++) {
+            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
+            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
+        }
     }
 
     public void update(ArrayList<Visitor> visitors, double deltaTime) {
-//        this.animationCounter += (5*deltaTime);
-//        if (this.animationCounter > 3){
-//            this.animationCounter = 0;
-//        }
+        this.animationCounter += (5*deltaTime);
+        if (this.animationCounter > 3){
+            this.animationCounter = 0;
+        }
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
@@ -83,7 +85,7 @@ public class Visitor {
             }
         }
 
-        double newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
+        newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
 
         double angleDifference = angle - newAngle;
 
@@ -131,11 +133,11 @@ public class Visitor {
 
         transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 2.3);
 
-        if (this.angle == Math.PI/2){
-            graphics2D.drawImage(this.characterUp.get((int)this.animationCounter), transform, null);
-        } else if (this.angle == -Math.PI/2){
+        if (this.newAngle >= Math.PI/3 && this.newAngle <= Math.PI*2/3){
             graphics2D.drawImage(this.characterDown.get((int)this.animationCounter), transform, null);
-        } else if (this.angle > -Math.PI/2 && this.angle < Math.PI/2){
+        } else if (this.newAngle <= -Math.PI/3 && this.newAngle >= -Math.PI*2/3){
+            graphics2D.drawImage(this.characterUp.get((int)this.animationCounter), transform, null);
+        } else if (this.newAngle > -Math.PI/3 && this.newAngle < Math.PI/3){
             graphics2D.drawImage(this.characterRight.get((int)this.animationCounter), transform, null);
         } else {
             graphics2D.drawImage(this.characterLeft.get((int)this.animationCounter), transform, null);
