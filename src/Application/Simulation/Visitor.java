@@ -36,7 +36,20 @@ public class Visitor {
         this.angle = 0;
     }
 
-    public void update(ArrayList<Visitor> visitors) {
+    private void CreateImages() {
+//        for (int x = 0; x < 3; x++) {
+//            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
+//            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
+//            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
+//            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
+//        }
+    }
+
+    public void update(ArrayList<Visitor> visitors, double deltaTime) {
+//        this.animationCounter += (5*deltaTime);
+//        if (this.animationCounter > 3){
+//            this.animationCounter = 0;
+//        }
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
