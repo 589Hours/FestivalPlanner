@@ -60,7 +60,6 @@ public class Tile {
     }
 
     public ArrayList<Tile> getNeighbours() {
-        System.out.println("Tile: "+ this + " has neighbours " + neighbours);
         return neighbours;
     }
 

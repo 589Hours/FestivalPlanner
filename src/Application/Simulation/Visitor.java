@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Visitor {
 
@@ -18,13 +17,21 @@ public class Visitor {
     private double angle;
     private double speed;
     private double currentDistance = Integer.MAX_VALUE;
-    private BufferedImage image;
+    private BufferedImage spriteSheet;
     private Tile currentTile;
+    private ArrayList<BufferedImage> characterDown = new ArrayList<>();
+    private ArrayList<BufferedImage> characterLeft = new ArrayList<>();
+    private ArrayList<BufferedImage> characterRight = new ArrayList<>();
+    private ArrayList<BufferedImage> characterUp = new ArrayList<>();
+    private int imageWidth;
+    private int imageHeight;
+    private double animationCounter;
+    private double newAngle;
+    private double drinkCounter;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
-            this.image = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
-            this.image = image.getSubimage(0, 0, image.getWidth() / 11, image.getHeight() / 6);
+            this.spriteSheet = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -34,9 +41,29 @@ public class Visitor {
         this.targetPosition = position;
         this.speed = speed;
         this.angle = 0;
+        this.imageWidth = 47; // 45-50
+        this.imageHeight = 100;
+        CreateImages();
+        this.animationCounter = 0;
+        this.newAngle = 0;
+        this.drinkCounter = 0;
     }
 
-    public void update(ArrayList<Visitor> visitors) {
+    private void CreateImages() {
+        for (int x = 0; x < 3; x++) {
+            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
+            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
+            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
+        }
+    }
+
+    public void update(ArrayList<Visitor> visitors, double deltaTime) {
+        this.animationCounter += (5*deltaTime);
+        if (this.animationCounter > 3){
+            this.animationCounter = 0;
+        }
+        this.drinkCounter += (deltaTime*10)*Math.random();
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
@@ -61,7 +88,7 @@ public class Visitor {
             }
         }
 
-        double newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
+        newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
 
         double angleDifference = angle - newAngle;
 
@@ -107,11 +134,18 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - image.getWidth() /2 , position.getY() - image.getHeight() /1.5);
+        transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 2.3);
 
-        graphics2D.setColor(Color.red);
-        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
-        graphics2D.drawImage(this.image, transform, null);
+        if (this.newAngle >= Math.PI/3 && this.newAngle <= Math.PI*2/3){
+            graphics2D.drawImage(this.characterDown.get((int)this.animationCounter), transform, null);
+        } else if (this.newAngle <= -Math.PI/3 && this.newAngle >= -Math.PI*2/3){
+            graphics2D.drawImage(this.characterUp.get((int)this.animationCounter), transform, null);
+        } else if (this.newAngle > -Math.PI/3 && this.newAngle < Math.PI/3){
+            graphics2D.drawImage(this.characterRight.get((int)this.animationCounter), transform, null);
+        } else {
+            graphics2D.drawImage(this.characterLeft.get((int)this.animationCounter), transform, null);
+        }
+
         graphics2D.setColor(Color.green);
         graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
         graphics2D.setColor(Color.black);
@@ -121,4 +155,15 @@ public class Visitor {
         this.targetPosition = targetPosition;
     }
 
+    public double getDrinkCounter() {
+        return drinkCounter;
+    }
+
+    public void setDrinkCounter(double drinkCounter) {
+        this.drinkCounter = drinkCounter;
+    }
+
+    public void setPathFinder(PathFinder pathFinder) {
+        this.pathFinder = pathFinder;
+    }
 }
