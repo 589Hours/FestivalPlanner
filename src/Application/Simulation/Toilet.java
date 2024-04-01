@@ -76,7 +76,6 @@ public class Toilet {
         }
         if (this.animationStarted){
             this.animationTimer += deltatime;
-            System.out.println((int)animationTimer);
         }
     }
 

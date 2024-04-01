@@ -101,15 +101,15 @@ public class Simulation extends Application {
         Tile spawnTile = new Tile(126, 64);
         Tile toilets = graph.getNodes()[98][18];
 
-        Tile toilet1 = graph.getNodes()[94][7];
-        Tile toilet2 = graph.getNodes()[94][9];
-        Tile toilet3 = graph.getNodes()[94][11];
-        Tile toilet4 = graph.getNodes()[94][13];
-        Tile toilet5 = graph.getNodes()[94][15];
-        Tile toilet6 = graph.getNodes()[94][17];
-        Tile toilet7 = graph.getNodes()[94][19];
-        Tile toilet8 = graph.getNodes()[94][21];
-        Tile toilet9 = graph.getNodes()[94][23];
+        Tile toilet1 = graph.getNodes()[95][7];
+        Tile toilet2 = graph.getNodes()[95][9];
+        Tile toilet3 = graph.getNodes()[95][11];
+        Tile toilet4 = graph.getNodes()[95][13];
+        Tile toilet5 = graph.getNodes()[95][15];
+        Tile toilet6 = graph.getNodes()[95][17];
+        Tile toilet7 = graph.getNodes()[95][19];
+        Tile toilet8 = graph.getNodes()[95][21];
+        Tile toilet9 = graph.getNodes()[95][23];
 
         alphaPathFinder = new PathFinder(alphaStage, graph, collisionLayer);
         betaPathFinder = new PathFinder(betaStage, graph, collisionLayer);
@@ -192,25 +192,31 @@ public class Simulation extends Application {
                 visitors.add(visitor);
             }
         }
+
         for (Visitor visitor : visitors) {
             visitor.update(visitors, deltaTime);
 
-            if (visitor.getDrinkCounter() >= 100) {
+            if (visitor.getDrinkCounter() >= 100 && !visitor.isGoingToToilet()) {
                 visitor.setPrevPathFinder(visitor.getPathFinder());
                 if (!visitor.getPathFinder().equals(toiletPathFinder)) {
                     System.out.println("Er moet iemand naar het toilet");
                     visitor.setPathFinder(toiletPathFinder);
+                    visitor.setGoingToToilet(true);
                     visitor.setDrinkCounter(0);
                 }
-                if (visitor.getCurrentTile().equals(visitor.getPathFinder().getTargetTile())) {
-                    for (Toilet toilet : toilets) {
-                        if (!toilet.isOccupied()) {
-                            toilet.setAnimationStarted(true);
-                            visitor.setPathFinder(toiletsPaths.get(toilets.indexOf(toilet)));
-                            break;
-                        }
+            }
+            if (visitor.getCurrentTile().toString().equals(visitor.getPathFinder().getTargetTile().toString()) &&
+            visitor.isGoingToToilet()) {
+                for (Toilet toilet : toilets) {
+                    if (!toilet.isOccupied()) {
+                        System.out.println("gaat toilet in: " + toilet);
+                        toilet.setAnimationStarted(true);
+                        visitor.setPathFinder(toiletsPaths.get(toilets.indexOf(toilet)));
+                        break;
                     }
                 }
+
+
             }
             for (Toilet toilet : toilets) {
                 if (toilet.isAnimationStarted()) {
@@ -225,6 +231,7 @@ public class Simulation extends Application {
                     } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
                         visitor.setInToilet(false);
                         visitor.setPathFinder(visitor.getPrevPathFinder());
+                        visitor.setGoingToToilet(false);
                     } else {
                         toilet.setOccupied(false);
                         toilet.setAnimationStarted(false);
@@ -234,6 +241,7 @@ public class Simulation extends Application {
                 }
             }
         }
+
         timer++;
     }
 }

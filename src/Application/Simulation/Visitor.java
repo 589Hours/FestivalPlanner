@@ -29,6 +29,7 @@ public class Visitor {
     private double newAngle;
     private double drinkCounter;
     private boolean isInToilet;
+    private boolean isGoingToToilet;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
@@ -42,13 +43,14 @@ public class Visitor {
         this.targetPosition = position;
         this.speed = speed;
         this.angle = 0;
-        this.imageWidth = 47; // 45-50
+        this.imageWidth = 48;
         this.imageHeight = 100;
         CreateImages();
         this.animationCounter = 0;
         this.newAngle = 0;
         this.drinkCounter = 0;
         this.isInToilet = false;
+        this.isGoingToToilet = false;
     }
 
     private void CreateImages() {
@@ -136,7 +138,7 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 2.3);
+        transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 1.25);
 
         if (this.newAngle >= Math.PI/3 && this.newAngle <= Math.PI*2/3){
             graphics2D.drawImage(this.characterDown.get((int)this.animationCounter), transform, null);
@@ -203,6 +205,14 @@ public class Visitor {
 
     public void setInToilet(boolean inToilet) {
         isInToilet = inToilet;
+    }
+
+    public boolean isGoingToToilet() {
+        return isGoingToToilet;
+    }
+
+    public void setGoingToToilet(boolean goingToToilet) {
+        isGoingToToilet = goingToToilet;
     }
 
     public PathFinder getPrevPathFinder() {
