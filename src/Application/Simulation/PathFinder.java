@@ -18,10 +18,12 @@ public class PathFinder {
     private Tile spawnTile;
     private Graph graph;
 
-    public PathFinder(Tile targetTile, Graph graph) {
+    public PathFinder(Tile targetTile, Graph graph, int[][] collisionLayer) {
         this.targetTile = targetTile;
         this.graph = graph;
+        this.collisionLayer = collisionLayer;
     }
+
     // CollisionID = 78225
     // LocatieID = 78224
 

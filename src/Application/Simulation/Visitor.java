@@ -46,38 +46,40 @@ public class Visitor {
     }
 
     private void CreateImages() {
-
-        for (int x = 0; x < 3; x++) {
-            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
-            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
-            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
-            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
-        }
+//        for (int x = 0; x < 3; x++) {
+//            this.characterDown.add(spriteSheet.getSubimage(x * this.imageWidth, 0, this.imageWidth, this.imageHeight));
+//            this.characterLeft.add(spriteSheet.getSubimage(x * this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight));
+//            this.characterRight.add(spriteSheet.getSubimage(x * this.imageWidth, 2 * this.imageHeight, this.imageWidth, this.imageHeight));
+//            this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
+//        }
     }
 
     public void update(ArrayList<Visitor> visitors, double deltaTime) {
-        this.animationCounter += (5*deltaTime);
-        if (this.animationCounter > 3){
-            this.animationCounter = 0;
-        }
-        for (Tile tile : currentTile.getNeighbours()) {
+//        this.animationCounter += (5*deltaTime);
+//        if (this.animationCounter > 3){
+//            this.animationCounter = 0;
+//        }
 
-            if (this.pathFinder.path.get(tile) == null)
-                continue;
+        if (position.distance(targetPosition) < 20) {
+            for (Tile tile : currentTile.getNeighbours()) {
 
-            int newDistance = this.pathFinder.path.get(tile);
+                if (this.pathFinder.path.get(tile) == null)
+                    continue;
 
-            if (newDistance < currentDistance) {
-                currentDistance = newDistance;
+                int newDistance = this.pathFinder.path.get(tile);
 
-                double x = tile.getPointX();
-                double y = tile.getPointY();
+                if (newDistance < currentDistance) {
+                    currentDistance = newDistance;
 
-                this.targetPosition = new Point2D.Double(x, y);
-                this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x/32, y/32));
+                    double x = tile.getPointX();
+                    double y = tile.getPointY();
 
-                //break when a closer tile is found
-                break;
+                    this.targetPosition = new Point2D.Double(x, y);
+                    this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x / 32, y / 32));
+
+                    //break when a closer tile is found
+                    break;
+                }
             }
         }
 
