@@ -48,16 +48,14 @@ public class Visitor {
         ArrayList<Performance> sameTimePerformances = new ArrayList<>();
         ArrayList<Performance> sortedPerformance = new ArrayList<>(festivalPlan.getPerformances());
         Collections.sort(sortedPerformance, new CustomHourComparator());
+
         for (Performance performance : sortedPerformance) {
             if (totalPopularity == 0) {
                 totalPopularity = performance.getArtist().getPopularity();
                 sameTimePerformances.add(performance);
                 lastBeginMin = performance.getBeginMinute();
                 lastBeginHour = performance.getBeginHour();
-                continue;
-            }
-
-            if (performance.getBeginMinute() == lastBeginMin && performance.getBeginHour() == lastBeginHour) {
+            } else if (performance.getBeginMinute() == lastBeginMin && performance.getBeginHour() == lastBeginHour) {
                 totalPopularity += performance.getArtist().getPopularity();
                 sameTimePerformances.add(performance);
             } else {
@@ -125,7 +123,7 @@ public class Visitor {
                 sameTimePerformances.add(performance);
                 totalPopularity = performance.getArtist().getPopularity();
             }
-            totalPopularity += performance.getArtist().getPopularity();
+//            totalPopularity += performance.getArtist().getPopularity();
         }
         for (Performance performance1 : planning) {
             System.out.println(performance1);
