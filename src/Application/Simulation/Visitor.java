@@ -25,6 +25,7 @@ public class Visitor {
     private ArrayList<BufferedImage> characterUp = new ArrayList<>();
     private int imageWidth;
     private int imageHeight;
+    private double animationCounter;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed) {
         try {
@@ -38,9 +39,10 @@ public class Visitor {
         this.targetPosition = position;
         this.speed = speed;
         this.angle = 0;
-        this.imageWidth = 50;
-        this.imageHeight = 130;
+        this.imageWidth = 47; // 45-50
+        this.imageHeight = 100;
         CreateImages();
+        this.animationCounter = 0;
     }
 
     private void CreateImages() {
@@ -53,7 +55,11 @@ public class Visitor {
         }
     }
 
-    public void update(ArrayList<Visitor> visitors) {
+    public void update(ArrayList<Visitor> visitors, double deltaTime) {
+        this.animationCounter += (5*deltaTime);
+        if (this.animationCounter > 3){
+            this.animationCounter = 0;
+        }
         for (Tile tile : currentTile.getNeighbours()) {
 
             if (this.pathFinder.path.get(tile) == null)
@@ -123,8 +129,16 @@ public class Visitor {
 
         transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 2.3);
 
-        
-        graphics2D.drawImage(this.characterDown.get(0), transform, null);
+        if (this.angle == Math.PI/2){
+            graphics2D.drawImage(this.characterUp.get((int)this.animationCounter), transform, null);
+        } else if (this.angle == -Math.PI/2){
+            graphics2D.drawImage(this.characterDown.get((int)this.animationCounter), transform, null);
+        } else if (this.angle > -Math.PI/2 && this.angle < Math.PI/2){
+            graphics2D.drawImage(this.characterRight.get((int)this.animationCounter), transform, null);
+        } else {
+            graphics2D.drawImage(this.characterLeft.get((int)this.animationCounter), transform, null);
+        }
+
         graphics2D.setColor(Color.green);
         graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
         graphics2D.setColor(Color.black);

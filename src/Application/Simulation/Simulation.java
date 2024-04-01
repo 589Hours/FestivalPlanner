@@ -128,7 +128,7 @@ public class Simulation extends Application {
             }
         }
         for (Visitor visitor : visitors) {
-            visitor.update(visitors);
+            visitor.update(visitors, deltaTime);
         }
         timer++;
     }
