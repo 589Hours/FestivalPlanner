@@ -67,7 +67,7 @@ public class ArtistAdd {
             confirmation.showAndWait(); // Hier wordt de alert getoond.
 
             artistStage.close(); // Hier wordt de venster gesloten.
-        });
+        }); //haha
         cancelButton.setOnAction(event -> { // Hier wordt de cancel button aangemaakt.
             artistStage.close(); // Hier wordt de venster gesloten.
         });

@@ -47,16 +47,17 @@ public class GUI extends Application {
 
         festivalPlan = new FestivalPlan();
         saveFilePath = "Saves/SaveFile.ser";
-        try{
+        try {
 
             FileInputStream fis = new FileInputStream(saveFilePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
             festivalPlan = (FestivalPlan) ois.readObject();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("file not found or class not found!");
         }
-
+        // Initialisatie van het menu
         MenuBar menuBar = new MenuBar();
+        // Menu's voor weergave, creatie, bewerking, verwijdering en opslaan/laden
         Menu viewMenu = new Menu("View");
         MenuItem viewBegin = new MenuItem("BeginView");
         MenuItem viewTable = new MenuItem("Tableview");
@@ -75,9 +76,9 @@ public class GUI extends Application {
         editMenu.getItems().addAll(editStage, editArtist);
 
         Menu deleteMenu = new Menu("Delete");
-        MenuItem  deleteStage = new MenuItem("Podium");
-        MenuItem  deleteArtist = new MenuItem("Artist");
-        MenuItem  deletePerformance = new MenuItem("Performance");
+        MenuItem deleteStage = new MenuItem("Podium");
+        MenuItem deleteArtist = new MenuItem("Artist");
+        MenuItem deletePerformance = new MenuItem("Performance");
         deleteMenu.getItems().addAll(deleteStage, deleteArtist, deletePerformance);
 
         Menu saveAndLoadMenu = new Menu("Save & Load");
@@ -111,12 +112,12 @@ public class GUI extends Application {
         });
 
         loadAgenda.setOnAction(event -> {
-            try{
+            try {
                 FileInputStream fis = new FileInputStream(saveFilePath);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 festivalPlan = (FestivalPlan) ois.readObject();
                 succesPopup("File successfully loaded!");
-            } catch (Exception e){
+            } catch (Exception e) {
                 fileNotFoundNotification(1);
                 System.out.println("file not found or class not found!");
             }
@@ -141,7 +142,7 @@ public class GUI extends Application {
                     PrintWriter printWriter = new PrintWriter(saveFilePath);
                     printWriter.write("");
                     printWriter.close();
-                } catch (IOException e){
+                } catch (IOException e) {
                     fileNotFoundNotification(2);
                 }
                 succesPopup("Successfully cleared the agenda and save file");
@@ -176,12 +177,12 @@ public class GUI extends Application {
         });
 
         deletePerformance.setOnAction(event -> {
-            new DeletePerformance(festivalPlan,festivalBlockview);
+            new DeletePerformance(festivalPlan, festivalBlockview);
         });
 
-        // MouseClick
+        // MouseClick events
         canvasBlockView.setOnMousePressed(event -> {
-            if (borderPane.getCenter() == canvasBlockView){
+            if (borderPane.getCenter() == canvasBlockView) {
                 Point2D point2D = new Point2D.Double(event.getX(), event.getY());
                 if (festivalBlockview.checkClicked(point2D) != null) {
                     Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -189,7 +190,7 @@ public class GUI extends Application {
                     info.setHeaderText(festivalBlockview.checkClicked(point2D).getArtist().getName());
                     info.setContentText("Podium: " + festivalBlockview.checkClicked(point2D).getStage().getName() + "\n" +
                             "Tijd: " + festivalBlockview.checkClicked(point2D).getBeginTime() + " - " +
-                                    festivalBlockview.checkClicked(point2D).getEndTime() + "\n" +
+                            festivalBlockview.checkClicked(point2D).getEndTime() + "\n" +
                             "Genre: " + festivalBlockview.checkClicked(point2D).getArtist().getGenre() + "\n" +
                             "ArtiestBeschrijving: " + festivalBlockview.checkClicked(point2D).getArtist().getArtistInfo());
                     info.showAndWait();
@@ -198,16 +199,16 @@ public class GUI extends Application {
             }
         });
         canvas.setOnMousePressed(event -> {
-            if (borderPane.getCenter() == canvas){
+            if (borderPane.getCenter() == canvas) {
                 Point2D point2D = new Point2D.Double(event.getX(), event.getY());
                 if (beginScreen.checkClicked(point2D) != null) {
-                    if (beginScreen.checkClicked(point2D).equals("TableView")){
+                    if (beginScreen.checkClicked(point2D).equals("TableView")) {
                         FestivalTableview festivalTableview = new FestivalTableview(festivalPlan);
                         borderPane.setCenter(festivalTableview);
-                    } else if (beginScreen.checkClicked(point2D).equals("BlockView")){
+                    } else if (beginScreen.checkClicked(point2D).equals("BlockView")) {
                         festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
                         borderPane.setCenter(canvasBlockView);
-                    } else if (beginScreen.checkClicked(point2D).equals("StartSimulation")){
+                    } else if (beginScreen.checkClicked(point2D).equals("StartSimulation")) {
                         try {
                             new Simulation().init();
                             started = true;
@@ -218,16 +219,18 @@ public class GUI extends Application {
                 }
             }
         });
-
+        // toevoegen van de menubalk aan de bovenkant van de BorderPane
         borderPane.setTop(menuBar);
-
+        // Initiële weergave van het beginscherm
         beginScreen.draw(beginScreen.getFxGraphics2D());
         borderPane.setCenter(canvas);
 
+        // KNop voor het starten van de simulatie
         Button simulationButton = new Button("Start simulation");
         borderPane.setBottom(simulationButton);
 
-        simulationButton.setOnAction(event ->  {
+// Event handler voor de simulatieknop
+        simulationButton.setOnAction(event -> {
             try {
                 new Simulation().init();
                 started = true;
@@ -245,9 +248,10 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
+    // Methode voor het tonen van een melding als het bestand niet is gevonden
     private void fileNotFoundNotification(int errorType) {
         Alert fileNotFound = new Alert(Alert.AlertType.ERROR);
-        if (errorType == 1){
+        if (errorType == 1) {
             fileNotFound.setContentText("Could not find a file to load!");
         } else {
             fileNotFound.setContentText("Could not find a file to clear!");
@@ -255,9 +259,10 @@ public class GUI extends Application {
         fileNotFound.showAndWait();
     }
 
-    public static void succesPopup(String contextString){
+    // Methode voor het tonen van een succesmelding
+    public static void succesPopup(String contextString) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Succes!");
+        alert.setHeaderText("Success!");
         alert.setContentText(contextString);
         alert.showAndWait();
     }
