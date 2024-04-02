@@ -212,6 +212,7 @@ public class Simulation extends Application {
                     System.out.println("checking toilet: " + toilet);
                     if (!toilet.isOccupied() && !visitor.isGoingToToilet()) {
                         System.out.println("gaat toilet in: " + toilet);
+                        visitor.setCurrentToilet(toilet);
                         visitor.setGoingToToilet(true);
                         toilet.setAnimationStarted(true);
                         visitor.setPathFinder(toiletsPaths.get(toilets.indexOf(toilet)));
@@ -219,11 +220,8 @@ public class Simulation extends Application {
                     }
                 }
             }
-//            if (toiletsPaths.contains(visitor.getPathFinder())){
-//                visitor.setGoingToToilet(true);
-//            }
             for (Toilet toilet : toilets) {
-                if (toilet.isAnimationStarted()) {
+                if (toilet.isAnimationStarted() && visitor.getCurrentToilet() == toilet) {
                     if (toilet.getAnimationTimer() >= 0 && toilet.getAnimationTimer() < 5) {
                         toilet.setOccupied(true);
                     } else if (toilet.getAnimationTimer() >= 5 && toilet.getAnimationTimer() < 15) {
@@ -235,10 +233,9 @@ public class Simulation extends Application {
                     } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
                         visitor.setDrinkCounter(0);
                         visitor.setInToilet(false);
-                        visitor.setPathFinder(alphaPathFinder);
+                        visitor.setPathFinder(toiletPathFinder);
                         visitor.setGoingToToilet(false);
                     } else {
-
                         visitor.setPathFinder(visitor.getPrevPathFinder());
                         toilet.setOccupied(false);
                         toilet.setAnimationStarted(false);
