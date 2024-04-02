@@ -1,5 +1,6 @@
 package Application.Simulation;
 
+import com.sun.xml.internal.ws.api.client.WSPortInfo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -184,7 +185,7 @@ public class Simulation extends Application {
             toilet.update(deltaTime);
         }
         if (timer % 144 == 0) {
-            if (visitors.size() < 5) {
+            if (visitors.size() < 50) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126 * 32, 64 * 32),
                         alphaPathFinder,
@@ -224,19 +225,23 @@ public class Simulation extends Application {
                 if (toilet.isAnimationStarted() && visitor.getCurrentToilet() == toilet) {
                     if (toilet.getAnimationTimer() >= 0 && toilet.getAnimationTimer() < 5) {
                         toilet.setOccupied(true);
+                        System.out.println("0 tot 5");
                     } else if (toilet.getAnimationTimer() >= 5 && toilet.getAnimationTimer() < 15) {
                         if (visitor.getCurrentTile().equals(visitor.getPathFinder().getTargetTile())) {
                             visitor.setInToilet(true);
                         }
+                        System.out.println("5 tot 15");
                     } else if (toilet.getAnimationTimer() >= 15 && toilet.getAnimationTimer() < 23) {
-
+                        System.out.println("15 tot 23");
                     } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
+                        System.out.println("23 tot 30");
                         visitor.setDrinkCounter(0);
                         visitor.setInToilet(false);
-                        visitor.setPathFinder(toiletPathFinder);
                         visitor.setGoingToToilet(false);
                     } else {
+                        System.out.println("else");
                         visitor.setPathFinder(visitor.getPrevPathFinder());
+                        visitor.setCurrentToilet(null);
                         toilet.setOccupied(false);
                         toilet.setAnimationStarted(false);
                         toilet.setStatus(0);

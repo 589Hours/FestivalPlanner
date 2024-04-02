@@ -76,7 +76,7 @@ public class Visitor {
         if ((int)this.animationCounter >= 3){
             this.animationCounter = 0;
         }
-       
+
         this.drinkCounter += deltaTime*Math.random();
 
         if (position.distance(targetPosition) < 20) {
