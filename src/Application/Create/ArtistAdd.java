@@ -51,6 +51,14 @@ public class ArtistAdd {
                 error.getDialogPane().setContent(new Label("Either a textfield is left empty or the given popularity is not between 0-100"));
                 error.show();
             } else {
+                for (Artist artist : festivalPlan.getArtists()) {
+                    if (artist.getName().equals(artistNameText.getText())){
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.getDialogPane().setContent(new Label("This artist already exists!"));
+                        error.show();
+                        return;
+                    }
+                }
                 if (description.getText().equals("Optional")){
                     festivalPlan.addArtist(new Artist(artistNameText.getText(), Integer.parseInt(artistPop.getText()), artistGenreText.getText()));
                 } else {
