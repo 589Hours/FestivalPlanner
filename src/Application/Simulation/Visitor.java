@@ -92,10 +92,11 @@ public class Visitor {
 
                 switch (sameTimePerformances.size()) {
                     case 1:
+                        randomInt = random.nextInt(100);
                         if(sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
                             planning.add(sameTimePerformances.get(0));
-                            break;
                         }
+                        break;
 
                     case 2:
                         if (sameTimePerformances.get(0).getArtist().getPopularity() >= randomInt) {
@@ -335,6 +336,7 @@ public class Visitor {
 
         //get the distanceValue from current Tile in another pathfinder
         int newPathCurrentDistanceValue = this.pathFinder.path.get(this.currentTile);
+        this.currentDistance = newPathCurrentDistanceValue;
 
         //initialize the first target tile so the npc moves
         for (Tile neighbour : this.currentTile.getNeighbours()) {

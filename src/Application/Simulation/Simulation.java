@@ -206,7 +206,7 @@ public class Simulation {
             toilet.update(deltaTime);
         }
         if (counter % 90 == 0) {
-            if (visitors.size() < 100) {
+            if (visitors.size() < 1) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126 * 32, 64 * 32),
                         alphaPathFinder,
