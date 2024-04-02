@@ -5,11 +5,15 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Visitor {
+    private String name;
+    private int age;
+
     private PathFinder prevPathFinder;
     private PathFinder pathFinder;
     private Point2D position;
@@ -32,7 +36,7 @@ public class Visitor {
     private boolean isInToilet;
     private boolean isGoingToToilet;
 
-    public Visitor(Point2D position, PathFinder pathFinder, double speed) {
+    public Visitor(Point2D position, PathFinder pathFinder, double speed, String name, int age) {
         try {
             this.spriteSheet = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
         } catch (IOException e) {
@@ -52,6 +56,8 @@ public class Visitor {
         this.drinkCounter = 0;
         this.isInToilet = false;
         this.isGoingToToilet = false;
+        this.name = name;
+        this.age = age;
     }
 
     private void CreateImages() {
@@ -141,6 +147,8 @@ public class Visitor {
         AffineTransform transform = new AffineTransform();
 
         transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 1.25);
+        graphics2D.draw(new Rectangle2D.Double(position.getX() - this.imageWidth / 2.25, position.getY() - this.imageHeight / 1.25,
+        this.imageWidth, this.imageHeight));
 
         if (this.newAngle >= Math.PI/3 && this.newAngle <= Math.PI*2/3){
             graphics2D.drawImage(this.characterDown.get((int)this.animationCounter), transform, null);
@@ -159,6 +167,15 @@ public class Visitor {
         graphics2D.setColor(Color.green);
         graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10,10));
         graphics2D.setColor(Color.black);
+    }
+
+    public boolean isClickedOnMe(Point2D point){
+        //TODO: deze if fixen
+        if (point.getX() > position.getX() - this.imageWidth / 2.25 && point.getX() < position.getX() - this.imageWidth / 2.25 + this.imageWidth
+        && point.getY() > position.getY() - this.imageHeight / 1.25 && point.getY() < position.getY() - this.imageHeight / 1.25 + this.imageWidth){
+            return true;
+        }
+        return false;
     }
 
     public Tile getCurrentTile() {
@@ -223,5 +240,25 @@ public class Visitor {
 
     public void setPrevPathFinder(PathFinder prevPathFinder) {
         this.prevPathFinder = prevPathFinder;
+    }
+
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
     }
 }
