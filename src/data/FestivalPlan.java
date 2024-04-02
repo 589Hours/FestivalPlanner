@@ -12,7 +12,7 @@ public class FestivalPlan implements Serializable {
         this.performances = new ArrayList<>();
         this.artists = new ArrayList<>();
         this.stages = new ArrayList<>();
-        addTestData();
+//        addTestData();
     }
 
     private void addTestData() {
