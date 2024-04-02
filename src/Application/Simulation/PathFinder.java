@@ -26,7 +26,7 @@ public class PathFinder {
     // CollisionID = 78225
     // LocatieID = 78224
 
-
+    // Methode om de afstandkaart te berekenen met behulp van de grafiek
     public void calculateDistanceMapWithGraph(){
         Queue<Tile> todo = new LinkedList();
 
@@ -38,9 +38,12 @@ public class PathFinder {
             Tile current = todo.poll();
 
             for (Tile neighbor : current.getNeighbours()) {
+                // Controleer of de buurman geen botsingstegel is
                 if (collisionLayer[neighbor.getY()][neighbor.getX()] != collisionTileID){
+                    // Als de buurman nog niet in het pad is opgenomen, voeg deze toe aan de te doen lijst
                     if (!path.containsKey(neighbor)){
                         todo.add(neighbor);
+                        // Update de afstand tot de buurman
                         path.put(neighbor, path.get(current)+1);
                     }
                 }
@@ -51,11 +54,12 @@ public class PathFinder {
         }
     }
 
+    // Methode om de afstand tot elke tegel op het pad te tekenen
     public void draw(Graphics2D graphics) {
         for (Tile tile : path.keySet()) {
             double x = tile.getX()*32;
             double y = tile.getY()*32;
-            
+
             graphics.setColor(Color.BLACK);
             graphics.drawString(Integer.toString(path.get(tile)), (int) x, (int) y);
         }

@@ -75,6 +75,7 @@ public class Simulation {
     public void start(FestivalPlan festivalPlan) {
         Stage stage = new Stage();
         BorderPane mainPane = new BorderPane();
+        // Canvas maken en instellen
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
         canvas.setHeight(1024);
@@ -96,7 +97,7 @@ public class Simulation {
         mainPane.setTop(emergency);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
 
-        Tile spawnTile = new Tile(126, 64);
+        // Starten van de animatietimer voor het bijwerken en tekenen
         new AnimationTimer() {
             long last = -1;
 
@@ -110,6 +111,7 @@ public class Simulation {
             }
         }.start();
 
+        // Scene instellen en tonen
         stage.setScene(new Scene(mainPane));
         stage.setTitle("Festival Planner");
         stage.show();
@@ -268,7 +270,7 @@ public class Simulation {
 
     }
 
-
+    // Methode voor tekenen van de simulatie
     public void draw(Graphics2D g) {
         g.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         g.setBackground(Color.black);
@@ -287,6 +289,7 @@ public class Simulation {
         g.setTransform(new AffineTransform());
     }
 
+    // Methode voor bijwerken van de simulatie
     public void update(double deltaTime) {
         for (Toilet toilet : toilets) {
             toilet.update(deltaTime);

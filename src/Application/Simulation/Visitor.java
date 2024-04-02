@@ -48,11 +48,13 @@ public class Visitor {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // Padzoeker en positie instellen
         this.pathFinder = pathFinder;
         this.position = position;
         this.currentTile = this.pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
         this.targetPosition = position;
         this.speed = speed;
+        // Hoek initialiseren op 0
         this.angle = 0;
         this.imageWidth = 48;
         this.imageHeight = 100;
@@ -181,15 +183,15 @@ public class Visitor {
         newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
 
         double angleDifference = angle - newAngle;
-
+        // Hoekverschil binnen bereik van -pi tot pi houden
         while (angleDifference > Math.PI) {
             angleDifference -= 2 * Math.PI;
         }
-
         while (angleDifference < -Math.PI) {
             angleDifference += 2 * Math.PI;
         }
 
+        // Hoek aanpassen op basis van het hoekverschil
         if (angleDifference < -0.1) {
             angle += 0.1;
         } else if (angleDifference > 0.1) {
@@ -198,13 +200,15 @@ public class Visitor {
             angle = newAngle;
         }
 
+        // Nieuwe positie berekenen op basis van snelheid en hoek
         Point2D newPosition = new Point2D.Double(
                 position.getX() + speed * Math.cos(angle) * 1500,
                 position.getY() + speed * Math.sin(angle) * 1500
         );
 
-        boolean collision = false;
+        boolean collision = false; // Variabele om botsing te controleren
 
+        // Controleren op botsingen met andere bezoekers
         for (Visitor visitor : visitors) {
             if (visitor != this && !emergency) {
                 //32 so the heads can collide (giving the 2.5D effect we want)
@@ -258,12 +262,13 @@ public class Visitor {
         }
 
         if (!collision) {
-            this.position = newPosition;
+            this.position = newPosition; // Positie bijwerken naar de nieuwe positie
         } else {
-            this.angle += 0.2;
+            this.angle += 0.2; // Hoek verhogen als er een botsing is
         }
     }
 
+    // Methode om de bezoeker op het scherm te tekenen
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 

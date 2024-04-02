@@ -28,8 +28,8 @@ public class Map {
 
     public Map(String fileName, FestivalPlan festivalPlan, Simulation simulation) {
         JsonReader reader = null;
-        reader = Json.createReader(getClass().getResourceAsStream(fileName));
-        JsonObject root = reader.readObject();
+        reader = Json.createReader(getClass().getResourceAsStream(fileName)); // JSON-lezer initialiseren
+        JsonObject root = reader.readObject(); // Root JSON-object ophalen
         String imageFileName;
         nightOpacity = 0f;
         sim = simulation;
@@ -37,14 +37,15 @@ public class Map {
         this.height = root.getInt("height");
 
         try {
+            // Tegelsets inladen
             for (int i = 0; i < 7; i++) {
                 imageFileName = "/" + root.getJsonArray("tilesets").getJsonObject(i).getString("image");
                 tilesets.add(ImageIO.read(getClass().getResourceAsStream(imageFileName)));
             }
-            this.tileHeight = root.getJsonArray("tilesets").getJsonObject(0).getInt("tileheight");
-            this.tileWidth = root.getJsonArray("tilesets").getJsonObject(0).getInt("tilewidth");
+            this.tileHeight = root.getJsonArray("tilesets").getJsonObject(0).getInt("tileheight"); // Tegelhoogte ophalen
+            this.tileWidth = root.getJsonArray("tilesets").getJsonObject(0).getInt("tilewidth"); // Tegelbreedte ophalen
 
-
+            // Tegelafbeeldingen creëren
             for (BufferedImage tileset : tilesets) {
                 for (int y = 0; y <= tileset.getHeight() - tileHeight; y += tileHeight) {
                     for (int x = 0; x <= tileset.getWidth() - tileWidth; x += tileWidth) {
@@ -60,33 +61,35 @@ public class Map {
             String type = root.getJsonArray("layers").getJsonObject(i).getString("type");
             String layerName = root.getJsonArray("layers").getJsonObject(i).getString("name");
             if (type.equals("tilelayer")){
-                Layer layer = new Layer(root, width, height, i, tiles);
+                Layer layer = new Layer(root, width, height, i, tiles); // Nieuwe laag aanmaken
                 if (layerName.equals("Collision")){
                     collisionLayer = layer.getCollisionLayer();
                 }
-                layers.add(layer);
+                layers.add(layer); // Laag toevoegen aan de lijst
             }
         }
 
         createEndImage();
         layers.clear();
 
+        // Nachtlaag toevoegen
         Layer nightLayer = new Layer(root, width, height, 19, tiles);
         layers.add(nightLayer);
+        // Nachtdecoratielaag toevoegen
         Layer nightDecoration = new Layer(root, width, height, 20, tiles);
         layers.add(nightDecoration);
-        setUpNightImage();
+        setUpNightImage(); // Nachtmodusafbeelding instellen
     }
 
+    private BufferedImage endImage; // Eindafbeelding van de kaart
+    private BufferedImage nightLayer; // Nachtmodusafbeelding van de kaart
 
-    private BufferedImage endImage;
-    private BufferedImage nightLayer;
-
+    // Methode om de eindafbeelding van de kaart te maken
     private void createEndImage() {
         this.endImage = new BufferedImage(32 * width, 32 * height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = this.endImage.createGraphics();
         for (Layer layer : layers) {
-            layer.draw(g);
+            layer.draw(g); // Elke laag tekenen op de eindafbeelding
         }
     }
 
@@ -94,10 +97,11 @@ public class Map {
         this.nightLayer = new BufferedImage(32 * width, 32 * height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = this.nightLayer.createGraphics();
         for (Layer layer : layers) {
-            layer.draw(g);
+            layer.draw(g); // Elke laag tekenen op de nachtmodusafbeelding
         }
     }
 
+    // Methode om de kaart te tekenen
     public void draw(Graphics2D g) {
         String timeString;
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
