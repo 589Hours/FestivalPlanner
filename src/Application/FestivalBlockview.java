@@ -1,16 +1,13 @@
 package Application;
 
-import data.Artist;
 import data.FestivalPlan;
 import data.Performance;
 import org.jfree.fx.FXGraphics2D;
-import sun.misc.Perf;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FestivalBlockview extends Canvas {
@@ -197,6 +194,10 @@ public class FestivalBlockview extends Canvas {
             }
         }
         blocks.remove(delete);
+    }
+
+    public void deleteAllBlocks(){
+        blocks.clear();
     }
 
     public FXGraphics2D getFxGraphics2D() {

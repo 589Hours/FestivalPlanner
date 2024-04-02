@@ -93,17 +93,11 @@ public class FestivalPlan implements Serializable {
         return performances;
     }
 
-    public void setPerformances(ArrayList<Performance> performances) {
-        this.performances = performances;
-    }
 
     public ArrayList<Artist> getArtists() {
         return artists;
     }
 
-    public void setArtists(ArrayList<Artist> artists) {
-        this.artists = artists;
-    }
 
     public ArrayList<Stage> getStages() {
         return stages;
