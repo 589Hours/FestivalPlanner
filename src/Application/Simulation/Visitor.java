@@ -37,6 +37,7 @@ public class Visitor {
     private boolean isGoingToToilet;
     private Toilet currentToilet;
     private double foodcounter;
+    private boolean isOnTerrain;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed, String name, int age) {
         try {
