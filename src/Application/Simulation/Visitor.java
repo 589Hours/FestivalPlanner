@@ -35,6 +35,7 @@ public class Visitor {
     private double drinkCounter;
     private boolean isInToilet;
     private boolean isGoingToToilet;
+    private Toilet currentToilet;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed, String name, int age) {
         try {
@@ -56,6 +57,7 @@ public class Visitor {
         this.drinkCounter = 0;
         this.isInToilet = false;
         this.isGoingToToilet = false;
+        this.currentToilet = null;
         this.name = name;
         this.age = age;
     }
@@ -190,12 +192,21 @@ public class Visitor {
         return drinkCounter;
     }
 
+    public Toilet getCurrentToilet() {
+        return currentToilet;
+    }
+
+    public void setCurrentToilet(Toilet currentToilet) {
+        this.currentToilet = currentToilet;
+    }
+
     public void setDrinkCounter(double drinkCounter) {
         this.drinkCounter = drinkCounter;
     }
 
     public void setPathFinder(PathFinder pathFinder) {
         this.pathFinder = pathFinder;
+        this.targetPosition = this.position;
 
         //get the distanceValue from current Tile in another pathfinder
         int newPathCurrentDistanceValue = this.pathFinder.path.get(this.currentTile);
