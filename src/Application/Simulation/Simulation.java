@@ -370,8 +370,21 @@ public class Simulation extends Application {
                 Alert visitorInfo = new Alert(Alert.AlertType.INFORMATION);
                 visitorInfo.setTitle(visitor.getName());
                 visitorInfo.setHeaderText(visitor.getName());
+                String plan = "";
+                if (toilets.contains(visitor.getPathFinder())){
+                    plan = "De wc";
+                } else if (visitor.getPathFinder().equals(toiletPathFinder)){
+                    plan = "De wc";
+                } else if (foodStands.contains(visitor.getPathFinder())){
+                    plan = "Een foodtruck";
+                } else if (visitor.getPathFinder().equals(exitPathFinder)){
+                    plan = "De uitgang";
+                } else {
+                    plan = "Een podium";
+                }
                 visitorInfo.setContentText("Naam: " + visitor.getName() +
                         "\n" + "Leeftijd: " + visitor.getAge() +
+                        "\n" + "Gaat naar: " + plan+
                         "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%" +
                         "\n" + "Maag: " + (int)visitor.getFoodcounter() + "%");
                 visitorInfo.showAndWait();
