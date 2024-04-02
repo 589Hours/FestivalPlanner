@@ -44,6 +44,8 @@ public class Visitor {
     private boolean isGoingToToilet;
     private Toilet currentToilet;
     private ArrayList<Performance> planning;
+    private double foodcounter;
+    private boolean isOnTerrain;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed, FestivalPlan festivalPlan, String name, int age) {
         try {
@@ -67,6 +69,7 @@ public class Visitor {
         this.isInToilet = false;
         this.isGoingToToilet = false;
         this.currentToilet = null;
+        this.foodcounter = Math.random()*100;
         this.name = name;
         this.age = age;
         this.planning = new ArrayList<>();
@@ -181,7 +184,10 @@ public class Visitor {
             this.animationCounter = 0;
         }
 
-        this.drinkCounter += deltaTime * Math.random();
+        this.drinkCounter += deltaTime*Math.random();
+        if (this.foodcounter > 0) {
+            this.foodcounter -= deltaTime * Math.random();
+        }
 
         newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
 
@@ -420,4 +426,12 @@ public class Visitor {
         return pathFinder;
     }
 
+
+    public double getFoodcounter() {
+        return foodcounter;
+    }
+
+    public void setFoodcounter(double foodcounter) {
+        this.foodcounter = foodcounter;
+    }
 }
