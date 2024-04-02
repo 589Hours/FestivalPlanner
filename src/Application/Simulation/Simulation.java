@@ -94,7 +94,7 @@ public class Simulation extends Application {
                 visitor.setPathFinder(exitPathFinder);
             }
         });
-        mainPane.setLeft(emergency);
+        mainPane.setTop(emergency);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
 
         Tile spawnTile = new Tile(126, 64);
