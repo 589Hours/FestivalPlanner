@@ -36,6 +36,7 @@ public class Visitor {
     private boolean isInToilet;
     private boolean isGoingToToilet;
     private Toilet currentToilet;
+    private double foodcounter;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed, String name, int age) {
         try {
@@ -58,6 +59,7 @@ public class Visitor {
         this.isInToilet = false;
         this.isGoingToToilet = false;
         this.currentToilet = null;
+        this.foodcounter = Math.random()*100;
         this.name = name;
         this.age = age;
     }
@@ -78,6 +80,9 @@ public class Visitor {
         }
 
         this.drinkCounter += deltaTime*Math.random();
+        if (this.foodcounter > 0) {
+            this.foodcounter -= deltaTime * Math.random();
+        }
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
@@ -273,5 +278,13 @@ public class Visitor {
 
     public int getAge() {
         return age;
+    }
+
+    public double getFoodcounter() {
+        return foodcounter;
+    }
+
+    public void setFoodcounter(double foodcounter) {
+        this.foodcounter = foodcounter;
     }
 }

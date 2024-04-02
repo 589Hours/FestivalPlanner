@@ -13,6 +13,7 @@ import org.jfree.fx.ResizableCanvas;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Simulation extends Application {
@@ -40,6 +41,25 @@ public class Simulation extends Application {
     private PathFinder toilet7PathFinder;
     private PathFinder toilet8PathFinder;
     private PathFinder toilet9PathFinder;
+
+    private ArrayList<PathFinder> foodStands = new ArrayList<>();
+    private PathFinder foodStand1PathFinder;
+    private PathFinder foodStand2PathFinder;
+    private PathFinder foodStand3PathFinder;
+    private PathFinder foodStand4PathFinder;
+    private PathFinder foodStand5PathFinder;
+    private PathFinder foodStand6PathFinder;
+    private PathFinder foodStand7PathFinder;
+    private PathFinder foodStand8PathFinder;
+    private PathFinder foodStand9PathFinder;
+    private PathFinder foodStand10PathFinder;
+    private PathFinder foodStand11PathFinder;
+    private PathFinder foodStand12PathFinder;
+    private PathFinder foodStand13PathFinder;
+    private PathFinder foodStand14PathFinder;
+    private PathFinder foodStand15PathFinder;
+    private PathFinder foodStand16PathFinder;
+    private PathFinder foodStand17PathFinder;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -113,6 +133,25 @@ public class Simulation extends Application {
         Tile toilet8 = graph.getNodes()[95][21];
         Tile toilet9 = graph.getNodes()[95][23];
 
+        Tile foodStand1 = graph.getNodes()[46][45];
+        Tile foodStand2 = graph.getNodes()[46][58];
+        Tile foodStand3 = graph.getNodes()[46][62];
+        Tile foodStand4 = graph.getNodes()[46][66];
+        Tile foodStand5 = graph.getNodes()[46][71];
+        Tile foodStand6 = graph.getNodes()[46][75];
+        Tile foodStand7 = graph.getNodes()[46][81];
+        Tile foodStand8 = graph.getNodes()[46][85];
+        Tile foodStand9 = graph.getNodes()[45][92];
+        Tile foodStand10 = graph.getNodes()[45][95];
+        Tile foodStand11 = graph.getNodes()[45][101];
+        Tile foodStand12 = graph.getNodes()[45][106];
+
+        Tile foodStand13 = graph.getNodes()[61][69];
+        Tile foodStand14 = graph.getNodes()[61][75];
+        Tile foodStand15 = graph.getNodes()[61][83];
+        Tile foodStand16 = graph.getNodes()[61][91];
+        Tile foodStand17 = graph.getNodes()[61][98];
+
         alphaPathFinder = new PathFinder(alphaStage, graph, collisionLayer);
         betaPathFinder = new PathFinder(betaStage, graph, collisionLayer);
         charliePathFinder = new PathFinder(charlieStage, graph, collisionLayer);
@@ -139,6 +178,41 @@ public class Simulation extends Application {
         toiletsPaths.add(toilet8PathFinder);
         toiletsPaths.add(toilet9PathFinder);
 
+        foodStand1PathFinder = new PathFinder(foodStand1, graph, collisionLayer);
+        foodStand2PathFinder = new PathFinder(foodStand2, graph, collisionLayer);
+        foodStand3PathFinder = new PathFinder(foodStand3, graph, collisionLayer);
+        foodStand4PathFinder = new PathFinder(foodStand4, graph, collisionLayer);
+        foodStand5PathFinder = new PathFinder(foodStand5, graph, collisionLayer);
+        foodStand6PathFinder = new PathFinder(foodStand6, graph, collisionLayer);
+        foodStand7PathFinder = new PathFinder(foodStand7, graph, collisionLayer);
+        foodStand8PathFinder = new PathFinder(foodStand8, graph, collisionLayer);
+        foodStand9PathFinder = new PathFinder(foodStand9, graph, collisionLayer);
+        foodStand10PathFinder = new PathFinder(foodStand10, graph, collisionLayer);
+        foodStand11PathFinder = new PathFinder(foodStand11, graph, collisionLayer);
+        foodStand12PathFinder = new PathFinder(foodStand12, graph, collisionLayer);
+        foodStand13PathFinder = new PathFinder(foodStand13, graph, collisionLayer);
+        foodStand14PathFinder = new PathFinder(foodStand14, graph, collisionLayer);
+        foodStand15PathFinder = new PathFinder(foodStand15, graph, collisionLayer);
+        foodStand16PathFinder = new PathFinder(foodStand16, graph, collisionLayer);
+        foodStand17PathFinder = new PathFinder(foodStand17, graph, collisionLayer);
+        foodStands.add(foodStand1PathFinder);
+        foodStands.add(foodStand2PathFinder);
+        foodStands.add(foodStand3PathFinder);
+        foodStands.add(foodStand4PathFinder);
+        foodStands.add(foodStand5PathFinder);
+        foodStands.add(foodStand6PathFinder);
+        foodStands.add(foodStand7PathFinder);
+        foodStands.add(foodStand8PathFinder);
+        foodStands.add(foodStand9PathFinder);
+        foodStands.add(foodStand10PathFinder);
+        foodStands.add(foodStand11PathFinder);
+        foodStands.add(foodStand12PathFinder);
+        foodStands.add(foodStand13PathFinder);
+        foodStands.add(foodStand14PathFinder);
+        foodStands.add(foodStand15PathFinder);
+        foodStands.add(foodStand16PathFinder);
+        foodStands.add(foodStand17PathFinder);
+
 
         alphaPathFinder.calculateDistanceMapWithGraph();
         spawnTile = alphaPathFinder.getSpawnTile();
@@ -148,15 +222,12 @@ public class Simulation extends Application {
         echoPathFinder.calculateDistanceMapWithGraph();
 
         toiletPathFinder.calculateDistanceMapWithGraph();
-        toilet1PathFinder.calculateDistanceMapWithGraph();
-        toilet2PathFinder.calculateDistanceMapWithGraph();
-        toilet3PathFinder.calculateDistanceMapWithGraph();
-        toilet4PathFinder.calculateDistanceMapWithGraph();
-        toilet5PathFinder.calculateDistanceMapWithGraph();
-        toilet6PathFinder.calculateDistanceMapWithGraph();
-        toilet7PathFinder.calculateDistanceMapWithGraph();
-        toilet8PathFinder.calculateDistanceMapWithGraph();
-        toilet9PathFinder.calculateDistanceMapWithGraph();
+        for (PathFinder toiletsPath : toiletsPaths) {
+            toiletsPath.calculateDistanceMapWithGraph();
+        }
+        for (PathFinder foodStand : foodStands) {
+            foodStand.calculateDistanceMapWithGraph();
+        }
 
         start(new Stage());
     }
@@ -177,7 +248,7 @@ public class Simulation extends Application {
         }
 
 
-        toiletPathFinder.draw(g);
+        foodStand13PathFinder.draw(g);
         g.setTransform(new AffineTransform());
     }
 
@@ -199,6 +270,19 @@ public class Simulation extends Application {
 
         for (Visitor visitor : visitors) {
             visitor.update(visitors, deltaTime);
+
+            if (visitor.getFoodcounter() <= 10){
+                if (!foodStands.contains(visitor.getPathFinder())) {
+                    visitor.setPrevPathFinder(visitor.getPathFinder());
+                    visitor.setPathFinder(foodStands.get((int) (Math.random() * 17)));
+                } else {
+                    if (visitor.getPathFinder().getTargetTile().equals(visitor.getCurrentTile())) {
+                        visitor.setFoodcounter(100);
+                        visitor.setPathFinder(visitor.getPrevPathFinder());
+                    }
+                }
+            }
+
             if (visitor.getDrinkCounter() >= 100 && !visitor.isGoingToToilet()) {
                 if (!visitor.getPathFinder().equals(toiletPathFinder)) {
                     System.out.println("Toiletpathfinder: " +  toiletPathFinder);
@@ -264,7 +348,8 @@ public class Simulation extends Application {
                 visitorInfo.setHeaderText(visitor.getName());
                 visitorInfo.setContentText("Naam: " + visitor.getName() +
                         "\n" + "Leeftijd: " + visitor.getAge() +
-                        "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%");
+                        "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%" +
+                        "\n" + "Maag: " + (int)visitor.getFoodcounter() + "%");
                 visitorInfo.showAndWait();
             }
         }
