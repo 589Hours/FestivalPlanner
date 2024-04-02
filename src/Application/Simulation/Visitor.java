@@ -54,7 +54,7 @@ public class Visitor {
         CreateImages();
         this.animationCounter = 0;
         this.newAngle = 0;
-        this.drinkCounter = Math.random()*100;
+        this.drinkCounter = Math.random()*50;
         this.isInToilet = false;
         this.isGoingToToilet = false;
         this.currentToilet = null;
