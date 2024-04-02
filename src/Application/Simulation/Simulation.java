@@ -47,7 +47,8 @@ public class Simulation extends Application {
         canvas.setWidth(1024);
         canvas.setHeight(1024);
 
-        canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double(event.getX()*(1/camera.getTransform().getScaleX()), event.getY()*(1/camera.getTransform().getScaleX()))));
+        canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double((event.getX() - camera.getTransform().getTranslateX())*(1/camera.getTransform().getScaleX()),
+                (event.getY() - camera.getTransform().getTranslateX())*(1/camera.getTransform().getScaleX()))));
         canvas.setOnScroll(event -> camera.mouseScroll(event));
 //        canvas.setOnMouseMoved(event -> {
 //            try {
