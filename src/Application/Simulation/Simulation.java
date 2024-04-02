@@ -1,5 +1,6 @@
 package Application.Simulation;
 
+import com.sun.xml.internal.ws.api.client.WSPortInfo;
 import data.FestivalPlan;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -55,7 +56,8 @@ public class Simulation {
         hours = 10;
         minutes = 0;
 
-        canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double(event.getX()*(1/camera.getTransform().getScaleX()), event.getY()*(1/camera.getTransform().getScaleX()))));
+        canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double((event.getX() - camera.getTransform().getTranslateX())*(1/camera.getTransform().getScaleX()),
+                (event.getY() - camera.getTransform().getTranslateY())*(1/camera.getTransform().getScaleY()))));
         canvas.setOnScroll(event -> camera.mouseScroll(event));
 //        canvas.setOnMouseMoved(event -> {
 //            try {
@@ -247,19 +249,23 @@ public class Simulation {
                 if (toilet.isAnimationStarted() && visitor.getCurrentToilet() == toilet) {
                     if (toilet.getAnimationTimer() >= 0 && toilet.getAnimationTimer() < 5) {
                         toilet.setOccupied(true);
+                        System.out.println("0 tot 5");
                     } else if (toilet.getAnimationTimer() >= 5 && toilet.getAnimationTimer() < 15) {
                         if (visitor.getCurrentTile().equals(visitor.getPathFinder().getTargetTile())) {
                             visitor.setInToilet(true);
                         }
+                        System.out.println("5 tot 15");
                     } else if (toilet.getAnimationTimer() >= 15 && toilet.getAnimationTimer() < 23) {
-
+                        System.out.println("15 tot 23");
                     } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
+                        System.out.println("23 tot 30");
                         visitor.setDrinkCounter(0);
                         visitor.setInToilet(false);
-                        visitor.setPathFinder(toiletPathFinder);
                         visitor.setGoingToToilet(false);
                     } else {
+                        System.out.println("else");
                         visitor.setPathFinder(visitor.getPrevPathFinder());
+                        visitor.setCurrentToilet(null);
                         toilet.setOccupied(false);
                         toilet.setAnimationStarted(false);
                         toilet.setStatus(0);
@@ -305,15 +311,15 @@ public class Simulation {
     }
 
     public void checkClicked(Point2D point){
-        System.out.println("clicked");
         ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
         for (Visitor visitor : visitorsCopy) {
             if (visitors.get(visitors.indexOf(visitor)).isClickedOnMe(point)){
-                System.out.println("clicked on visitor");
                 Alert visitorInfo = new Alert(Alert.AlertType.INFORMATION);
-                visitorInfo.setTitle(visitors.get(visitors.indexOf(visitor)).getName());
-                visitorInfo.setHeaderText(visitors.get(visitors.indexOf(visitor)).getName());
-                visitorInfo.setContentText("Naam: " + visitors.get(visitors.indexOf(visitor)).getName() + "\n" + "Leeftijd: " + visitors.get(visitors.indexOf(visitor)).getAge());
+                visitorInfo.setTitle(visitor.getName());
+                visitorInfo.setHeaderText(visitor.getName());
+                visitorInfo.setContentText("Naam: " + visitor.getName() +
+                        "\n" + "Leeftijd: " + visitor.getAge() +
+                        "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%");
                 visitorInfo.showAndWait();
             }
         }

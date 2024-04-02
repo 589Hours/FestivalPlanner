@@ -202,7 +202,7 @@ public class Visitor {
         if ((int)this.animationCounter >= 3){
             this.animationCounter = 0;
         }
-       
+
         this.drinkCounter += deltaTime*Math.random();
 
         if (position.distance(targetPosition) < 20) {
@@ -298,9 +298,8 @@ public class Visitor {
     }
 
     public boolean isClickedOnMe(Point2D point){
-        //TODO: deze if fixen
         if (point.getX() > position.getX() - this.imageWidth / 2.25 && point.getX() < position.getX() - this.imageWidth / 2.25 + this.imageWidth
-        && point.getY() > position.getY() - this.imageHeight / 1.25 && point.getY() < position.getY() - this.imageHeight / 1.25 + this.imageWidth){
+        && point.getY() > position.getY() - this.imageHeight / 1.25 && point.getY() < position.getY() - this.imageHeight / 1.25 + this.imageHeight){
             return true;
         }
         return false;
