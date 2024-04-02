@@ -84,16 +84,6 @@ public class Simulation {
         canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double((event.getX() - camera.getTransform().getTranslateX()) * (1 / camera.getTransform().getScaleX()),
                 (event.getY() - camera.getTransform().getTranslateY()) * (1 / camera.getTransform().getScaleY()))));
         canvas.setOnScroll(event -> camera.mouseScroll(event));
-//        canvas.setOnMouseMoved(event -> {
-//            try {
-//                Point2D mousePos = camera.getWorldPosition(new Point2D.Double(event.getX(), event.getY()));
-//                for (Visitor visitor : visitors) {
-//                    visitor.setTargetPosition(mousePos);
-//                }
-//            } catch (NoninvertibleTransformException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
 
         mainPane.setCenter(canvas);
         Button emergency = new Button("Noodsituatie!");
@@ -144,7 +134,6 @@ public class Simulation {
         Tile charlieStage = graph.getNodes()[110][110];
         Tile deltaStage = graph.getNodes()[18][40];
         Tile echoStage = graph.getNodes()[110][40];
-        Tile spawnTile = new Tile(126, 64);
         Tile toilets = graph.getNodes()[98][18];
 
         Tile toilet1 = graph.getNodes()[95][7];
@@ -250,6 +239,16 @@ public class Simulation {
         echoPathFinder.calculateDistanceMapWithGraph();
 
         toiletPathFinder.calculateDistanceMapWithGraph();
+        toilet1PathFinder.calculateDistanceMapWithGraph();
+        toilet2PathFinder.calculateDistanceMapWithGraph();
+        toilet3PathFinder.calculateDistanceMapWithGraph();
+        toilet4PathFinder.calculateDistanceMapWithGraph();
+        toilet5PathFinder.calculateDistanceMapWithGraph();
+        toilet6PathFinder.calculateDistanceMapWithGraph();
+        toilet7PathFinder.calculateDistanceMapWithGraph();
+        toilet8PathFinder.calculateDistanceMapWithGraph();
+        toilet9PathFinder.calculateDistanceMapWithGraph();
+
         for (PathFinder toiletsPath : toiletsPaths) {
             toiletsPath.calculateDistanceMapWithGraph();
         }
@@ -284,9 +283,6 @@ public class Simulation {
             }
         }
 
-        if (visitors.size() == 1) {
-            visitors.get(0).getPath().draw(g);
-        }
 
         g.setTransform(new AffineTransform());
     }
@@ -309,7 +305,7 @@ public class Simulation {
         }
         ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
         for (Visitor visitor : visitorsCopy) {
-            visitor.update(visitors, deltaTime);
+            visitor.update(visitors, deltaTime, emergency);
             if (visitor.getPathFinder().equals(exitPathFinder)) {
                 ArrayList<Tile> neighbours = visitor.getPathFinder().getTargetTile().getNeighbours();
                 if (visitor.getPathFinder().getTargetTile().equals(visitor.getCurrentTile()) || neighbours.contains(visitor.getCurrentTile())) {
@@ -344,44 +340,13 @@ public class Simulation {
                             toilet.setAnimationStarted(true);
                             visitor.setPathFinder(toiletsPaths.get(toilets.indexOf(toilet)));
                             break;
-                        }
-                        System.out.println("5 tot 15");
-                    } else if (toilet.getAnimationTimer() >= 15 && toilet.getAnimationTimer() < 23) {
-                        System.out.println("15 tot 23");
-                    } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
-                        System.out.println("23 tot 30");
-                        visitor.setDrinkCounter(0);
-                        visitor.setInToilet(false);
-                        visitor.setGoingToToilet(false);
-                    } else {
-                        System.out.println("else");
-                        visitor.setPathFinder(visitor.getPrevPathFinder());
-                        visitor.setCurrentToilet(null);
-                        toilet.setOccupied(false);
-                        toilet.setAnimationStarted(false);
-                        toilet.setStatus(0);
-                        toilet.setAnimationTimer(0);
-                    }
-                }
-                for (Toilet toilet : toilets) {
-                    if (toilet.isAnimationStarted() && visitor.getCurrentToilet() == toilet) {
-                        if (toilet.getAnimationTimer() >= 0 && toilet.getAnimationTimer() < 5) {
-                            toilet.setOccupied(true);
-                            System.out.println("0 tot 5");
-                        } else if (toilet.getAnimationTimer() >= 5 && toilet.getAnimationTimer() < 15) {
-                            if (visitor.getCurrentTile().equals(visitor.getPathFinder().getTargetTile())) {
-                                visitor.setInToilet(true);
-                            }
-                            System.out.println("5 tot 15");
                         } else if (toilet.getAnimationTimer() >= 15 && toilet.getAnimationTimer() < 23) {
-                            System.out.println("15 tot 23");
+
                         } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
-                            System.out.println("23 tot 30");
                             visitor.setDrinkCounter(0);
                             visitor.setInToilet(false);
                             visitor.setGoingToToilet(false);
                         } else {
-                            System.out.println("else");
                             visitor.setPathFinder(visitor.getPrevPathFinder());
                             visitor.setCurrentToilet(null);
                             toilet.setOccupied(false);
@@ -390,100 +355,121 @@ public class Simulation {
                             toilet.setAnimationTimer(0);
                         }
                     }
-                }
             }
-        }
-        if (counter % 50 == 0) {
-            updateTime();
-        }
-        counter++;
-    }
-
-    private void updateTime() {
-        this.minutes++;
-        if (this.minutes == 60) {
-            this.minutes = 0;
-            this.hours++;
-
-            if (this.hours == 24) {
-                this.hours = 0;
-            }
-        }
-        checkTime();
-        System.out.println(hours + ":" + minutes);
-        map.updateOpacity();
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public PathFinder[] getPathFinders() {
-        return pathFinders;
-    }
-
-    public FestivalPlan getFestivalPlan() {
-        return festivalPlan;
-    }
-
-    public void checkClicked(Point2D point) {
-        ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
-        for (Visitor visitor : visitorsCopy) {
-            if (visitors.get(visitors.indexOf(visitor)).isClickedOnMe(point)) {
-                Alert visitorInfo = new Alert(Alert.AlertType.INFORMATION);
-                visitorInfo.setTitle(visitor.getName());
-                visitorInfo.setHeaderText(visitor.getName());
-                String plan = "";
-                if (toilets.contains(visitor.getPathFinder())){
-                    plan = "De wc";
-                } else if (visitor.getPathFinder().equals(toiletPathFinder)){
-                    plan = "De wc";
-                } else if (foodStands.contains(visitor.getPathFinder())){
-                    plan = "Een foodtruck";
-                } else if (visitor.getPathFinder().equals(exitPathFinder)){
-                    plan = "De uitgang";
-                } else {
-                    plan = "Een podium";
-                }
-                visitorInfo.setContentText("Naam: " + visitor.getName() +
-                        "\n" + "Leeftijd: " + visitor.getAge() +
-                        "\n" + "Gaat naar: " + plan+
-                        "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%" +
-                        "\n" + "Maag: " + (int)visitor.getFoodcounter() + "%");
-                visitorInfo.showAndWait();
-            }
-        }
-    }
-
-    public void checkTime() {
-        for (Visitor visitor : visitors) {
-            for (Performance performance : visitor.getPlanning()) {
-                int beginHour = performance.getBeginHour();
-                int beginMinute = performance.getBeginMinute();
-                data.Stage stage = null;
-
-                if (beginMinute <= 15 && beginMinute >= 0) {
-                    if (getHours() == beginHour - 1 && getMinutes() == 45 + beginMinute) {
-                        stage = performance.getStage();
+            for (Toilet toilet : toilets) {
+                if (toilet.isAnimationStarted() && visitor.getCurrentToilet() == toilet) {
+                    if (toilet.getAnimationTimer() >= 0 && toilet.getAnimationTimer() < 5) {
+                        toilet.setOccupied(true);
+                    } else if (toilet.getAnimationTimer() >= 5 && toilet.getAnimationTimer() < 15) {
+                        if (visitor.getCurrentTile().equals(visitor.getPathFinder().getTargetTile())) {
+                            visitor.setInToilet(true);
+                        }
+                    } else if (toilet.getAnimationTimer() >= 15 && toilet.getAnimationTimer() < 23) {
+                    } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
+                        visitor.setDrinkCounter(0);
+                        visitor.setInToilet(false);
+                        visitor.setGoingToToilet(false);
+                    } else {
+                        visitor.setPathFinder(visitor.getPrevPathFinder());
+                        visitor.setCurrentToilet(null);
+                        toilet.setOccupied(false);
+                        toilet.setAnimationStarted(false);
+                        toilet.setStatus(0);
+                        toilet.setAnimationTimer(0);
                     }
-                } else if (beginHour == getHours() && beginMinute - 15 == getMinutes()) {
+                }
+            }
+        }
+    }
+        if(counter %50==0)
+
+    {
+        updateTime();
+    }
+
+    counter++;
+}
+
+private void updateTime() {
+    this.minutes++;
+    if (this.minutes == 60) {
+        this.minutes = 0;
+        this.hours++;
+
+        if (this.hours == 24) {
+            this.hours = 0;
+        }
+    }
+    checkTime();
+    map.updateOpacity();
+}
+
+public int getHours() {
+    return hours;
+}
+
+public int getMinutes() {
+    return minutes;
+}
+
+public FestivalPlan getFestivalPlan() {
+    return festivalPlan;
+}
+
+public void checkClicked(Point2D point) {
+    ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
+    for (Visitor visitor : visitorsCopy) {
+        if (visitors.get(visitors.indexOf(visitor)).isClickedOnMe(point)) {
+            Alert visitorInfo = new Alert(Alert.AlertType.INFORMATION);
+            visitorInfo.setTitle(visitor.getName());
+            visitorInfo.setHeaderText(visitor.getName());
+            String plan = "";
+            if (toilets.contains(visitor.getPathFinder())) {
+                plan = "De wc";
+            } else if (visitor.getPathFinder().equals(toiletPathFinder)) {
+                plan = "De wc";
+            } else if (foodStands.contains(visitor.getPathFinder())) {
+                plan = "Een foodtruck";
+            } else if (visitor.getPathFinder().equals(exitPathFinder)) {
+                plan = "De uitgang";
+            } else {
+                plan = "Een podium";
+            }
+            visitorInfo.setContentText("Naam: " + visitor.getName() +
+                    "\n" + "Leeftijd: " + visitor.getAge() +
+                    "\n" + "Gaat naar: " + plan +
+                    "\n" + "Blaas: " + (int) visitor.getDrinkCounter() + "%" +
+                    "\n" + "Maag: " + (int) visitor.getFoodcounter() + "%");
+            visitorInfo.showAndWait();
+            break;
+        }
+    }
+}
+
+public void checkTime() {
+    for (Visitor visitor : visitors) {
+        for (Performance performance : visitor.getPlanning()) {
+            int beginHour = performance.getBeginHour();
+            int beginMinute = performance.getBeginMinute();
+            data.Stage stage = null;
+
+            if (beginMinute <= 15 && beginMinute >= 0) {
+                if (getHours() == beginHour - 1 && getMinutes() == 45 + beginMinute) {
                     stage = performance.getStage();
                 }
-                if (stage != null) {
-                    for (int i = 0; i < getFestivalPlan().getStages().size(); i++) {
-                        if (stage == getFestivalPlan().getStages().get(i)) {
-                            visitor.setPathFinder(pathFinders[i]);
-                            System.out.println("Its time to go to stage " + i);
-                        }
+            } else if (beginHour == getHours() && beginMinute - 15 == getMinutes()) {
+                stage = performance.getStage();
+            }
+            if (stage != null) {
+                for (int i = 0; i < getFestivalPlan().getStages().size(); i++) {
+                    if (stage == getFestivalPlan().getStages().get(i)) {
+                        visitor.setPathFinder(pathFinders[i]);
                     }
                 }
             }
         }
     }
+}
 
 }
 

@@ -2,7 +2,6 @@ package Application.Simulation;
 
 import data.FestivalPlan;
 import data.Performance;
-import data.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,13 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Random;
 
 public class Visitor {
     private String name;
     private int age;
-
     private PathFinder prevPathFinder;
     private PathFinder pathFinder;
     private Point2D position;
@@ -36,7 +33,6 @@ public class Visitor {
     private ArrayList<BufferedImage> characterUp = new ArrayList<>();
     private int imageWidth;
     private int imageHeight;
-    int drinkTimer = 0;
     private double animationCounter;
     private double newAngle;
     private double drinkCounter;
@@ -45,7 +41,6 @@ public class Visitor {
     private Toilet currentToilet;
     private ArrayList<Performance> planning;
     private double foodcounter;
-    private boolean isOnTerrain;
 
     public Visitor(Point2D position, PathFinder pathFinder, double speed, FestivalPlan festivalPlan, String name, int age) {
         try {
@@ -55,7 +50,6 @@ public class Visitor {
         }
         this.pathFinder = pathFinder;
         this.position = position;
-        Tile tile = this.pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
         this.currentTile = this.pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
         this.targetPosition = position;
         this.speed = speed;
@@ -159,12 +153,7 @@ public class Visitor {
                 sameTimePerformances.add(performance);
                 totalPopularity = performance.getArtist().getPopularity();
             }
-//            totalPopularity += performance.getArtist().getPopularity();
         }
-        for (Performance performance1 : planning) {
-            System.out.println(performance1);
-        }
-        System.out.println("\n");
 
     }
 
@@ -177,7 +166,7 @@ public class Visitor {
         }
     }
 
-    public void update(ArrayList<Visitor> visitors, double deltaTime) {
+    public void update(ArrayList<Visitor> visitors, double deltaTime, boolean emergency) {
 
         this.animationCounter += (5 * deltaTime);
         if ((int) this.animationCounter >= 3) {
@@ -217,7 +206,7 @@ public class Visitor {
         boolean collision = false;
 
         for (Visitor visitor : visitors) {
-            if (visitor != this) {
+            if (visitor != this && !emergency) {
                 //32 so the heads can collide (giving the 2.5D effect we want)
                 if (visitor.position.distance(newPosition) <= 16) {
                     collision = true;
@@ -228,7 +217,7 @@ public class Visitor {
         if (position.distance(targetPosition) < 20) {
             double x = 0, y = 0;
             int newDistance;
-            if (this.currentDistance < 5 || collision) {
+            if (this.currentDistance < 5 && !emergency || collision) {
                 int randomTile = (int) Math.round(Math.random()*this.currentTile.getNeighbours().size()-1);
                 if (randomTile < 0){
                     randomTile = 0;
@@ -279,8 +268,6 @@ public class Visitor {
         AffineTransform transform = new AffineTransform();
 
         transform.translate(position.getX() - this.imageWidth / 2.25, position.getY() - this.imageHeight / 1.25);
-        graphics2D.draw(new Rectangle2D.Double(position.getX() - this.imageWidth / 2.25, position.getY() - this.imageHeight / 1.25,
-                this.imageWidth, this.imageHeight));
 
         if (this.newAngle >= Math.PI / 3 && this.newAngle <= Math.PI * 2 / 3) {
             graphics2D.drawImage(this.characterDown.get((int) this.animationCounter), transform, null);
@@ -292,12 +279,7 @@ public class Visitor {
             graphics2D.drawImage(this.characterLeft.get((int) this.animationCounter), transform, null);
         }
 
-        //test draw the target location
-        graphics2D.setColor(Color.red);
-        graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
 
-        graphics2D.setColor(Color.green);
-        graphics2D.fill(new Ellipse2D.Double(this.position.getX(), this.position.getY(), 10, 10));
         graphics2D.setColor(Color.black);
     }
 
@@ -400,18 +382,6 @@ public class Visitor {
 
     public void setPrevPathFinder(PathFinder prevPathFinder) {
         this.prevPathFinder = prevPathFinder;
-    }
-
-    public Point2D getPosition() {
-        return position;
-    }
-
-    public int getImageWidth() {
-        return imageWidth;
-    }
-
-    public int getImageHeight() {
-        return imageHeight;
     }
 
     public String getName() {

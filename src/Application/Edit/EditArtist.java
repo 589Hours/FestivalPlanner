@@ -8,9 +8,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.Line;
-import java.util.Optional;
-
 public class EditArtist {
     public EditArtist(FestivalPlan festivalPlan) {
         Stage stage = new Stage();

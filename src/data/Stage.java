@@ -11,10 +11,6 @@ public class Stage implements Serializable {
         this.stageNumber = stageNumber;
     }
 
-    public void setStageNumber(int stageNumber) {
-        this.stageNumber = stageNumber;
-    }
-
     public int getStageNumber() {
         return stageNumber;
     }

@@ -42,7 +42,7 @@ public class Performance implements Serializable, Comparable<Performance> {
         return beginHour;
     }
 
-    public void setBeginHour(int beginHour) {
+    public void getBeginHour(int beginHour) {
         this.beginHour = beginHour;
     }
 
@@ -50,24 +50,13 @@ public class Performance implements Serializable, Comparable<Performance> {
         return beginMinute;
     }
 
-    public void setBeginMinute(int beginMinute) {
-        this.beginMinute = beginMinute;
-    }
 
     public int getEndHour() {
         return endHour;
     }
 
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
     public int getEndMinute() {
         return endMinute;
-    }
-
-    public void setEndMinute(int endMinute) {
-        this.endMinute = endMinute;
     }
 
     public String getBeginTime() {

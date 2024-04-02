@@ -152,7 +152,4 @@ public class Map {
             nightOpacity = 0;
         }
     }
-
-    // CollisionID = 78225
-    // LocatieID = 78224
 }

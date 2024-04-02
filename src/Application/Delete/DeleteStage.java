@@ -3,14 +3,12 @@ package Application.Delete;
 import Application.FestivalBlockview;
 import data.FestivalPlan;
 import data.Performance;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Optional;
 

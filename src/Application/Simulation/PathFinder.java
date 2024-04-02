@@ -13,7 +13,6 @@ public class PathFinder {
     HashMap<Tile, Integer> path = new HashMap<>();
     private Tile targetTile;
     private int collisionTileID = 78225;
-    private int locationID = 78224;
     private Tile lastTile;
     private Tile spawnTile;
     private Graph graph;
@@ -61,25 +60,14 @@ public class PathFinder {
             graphics.drawString(Integer.toString(path.get(tile)), (int) x, (int) y);
         }
     }
-    public void setCollisionLayer(int[][] collisionLayer) {
-        this.collisionLayer = collisionLayer;
-    }
 
     public Tile getTargetTile() {
         return targetTile;
     }
 
-    public Tile getSpawnTile(){
-        return this.spawnTile;
-    }
 
     public Tile getTileFromPosition(Point2D point) {
         return graph.getNodes()[(int) point.getY()][(int) point.getX()];
     }
 
-    public void printNeighboursforTile(Tile thisTile) {
-        for (Tile tile : thisTile.getNeighbours()) {
-            System.out.println("Tile: "+ thisTile + " has neighbour " + tile);
-        }
-    }
 }

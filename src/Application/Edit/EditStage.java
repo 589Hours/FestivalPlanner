@@ -1,14 +1,11 @@
 package Application.Edit;
 
-import data.Artist;
 import data.FestivalPlan;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.Optional;
 
 public class EditStage {
     public EditStage(FestivalPlan festivalPlan) {

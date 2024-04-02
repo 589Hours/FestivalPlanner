@@ -1,25 +1,17 @@
 package Application.Simulation;
 
-import javax.imageio.ImageIO;
 import javax.json.JsonObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class Layer {
-    private int tileWidth = 32;
-    private int tileHeight = 32;
     private int mapWidth;
     private int mapHeight;
     private int layerNum;
 
-    private ArrayList<BufferedImage> tiles = new ArrayList<>();
+    private ArrayList<BufferedImage> tiles;
     private int[][] layerMap;
     private BufferedImage[][] mapTiles;
     private int[][] collisionLayer;
