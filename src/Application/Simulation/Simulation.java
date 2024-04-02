@@ -259,7 +259,7 @@ public class Simulation extends Application {
             toilet.draw(g);
         }
         for (Visitor visitor : visitors) {
-            if (!visitor.isInToilet() && visitor.isOnTerrain()) {
+            if (!visitor.isInToilet()) {
                 visitor.draw(g);
             }
         }
