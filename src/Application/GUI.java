@@ -224,18 +224,6 @@ public class GUI extends Application {
         beginScreen.draw(beginScreen.getFxGraphics2D());
         borderPane.setCenter(canvas);
 
-        Button simulationButton = new Button("Start simulation");
-        borderPane.setBottom(simulationButton);
-
-        simulationButton.setOnAction(event ->  {
-            try {
-                new Simulation().init();
-                started = true;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
 
         borderPane.setPrefSize(1700, 800);
         Scene scene = new Scene(borderPane);
