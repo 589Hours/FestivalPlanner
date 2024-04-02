@@ -53,7 +53,7 @@ public class Visitor {
         CreateImages();
         this.animationCounter = 0;
         this.newAngle = 0;
-        this.drinkCounter = 0;
+        this.drinkCounter = Math.random()*100;
         this.isInToilet = false;
         this.isGoingToToilet = false;
         this.name = name;
@@ -75,7 +75,7 @@ public class Visitor {
             this.animationCounter = 0;
         }
        
-        this.drinkCounter += (deltaTime*10)*Math.random();
+        this.drinkCounter += deltaTime*Math.random();
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
