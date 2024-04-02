@@ -27,14 +27,14 @@ import java.awt.geom.Point2D;
     public void mouseScroll(ScrollEvent event) {
         if (event.isControlDown()) {
             // Zoom
-            this.zoom *= 1 + event.getDeltaY()/250.0f;
+            this.zoom *= 1 + event.getDeltaY() / 250.0f;
         } else if (event.isShiftDown()) {
             // X aanpassen
-            centerPoint = new Point2D.Double(centerPoint.getX() + (event.getDeltaX()*1.5), centerPoint.getY());
+            centerPoint = new Point2D.Double(centerPoint.getX() + (event.getDeltaX() * 1.5), centerPoint.getY());
         } else {
             // Y aanpassen
-            centerPoint = new Point2D.Double(centerPoint.getX(), centerPoint.getY() + (event.getDeltaY()*1.5));
+            centerPoint = new Point2D.Double(centerPoint.getX(), centerPoint.getY() + (event.getDeltaY() * 1.5));
         }
-
+    }
 }
 
