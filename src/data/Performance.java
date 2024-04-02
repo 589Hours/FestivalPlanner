@@ -2,7 +2,7 @@ package data;
 
 import java.io.Serializable;
 
-public class Performance implements Serializable {
+public class Performance implements Serializable, Comparable<Performance> {
     private Artist artist;
     private Stage stage;
 
@@ -42,7 +42,7 @@ public class Performance implements Serializable {
         return beginHour;
     }
 
-    public void setBeginHour(int beginHour) {
+    public void getBeginHour(int beginHour) {
         this.beginHour = beginHour;
     }
 
@@ -50,24 +50,13 @@ public class Performance implements Serializable {
         return beginMinute;
     }
 
-    public void setBeginMinute(int beginMinute) {
-        this.beginMinute = beginMinute;
-    }
 
     public int getEndHour() {
         return endHour;
     }
 
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
     public int getEndMinute() {
         return endMinute;
-    }
-
-    public void setEndMinute(int endMinute) {
-        this.endMinute = endMinute;
     }
 
     public String getBeginTime() {
@@ -115,10 +104,17 @@ public class Performance implements Serializable {
             }
         }
         return totalMinutes;
+
     }
 
     @Override
     public String toString() {
         return getArtist() + " at " + stage.getName();
+    }
+
+    @Override
+    public int compareTo(Performance o) {
+
+        return this.getBeginHour();
     }
 }

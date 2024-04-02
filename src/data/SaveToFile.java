@@ -6,7 +6,6 @@ import java.io.*;
 
 public class SaveToFile {
     private FestivalPlan festivalPlan;
-    private File agendaFile;
 
     public SaveToFile(FestivalPlan festivalPlan){
         this.festivalPlan = festivalPlan;

@@ -1,7 +1,6 @@
 package Application.Delete;
 
 import Application.FestivalBlockview;
-import data.Artist;
 import data.FestivalPlan;
 import data.Performance;
 import javafx.scene.Scene;
