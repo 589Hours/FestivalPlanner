@@ -200,8 +200,11 @@ public class Simulation extends Application {
         for (Visitor visitor : visitors) {
             visitor.update(visitors, deltaTime);
             if (visitor.getDrinkCounter() >= 100 && !visitor.isGoingToToilet()) {
-                visitor.setPrevPathFinder(visitor.getPathFinder());
                 if (!visitor.getPathFinder().equals(toiletPathFinder)) {
+                    System.out.println("Toiletpathfinder: " +  toiletPathFinder);
+                    System.out.println("Alphapathfinder: " + alphaPathFinder);
+                    System.out.println("setting pathfinder: " + visitor.getPathFinder());
+                    visitor.setPrevPathFinder(visitor.getPathFinder());
                     System.out.println("Er moet iemand naar het toilet");
                     visitor.setPathFinder(toiletPathFinder);
                 }
@@ -230,12 +233,14 @@ public class Simulation extends Application {
                             visitor.setInToilet(true);
                         }
                     } else if (toilet.getAnimationTimer() >= 15 && toilet.getAnimationTimer() < 23) {
-                        visitor.setDrinkCounter(0);
+
                     } else if (toilet.getAnimationTimer() >= 23 && toilet.getAnimationTimer() < 30) {
+                        visitor.setDrinkCounter(0);
                         visitor.setInToilet(false);
-                        visitor.setPathFinder(toiletPathFinder);
+                        visitor.setPathFinder(alphaPathFinder);
                         visitor.setGoingToToilet(false);
                     } else {
+
                         visitor.setPathFinder(visitor.getPrevPathFinder());
                         toilet.setOccupied(false);
                         toilet.setAnimationStarted(false);

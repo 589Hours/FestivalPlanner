@@ -202,7 +202,10 @@ public class Visitor {
 
         //initialize the first target tile so the npc moves
         for (Tile neighbour : this.currentTile.getNeighbours()) {
-            int newPathDistance = pathFinder.path.get(neighbour);
+            if (this.pathFinder.path.get(neighbour) == null)
+                continue;
+
+            int newPathDistance = this.pathFinder.path.get(neighbour);
             if (newPathDistance < newPathCurrentDistanceValue) {
                 this.currentDistance = newPathDistance;
 
