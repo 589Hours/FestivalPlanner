@@ -273,7 +273,7 @@ public class Simulation extends Application {
             toilet.update(deltaTime);
         }
         if (timer % 144 == 0) {
-            if (visitors.size() < 50) {
+            if (visitors.size() < 50 && !this.emergency) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126 * 32, 64 * 32),
                         alphaPathFinder,
