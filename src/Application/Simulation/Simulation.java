@@ -251,15 +251,15 @@ public class Simulation extends Application {
     }
 
     public void checkClicked(Point2D point){
-        System.out.println("clicked");
         ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
         for (Visitor visitor : visitorsCopy) {
             if (visitors.get(visitors.indexOf(visitor)).isClickedOnMe(point)){
-                System.out.println("clicked on visitor");
                 Alert visitorInfo = new Alert(Alert.AlertType.INFORMATION);
-                visitorInfo.setTitle(visitors.get(visitors.indexOf(visitor)).getName());
-                visitorInfo.setHeaderText(visitors.get(visitors.indexOf(visitor)).getName());
-                visitorInfo.setContentText("Naam: " + visitors.get(visitors.indexOf(visitor)).getName() + "\n" + "Leeftijd: " + visitors.get(visitors.indexOf(visitor)).getAge());
+                visitorInfo.setTitle(visitor.getName());
+                visitorInfo.setHeaderText(visitor.getName());
+                visitorInfo.setContentText("Naam: " + visitor.getName() +
+                        "\n" + "Leeftijd: " + visitor.getAge() +
+                        "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%");
                 visitorInfo.showAndWait();
             }
         }
