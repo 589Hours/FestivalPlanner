@@ -63,7 +63,7 @@ public class Visitor {
         CreateImages();
         this.animationCounter = 0;
         this.newAngle = 0;
-        this.drinkCounter = Math.random()*50;
+        this.drinkCounter = Math.random() * 50;
         this.isInToilet = false;
         this.isGoingToToilet = false;
         this.currentToilet = null;
@@ -93,7 +93,7 @@ public class Visitor {
                 switch (sameTimePerformances.size()) {
                     case 1:
                         randomInt = random.nextInt(100);
-                        if(sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                        if (sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
                             planning.add(sameTimePerformances.get(0));
                         }
                         break;
@@ -173,60 +173,15 @@ public class Visitor {
             this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
         }
     }
-    public void update(ArrayList<Visitor> visitors, Simulation sim, double deltaTime, FestivalPlan festivalPlan) {
-        for (Performance performance : planning) {
-            int beginHour = performance.getBeginHour();
-            int beginMinute = performance.getBeginMinute();
-            Stage stage = null;
 
-            if (beginMinute <= 15 && beginMinute >= 0) {
-                if (sim.getHours() == beginHour - 1 && sim.getMinutes() == 45 + beginMinute) {
-                    stage = performance.getStage();
-                }
-            } else if (beginHour == sim.getHours() && beginMinute - 15 == sim.getMinutes()) {
-                stage = performance.getStage();
-            }
-            if(stage != null) {
-                for (int i = 0; i < sim.getFestivalPlan().getStages().size(); i++) {
-                    if (stage == sim.getFestivalPlan().getStages().get(i)) {
-                        setPathFinder(sim.getPathFinders()[i]);
-                        System.out.println(pathFinder);
-                        System.out.println("Its time to go to stage "  + i);
-                    }
-                }
-            }
-        }
+    public void update(ArrayList<Visitor> visitors, double deltaTime) {
 
-
-        this.animationCounter += (5*deltaTime);
-        if ((int)this.animationCounter >= 3){
+        this.animationCounter += (5 * deltaTime);
+        if ((int) this.animationCounter >= 3) {
             this.animationCounter = 0;
         }
 
-        this.drinkCounter += deltaTime*Math.random();
-
-        if (position.distance(targetPosition) < 20) {
-            for (Tile tile : currentTile.getNeighbours()) {
-
-                if (this.pathFinder.path.get(tile) == null)
-                    continue;
-
-                int newDistance = this.pathFinder.path.get(tile);
-
-                if (newDistance < currentDistance) {
-                    currentDistance = newDistance;
-
-                    double x = tile.getPointX();
-                    double y = tile.getPointY();
-
-                    this.targetPosition = new Point2D.Double(x, y);
-                    this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x / 32, y / 32));
-
-                    //break when a closer tile is found
-                    break;
-                }
-            }
-        }
+        this.drinkCounter += deltaTime * Math.random();
 
         newAngle = Math.atan2(this.targetPosition.getY() - this.position.getY(), this.targetPosition.getX() - this.position.getX());
 
@@ -258,10 +213,53 @@ public class Visitor {
         for (Visitor visitor : visitors) {
             if (visitor != this) {
                 //32 so the heads can collide (giving the 2.5D effect we want)
-                if (visitor.position.distance(newPosition) <= 32) {
+                if (visitor.position.distance(newPosition) <= 16) {
                     collision = true;
                 }
             }
+        }
+
+        if (position.distance(targetPosition) < 20) {
+            double x = 0, y = 0;
+            int newDistance;
+            if (this.currentDistance < 5 || collision) {
+                int randomTile = (int) Math.round(Math.random()*this.currentTile.getNeighbours().size()-1);
+                if (randomTile < 0){
+                    randomTile = 0;
+                }
+                Tile randomNeighbour = this.currentTile.getNeighbours().get(randomTile);
+
+                //you have to check it is not collision tile otherwise a new path won't work as null pointer.
+                if (pathFinder.path.get(randomNeighbour) == null)
+                    return;
+
+                newDistance = pathFinder.path.get(randomNeighbour);
+
+                currentDistance = newDistance;
+
+                x = randomNeighbour.getPointX();
+                y = randomNeighbour.getPointY();
+            } else {
+                for (Tile tile : currentTile.getNeighbours()) {
+                    if (this.pathFinder.path.get(tile) == null)
+                        continue;
+
+                    newDistance = this.pathFinder.path.get(tile);
+
+                    if (newDistance < currentDistance) {
+                        currentDistance = newDistance;
+
+                        x = tile.getPointX();
+                        y = tile.getPointY();
+
+                        //break when a closer tile is found
+                        break;
+                    }
+                }
+            }
+
+            this.targetPosition = new Point2D.Double(x, y);
+            this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(x / 32, y / 32));
         }
 
         if (!collision) {
@@ -274,18 +272,18 @@ public class Visitor {
     public void draw(Graphics2D graphics2D) {
         AffineTransform transform = new AffineTransform();
 
-        transform.translate(position.getX() - this.imageWidth / 2.25 , position.getY() - this.imageHeight / 1.25);
+        transform.translate(position.getX() - this.imageWidth / 2.25, position.getY() - this.imageHeight / 1.25);
         graphics2D.draw(new Rectangle2D.Double(position.getX() - this.imageWidth / 2.25, position.getY() - this.imageHeight / 1.25,
-        this.imageWidth, this.imageHeight));
+                this.imageWidth, this.imageHeight));
 
-        if (this.newAngle >= Math.PI/3 && this.newAngle <= Math.PI*2/3){
-            graphics2D.drawImage(this.characterDown.get((int)this.animationCounter), transform, null);
-        } else if (this.newAngle <= -Math.PI/3 && this.newAngle >= -Math.PI*2/3){
-            graphics2D.drawImage(this.characterUp.get((int)this.animationCounter), transform, null);
-        } else if (this.newAngle > -Math.PI/3 && this.newAngle < Math.PI/3){
-            graphics2D.drawImage(this.characterRight.get((int)this.animationCounter), transform, null);
+        if (this.newAngle >= Math.PI / 3 && this.newAngle <= Math.PI * 2 / 3) {
+            graphics2D.drawImage(this.characterDown.get((int) this.animationCounter), transform, null);
+        } else if (this.newAngle <= -Math.PI / 3 && this.newAngle >= -Math.PI * 2 / 3) {
+            graphics2D.drawImage(this.characterUp.get((int) this.animationCounter), transform, null);
+        } else if (this.newAngle > -Math.PI / 3 && this.newAngle < Math.PI / 3) {
+            graphics2D.drawImage(this.characterRight.get((int) this.animationCounter), transform, null);
         } else {
-            graphics2D.drawImage(this.characterLeft.get((int)this.animationCounter), transform, null);
+            graphics2D.drawImage(this.characterLeft.get((int) this.animationCounter), transform, null);
         }
 
         //test draw the target location
@@ -297,9 +295,9 @@ public class Visitor {
         graphics2D.setColor(Color.black);
     }
 
-    public boolean isClickedOnMe(Point2D point){
+    public boolean isClickedOnMe(Point2D point) {
         if (point.getX() > position.getX() - this.imageWidth / 2.25 && point.getX() < position.getX() - this.imageWidth / 2.25 + this.imageWidth
-        && point.getY() > position.getY() - this.imageHeight / 1.25 && point.getY() < position.getY() - this.imageHeight / 1.25 + this.imageHeight){
+                && point.getY() > position.getY() - this.imageHeight / 1.25 && point.getY() < position.getY() - this.imageHeight / 1.25 + this.imageHeight) {
             return true;
         }
         return false;
@@ -329,15 +327,31 @@ public class Visitor {
         this.drinkCounter = drinkCounter;
     }
 
+    public ArrayList<Performance> getPlanning() {
+        return planning;
+    }
+
     public void setPathFinder(PathFinder pathFinder) {
         this.pathFinder = pathFinder;
-        this.targetPosition = this.position;
+        this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(
+                Math.round(this.position.getX() / 32),
+                Math.round(this.position.getY() / 32)
+        ));
 
-        //get the distanceValue from current Tile in another pathfinder
+//        get the distanceValue from current Tile in another pathfinder
+        if (this.pathFinder.path.get(this.currentTile) == null) {
+            for (Tile neighbour : this.currentTile.getNeighbours()) {
+                if (this.pathFinder.path.get(neighbour) != null){
+                    this.currentTile = neighbour;
+                    break;
+                }
+            }
+        }
+
         int newPathCurrentDistanceValue = this.pathFinder.path.get(this.currentTile);
         this.currentDistance = newPathCurrentDistanceValue;
 
-        //initialize the first target tile so the npc moves
+//        initialize the first target tile so the npc moves
         for (Tile neighbour : this.currentTile.getNeighbours()) {
             if (this.pathFinder.path.get(neighbour) == null)
                 continue;
@@ -401,6 +415,7 @@ public class Visitor {
     public int getAge() {
         return age;
     }
+
     public PathFinder getPath() {
         return pathFinder;
     }
