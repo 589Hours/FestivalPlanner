@@ -283,10 +283,9 @@ public class Simulation extends Application {
                 visitors.add(visitor);
             }
         }
-
-        for (Visitor visitor : visitors) {
+        ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
+        for (Visitor visitor : visitorsCopy) {
             visitor.update(visitors, deltaTime);
-            // TODO check voor neightbours toevoegen
             if (visitor.getPathFinder().equals(exitPathFinder)) {
                 ArrayList<Tile> neighbours = visitor.getPathFinder().getTargetTile().getNeighbours();
                 if (visitor.getPathFinder().getTargetTile().equals(visitor.getCurrentTile()) || neighbours.contains(visitor.getCurrentTile())) {
