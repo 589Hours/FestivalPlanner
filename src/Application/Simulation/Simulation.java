@@ -11,6 +11,7 @@ import org.jfree.fx.ResizableCanvas;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Simulation {
@@ -23,6 +24,7 @@ public class Simulation {
     private int hours;
     private int minutes;
     private int counter;
+    private PathFinder[] pathFinders;
 
     private PathFinder alphaPathFinder;
     private PathFinder betaPathFinder;
@@ -36,7 +38,7 @@ public class Simulation {
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         canvas.setWidth(1024);
         canvas.setHeight(1024);
-        hours = 12;
+        hours = 10;
         minutes = 0;
 
         canvas.setOnScroll(event -> camera.mouseScroll(event));
@@ -100,6 +102,14 @@ public class Simulation {
         deltaPathFinder.calculateDistanceMapWithGraph();
         echoPathFinder.calculateDistanceMapWithGraph();
 
+        pathFinders = new PathFinder[5];
+        pathFinders[0] = alphaPathFinder;
+        pathFinders[1] = betaPathFinder;
+        pathFinders[2] = charliePathFinder;
+        pathFinders[3] = deltaPathFinder;
+        pathFinders[4] = echoPathFinder;
+
+
         start(festivalPlan);
 
     }
@@ -125,7 +135,7 @@ public class Simulation {
     public void update(double deltaTime) {
 
         if (counter % 144 == 0) {
-            if (visitors.size() < 5) {
+            if (visitors.size() < 1) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126*32, 64*32),
                         echoPathFinder,
@@ -135,9 +145,9 @@ public class Simulation {
             }
         }
         for (Visitor visitor : visitors) {
-            visitor.update(visitors);
+            visitor.update(visitors, this);
         }
-        if(counter % 3 == 0) {
+        if(counter % 10 == 0) {
             updateTime();
         }
         counter++;
@@ -153,16 +163,24 @@ public class Simulation {
                 this.hours = 0;
             }
         }
+        System.out.println(hours + ":" + minutes);
         map.updateOpacity();
     }
 
     public int getHours() {
-
         return hours;
     }
 
     public int getMinutes() {
         return minutes;
+    }
+
+    public PathFinder[] getPathFinders() {
+        return pathFinders;
+    }
+
+    public FestivalPlan getFestivalPlan() {
+        return festivalPlan;
     }
 }
 

@@ -2,6 +2,7 @@ package Application.Simulation;
 
 import data.FestivalPlan;
 import data.Performance;
+import data.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -111,7 +112,7 @@ public class Visitor {
                             planning.add(sameTimePerformances.get(2));
                             break;
                         }
-                        if(sameTimePerformances.get(3).getArtist().getPopularity() + sameTimePerformances.get(2).getArtist().getPopularity() + sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                        if (sameTimePerformances.get(3).getArtist().getPopularity() + sameTimePerformances.get(2).getArtist().getPopularity() + sameTimePerformances.get(1).getArtist().getPopularity() + sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
                             planning.add(sameTimePerformances.get(3));
                             break;
                         }
@@ -132,7 +133,30 @@ public class Visitor {
 
     }
 
-    public void update(ArrayList<Visitor> visitors) {
+    public void update(ArrayList<Visitor> visitors, Simulation sim) {
+        for (Performance performance : planning) {
+            int beginHour = performance.getBeginHour();
+            int beginMinute = performance.getBeginMinute();
+            Stage stage = null;
+
+            if (beginMinute <= 15 && beginMinute >= 0) {
+                if (sim.getHours() == beginHour - 1 && sim.getMinutes() == 45 + beginMinute) {
+                    stage = performance.getStage();
+                }
+            } else if (beginHour == sim.getHours() && beginMinute - 15 == sim.getMinutes()) {
+                stage = performance.getStage();
+            }
+            if(stage != null) {
+                for (int i = 0; i < sim.getFestivalPlan().getStages().size(); i++) {
+                    if (stage == sim.getFestivalPlan().getStages().get(i)) {
+                        this.pathFinder = sim.getPathFinders()[i];
+                        System.out.println(pathFinder);
+                        System.out.println("Its time to go to stage "  + i);
+                    }
+                }
+            }
+        }
+
 
         if (position.distance(targetPosition) < 20) {
             for (Tile tile : currentTile.getNeighbours()) {
@@ -206,7 +230,6 @@ public class Visitor {
         transform.translate(position.getX() - image.getWidth() / 2, position.getY() - image.getHeight() / 1.5);
 
         graphics2D.setColor(Color.red);
-//        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         graphics2D.draw(new Ellipse2D.Double(this.targetPosition.getX(), this.targetPosition.getY(), 10, 10));
         graphics2D.drawImage(this.image, transform, null);
         graphics2D.setColor(Color.green);
