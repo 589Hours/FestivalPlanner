@@ -208,12 +208,12 @@ public class GUI extends Application {
                         festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
                         borderPane.setCenter(canvasBlockView);
                     } else if (beginScreen.checkClicked(point2D).equals("StartSimulation")){
-                        try {
-                            new Simulation().init();
-                            started = true;
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                            try {
+                                new Simulation().init(festivalPlan);
+                                started = true;
+                            } catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
                     }
                 }
             }

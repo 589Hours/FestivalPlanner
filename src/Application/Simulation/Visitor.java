@@ -45,8 +45,7 @@ public class Visitor {
     private Toilet currentToilet;
     private ArrayList<Performance> planning;
 
-    public Visitor(Point2D position, PathFinder pathFinder, double speed, FestivalPlan festivalPlan) {
-    public Visitor(Point2D position, PathFinder pathFinder, double speed, String name, int age) {
+    public Visitor(Point2D position, PathFinder pathFinder, double speed, FestivalPlan festivalPlan, String name, int age) {
         try {
             this.spriteSheet = ImageIO.read(this.getClass().getResourceAsStream("/Visitors/MV_Graveyard_Zombies_Skeleton.png"));
         } catch (IOException e) {
@@ -54,7 +53,8 @@ public class Visitor {
         }
         this.pathFinder = pathFinder;
         this.position = position;
-        this.currentTile = pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
+        Tile tile = this.pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
+        this.currentTile = this.pathFinder.getTileFromPosition(new Point2D.Double(126, 64));
         this.targetPosition = position;
         this.speed = speed;
         this.angle = 0;
@@ -92,8 +92,11 @@ public class Visitor {
 
                 switch (sameTimePerformances.size()) {
                     case 1:
-                        planning.add(sameTimePerformances.get(0));
-                        break;
+                        if(sameTimePerformances.get(0).getArtist().getPopularity() > randomInt) {
+                            planning.add(sameTimePerformances.get(0));
+                            break;
+                        }
+
                     case 2:
                         if (sameTimePerformances.get(0).getArtist().getPopularity() >= randomInt) {
                             planning.add(sameTimePerformances.get(0));
@@ -169,7 +172,7 @@ public class Visitor {
             this.characterUp.add(spriteSheet.getSubimage(x * this.imageWidth, 3 * this.imageHeight, this.imageWidth, this.imageHeight));
         }
     }
-    public void update(ArrayList<Visitor> visitors, Simulation sim) {
+    public void update(ArrayList<Visitor> visitors, Simulation sim, double deltaTime, FestivalPlan festivalPlan) {
         for (Performance performance : planning) {
             int beginHour = performance.getBeginHour();
             int beginMinute = performance.getBeginMinute();
@@ -185,7 +188,7 @@ public class Visitor {
             if(stage != null) {
                 for (int i = 0; i < sim.getFestivalPlan().getStages().size(); i++) {
                     if (stage == sim.getFestivalPlan().getStages().get(i)) {
-                        this.pathFinder = sim.getPathFinders()[i];
+                        setPathFinder(sim.getPathFinders()[i]);
                         System.out.println(pathFinder);
                         System.out.println("Its time to go to stage "  + i);
                     }

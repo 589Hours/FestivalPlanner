@@ -92,7 +92,7 @@ public class Simulation {
 
     public void init(FestivalPlan festivalPlan) throws Exception {
         camera = new Camera();
-        map = new Map("/FestivalMap.json", this.alphaPathFinder);
+        map = new Map("/FestivalMap.json", festivalPlan, this);
         for (int i = 0; i < 9; i++) {
             this.toilets.add(new Toilet(new Point2D.Double(282 + (i * 99 - (i * 4)), 4312)));
         }
@@ -150,6 +150,7 @@ public class Simulation {
 
 
         alphaPathFinder.calculateDistanceMapWithGraph();
+        spawnTile = alphaPathFinder.getSpawnTile();
         betaPathFinder.calculateDistanceMapWithGraph();
         charliePathFinder.calculateDistanceMapWithGraph();
         deltaPathFinder.calculateDistanceMapWithGraph();
@@ -202,24 +203,23 @@ public class Simulation {
 
     public void update(double deltaTime) {
         for (Toilet toilet : toilets) {
-        }
             toilet.update(deltaTime);
-        if (counter % 144 == 0) {
-            if (visitors.size() < 1) {
+        }
+        if (counter % 90 == 0) {
+            if (visitors.size() < 100) {
                 Visitor visitor = new Visitor(
                         new Point2D.Double(126 * 32, 64 * 32),
                         alphaPathFinder,
                         0.001,
+                        festivalPlan,
                         names[visitors.size()],
                         (int) (Math.floor(Math.random() * (60 - 15 + 1)) + 15));
-                        festivalPlan);
                 visitors.add(visitor);
             }
         }
 
         for (Visitor visitor : visitors) {
-            visitor.update(visitors, this);
-            visitor.update(visitors, deltaTime);
+            visitor.update(visitors, this, deltaTime, festivalPlan);
             if (visitor.getDrinkCounter() >= 100 && !visitor.isGoingToToilet()) {
                 if (!visitor.getPathFinder().equals(toiletPathFinder)) {
                     System.out.println("Toiletpathfinder: " +  toiletPathFinder);
@@ -268,7 +268,7 @@ public class Simulation {
                 }
             }
         }
-        if(counter % 10 == 0) {
+        if(counter % 100 == 0) {
             updateTime();
         }
         counter++;
