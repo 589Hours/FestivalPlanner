@@ -48,7 +48,8 @@ public class Simulation extends Application {
         canvas.setWidth(1024);
         canvas.setHeight(1024);
 
-        canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double(event.getX()*(1/camera.getTransform().getScaleX()), event.getY()*(1/camera.getTransform().getScaleX()))));
+        canvas.setOnMousePressed(event -> checkClicked(new Point2D.Double((event.getX() - camera.getTransform().getTranslateX())*(1/camera.getTransform().getScaleX()),
+                (event.getY() - camera.getTransform().getTranslateY())*(1/camera.getTransform().getScaleY()))));
         canvas.setOnScroll(event -> camera.mouseScroll(event));
 //        canvas.setOnMouseMoved(event -> {
 //            try {
@@ -255,15 +256,15 @@ public class Simulation extends Application {
     }
 
     public void checkClicked(Point2D point){
-        System.out.println("clicked");
         ArrayList<Visitor> visitorsCopy = new ArrayList<>(visitors);
         for (Visitor visitor : visitorsCopy) {
             if (visitors.get(visitors.indexOf(visitor)).isClickedOnMe(point)){
-                System.out.println("clicked on visitor");
                 Alert visitorInfo = new Alert(Alert.AlertType.INFORMATION);
-                visitorInfo.setTitle(visitors.get(visitors.indexOf(visitor)).getName());
-                visitorInfo.setHeaderText(visitors.get(visitors.indexOf(visitor)).getName());
-                visitorInfo.setContentText("Naam: " + visitors.get(visitors.indexOf(visitor)).getName() + "\n" + "Leeftijd: " + visitors.get(visitors.indexOf(visitor)).getAge());
+                visitorInfo.setTitle(visitor.getName());
+                visitorInfo.setHeaderText(visitor.getName());
+                visitorInfo.setContentText("Naam: " + visitor.getName() +
+                        "\n" + "Leeftijd: " + visitor.getAge() +
+                        "\n" + "Blaas: " + (int)visitor.getDrinkCounter() + "%");
                 visitorInfo.showAndWait();
             }
         }
