@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class StageAdd {
-    public StageAdd(FestivalPlan data) {
+    public StageAdd(FestivalPlan festivalPlan) {
         Stage stageAdd = new Stage();
 
         TextField stageNameText = new TextField();
@@ -41,15 +41,22 @@ public class StageAdd {
         });
 
         buttonCreate.setOnAction(event ->  {
-            if (!(data.getStages().size() >= 5)) {
+            if (!(festivalPlan.getStages().size() >= 5)) {
                 if (stageNameText.getText().isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.getDialogPane().setContent(new Label("The textfield is empty, please enter a name."));
                     alert.show();
 
                 } else {
-                    data.addStage(new data.Stage(stageNameText.getText(), data.getStages().size() + 1));
-
+                    festivalPlan.addStage(new data.Stage(stageNameText.getText(), festivalPlan.getStages().size() + 1));
+                    for (data.Stage stage : festivalPlan.getStages()) {
+                        if (stage.getName().equals(stageNameText.getText())){
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.getDialogPane().setContent(new Label("There can't be two stages that go by the same name!"));
+                            error.show();
+                            return;
+                        }
+                    }
                     Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
                     confirmation.setHeaderText("Succes!");
                     confirmation.setHeaderText("The stage with the name \"" + stageNameText.getText() + "\" was added succesfully!");
