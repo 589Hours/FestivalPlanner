@@ -1,5 +1,7 @@
 package data;
 
+import javafx.scene.control.Alert;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -113,10 +115,51 @@ public class FestivalPlan implements Serializable {
         this.stages = stages;
     }
 
-    public void addPerformance(Performance performance){
-        this.performances.add(performance);
+    public boolean canAddPerformance(Performance newPerformance) {
+        for (Performance existingPerformance : performances) {
+            if (existingPerformance.getStage() == newPerformance.getStage() &&
+                    ((existingPerformance.getBeginHour() < newPerformance.getEndHour() && existingPerformance.getEndHour() > newPerformance.getBeginHour()) ||
+                            (existingPerformance.getEndHour() > newPerformance.getBeginHour() && existingPerformance.getEndHour() < newPerformance.getEndHour()))) {
+                showErrorAlert("Error: Artist already scheduled for another performance at that time on the same stage. Please choose another time.");
+                return false;
+            }
+        }
+        for (Performance existingPerformance : performances) {
+            if (existingPerformance.getArtist().equals(newPerformance.getArtist()) &&
+                    ((existingPerformance.getBeginHour() < newPerformance.getEndHour() && existingPerformance.getEndHour() > newPerformance.getBeginHour()) ||
+                            (existingPerformance.getEndHour() > newPerformance.getBeginHour() && existingPerformance.getEndHour() < newPerformance.getEndHour()))) {
+                showErrorAlert("Error: Artist already scheduled for another performance at that time. Please choose another time.");
+                return false;
+            }
+        }
+        return true;
     }
-    public void addArtist(Artist artist){
+
+    public void addPerformance(Performance performance) {
+        if (canAddPerformance(performance)) {
+            performances.add(performance);
+        }
+    }
+
+    public void showErrorAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Error: Performance cannot be added due to overlap!");
+        alert.showAndWait();
+    }
+
+    public void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Performance successfully added!");
+        alert.showAndWait();
+    }
+
+    public void clearInputFields() {
+    }
+        public void addArtist(Artist artist){
         this.artists.add(artist);
     }
     public void addStage(Stage stage){

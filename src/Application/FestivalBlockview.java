@@ -164,7 +164,7 @@ public class FestivalBlockview extends Canvas {
             int popularity = performance.getArtist().getPopularity();
             String genre = performance.getArtist().getGenre();
 
-            Color color = Color.getHSBColor(((float) (popularity / 3)/ 100), 1, 1);
+            Color color = Color.getHSBColor(((float) (popularity / 3) / 100), 1, 1);
 
             RoundRectangle2D roundRectangle = new RoundRectangle2D.Double(x, y, width, height, 5, 5);
             blocks.put(roundRectangle, performance);
@@ -189,21 +189,45 @@ public class FestivalBlockview extends Canvas {
         }
         return null;
     }
-    public void deleteBlock(Performance performance){
+
+    public void deleteBlock(Performance performance) {
         RoundRectangle2D delete = null;
         for (RoundRectangle2D rectangle2D : blocks.keySet()) {
-            if (blocks.get(rectangle2D) == performance){
+            if (blocks.get(rectangle2D) == performance) {
                 delete = rectangle2D;
             }
         }
         blocks.remove(delete);
     }
 
-    public void deleteAllBlocks(){
+    public void deleteAllBlocks() {
         blocks.clear();
     }
 
     public FXGraphics2D getFxGraphics2D() {
         return fxGraphics2D;
     }
+    /* public boolean addPerformance(FestivalPlan festivalPlan, Performance performance) {
+        if (festivalPlan.canAddPerformance(performance)) {
+            festivalPlan.addPerformance(performance);
+            festivalPlan.showSuccessAlert();
+            return true;
+        } else {
+
+            System.err.println("Error: Performance overlaps with existing performances.");
+            festivalPlan.showErrorAlert("Performance could not be added due to overlapping performances.");
+            return false;
+        }
+    } */
+    public void addPerformance(Performance performance) {
+        if (festivalPlan.canAddPerformance(performance)) {
+            festivalPlan.addPerformance(performance);
+            festivalPlan.clearInputFields();
+            festivalPlan.showSuccessAlert();
+        } else {
+
+            festivalPlan.showErrorAlert("Performance could not be added due to overlapping performances.");
+        }
+    }
 }
+

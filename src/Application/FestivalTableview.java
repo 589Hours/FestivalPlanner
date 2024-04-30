@@ -78,4 +78,25 @@ public class FestivalTableview extends TableView {
         tableColumn.setCellValueFactory(new PropertyValueFactory<CellDataForTableView, String>(parameter));
     }
 
+
+   /* public boolean addPerformance(FestivalPlan festivalPlan, Performance performance) {
+        if (festivalPlan.canAddPerformance(performance)) {
+            festivalPlan.addPerformance(performance);
+            festivalPlan.showSuccessAlert();
+            return true;
+        } else {
+            System.err.println("Error: Performance overlaps with existing performances.");
+            festivalPlan.showErrorAlert("Performance could not be added due to overlapping performances.");
+            return false;
+        }
+    } */
+    public void addPerformance(Performance performance) {
+        if (festivalPlan.canAddPerformance(performance)) {
+            festivalPlan.addPerformance(performance);
+            festivalPlan.clearInputFields();
+            festivalPlan.showSuccessAlert();
+        } else {
+            festivalPlan.showErrorAlert("Fout a klakel");
+        }
+    }
 }
