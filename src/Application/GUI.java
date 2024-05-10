@@ -10,6 +10,7 @@ import Application.Edit.EditArtist;
 import Application.Edit.EditStage;
 import Application.Simulation.Simulation;
 import data.FestivalPlan;
+import data.Performance;
 import data.SaveToFile;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -209,12 +210,12 @@ public class GUI extends Application {
                         festivalBlockview.draw(festivalBlockview.getFxGraphics2D(), festivalPlan);
                         borderPane.setCenter(canvasBlockView);
                     } else if (beginScreen.checkClicked(point2D).equals("StartSimulation")){
-                            try {
-                                new Simulation().init(festivalPlan);
-                                started = true;
-                            } catch (Exception e){
-                                throw new RuntimeException(e);
-                            }
+                        try {
+                            new Simulation().init(festivalPlan);
+                            started = true;
+                        } catch (Exception e){
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -251,5 +252,35 @@ public class GUI extends Application {
         alert.setHeaderText("Success!");
         alert.setContentText(contextString);
         alert.showAndWait();
+    }
+    public boolean checkForOverlap(Performance newPerformance) {
+        for (Performance existingPerformance : festivalPlan.getPerformances()) {
+
+            if (existingPerformance.getArtist().equals(newPerformance.getArtist())) {
+
+                if (existingPerformance.getStage() == newPerformance.getStage() &&
+                        ((existingPerformance.getBeginHour() < newPerformance.getEndHour() && existingPerformance.getEndHour() > newPerformance.getBeginHour()) ||
+                                (existingPerformance.getEndHour() > newPerformance.getBeginHour() && existingPerformance.getEndHour() < newPerformance.getEndHour()))) {
+                    System.err.println("Error: Artist already scheduled for another performance at that time on the same stage.");
+                    return true;
+                }
+            }
+
+            if (existingPerformance.getStage() != newPerformance.getStage() &&
+                    ((existingPerformance.getBeginHour() < newPerformance.getEndHour() && existingPerformance.getEndHour() > newPerformance.getBeginHour()) ||
+                            (existingPerformance.getEndHour() > newPerformance.getBeginHour() && existingPerformance.getEndHour() < newPerformance.getEndHour()))) {
+                System.err.println("Error: Two performances scheduled to overlap.");
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void addPerformance(Performance performance) {
+
+        if (!checkForOverlap(performance)) {
+            festivalPlan.addPerformance(performance);
+        }
     }
 }

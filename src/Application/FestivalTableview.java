@@ -77,5 +77,14 @@ public class FestivalTableview extends TableView {
     public void setCellValue(TableColumn tableColumn, String parameter){
         tableColumn.setCellValueFactory(new PropertyValueFactory<CellDataForTableView, String>(parameter));
     }
+    public void addPerformance(Performance performance) {
+        if (festivalPlan.canAddPerformance(performance)) {
+            festivalPlan.addPerformance(performance);
+            festivalPlan.clearInputFields();
+            festivalPlan.showSuccessAlert();
+        } else {
+            festivalPlan.showErrorAlert("Fout a klakel");
+        }
+    }
 
 }
